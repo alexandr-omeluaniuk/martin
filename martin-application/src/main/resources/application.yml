@@ -1,0 +1,41 @@
+## YAML Template.
+---
+server:
+  port: 9090
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        show_sql: false
+        use_sql_comments: false
+        format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/e-booking?useSSL=false&characterEncoding=utf-8&useUnicode=true
+    username: promat
+    password: 8228023mts
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: wisent.test@gmail.com
+    password: WB1000xzH
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.gmail.com
+logging:
+  level:
+    org:
+      ss: DEBUG
+platform:
+  rememberMeKey: 80wfj23nf0g03hgjasdf98h3fljs
+  superAdminEmail: starshistrelok@gmail.com
+  superAdminFirstName: Александр
+  superAdminLastName: Омельянюк
+  superAdminPassword: 8228023mts
+  serverDomain: http://localhost:3000
