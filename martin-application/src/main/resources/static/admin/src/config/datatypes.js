@@ -61,3 +61,17 @@ export const renderLinkTableCell = (entity, entityData, cellValue) => {
             <NavLink to={link}>{cellValue}</NavLink>
     );
 };
+
+export const convertUIValue = (field, value, oldValue) => {
+    let result = value;
+    if (field.fieldType === TYPE_SET) {
+        let arr = oldValue;
+        if (arr.includes(value)) {
+            arr = arr.filter(v => { return v !== value; });
+        } else {
+            arr.push(value);
+        }
+        result = arr;
+    }
+    return result;
+};

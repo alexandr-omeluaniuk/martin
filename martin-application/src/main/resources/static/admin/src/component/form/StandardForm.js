@@ -38,9 +38,10 @@ import Button from '@material-ui/core/Button';
 import moment from 'moment';
 import "moment/locale/ru";
 import { green } from '@material-ui/core/colors';
-import { TYPE_STRING, TYPE_DATE, TYPE_SET } from '../../config/datatypes';
+import { TYPE_STRING, TYPE_DATE } from '../../config/datatypes';
 import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL, MOBILE_PHONE_NUMBER, REGEX_MOBILE_PHONE_NUMBER } from '../../config/validators';
 import FormField from './FormField';
+import { convertUIValue } from '../../config/datatypes';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,20 +70,9 @@ function StandardForm(props) {
     // ------------------------------------------ FUNCTIONS -------------------------------------------------------------------------------
     const onChangeFieldValue = (name, value) => {
         let field = layout.fields.filter(f => {return f.name === name;})[0];
-        if (field.fieldType === TYPE_SET) {
-            let arr = formData.get(name);
-            if (arr.includes(value)) {
-                arr = arr.filter(v => { return v !== value; });
-            } else {
-                arr.push(value);
-            }
-            formData.set(name, arr);
-        } else {
-            formData.set(name, value);
-        }
+        formData.set(name, convertUIValue(field, value, formData.get(name)));
         setFormData(new Map(formData));
-        let validationResult = isFormValid();
-        setInvalidFields(validationResult);
+        setInvalidFields(isFormValid());
     };
     const isFormValid = () => {
         let newInvalidField = new Map();

@@ -33,11 +33,11 @@ import ListView from '../view/ListView';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        padding: theme.spacing(1),
+        padding: theme.spacing(2),
         width: '100%'
     },
     tabs: {
-        marginBottom: theme.spacing(1)
+        marginBottom: theme.spacing(2)
     }
 }));
 

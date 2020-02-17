@@ -36,10 +36,11 @@ import DataService from '../service/DataService';
 import { TYPE_AVATAR } from '../config/datatypes';
 import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
+import { convertUIValue } from '../config/datatypes';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
-        marginBottom: theme.spacing(1)
+        marginBottom: theme.spacing(2)
     }
 }));
 
@@ -52,7 +53,11 @@ function EntityCard(props) {
     const [activeTab, setActiveTab] = React.useState(0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
-    const onChangeFieldValue = () => {
+    const onChangeFieldValue = (name, value) => {
+        entityData.data[name] = value;
+        setEntityData(JSON.parse(JSON.stringify(entityData)));
+    };
+    const onFieldEdit = () => {
         
     };
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
@@ -97,7 +102,7 @@ function EntityCard(props) {
                                 return null;
                             }
                             return (
-                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue}
+                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue} onFieldEdit={onFieldEdit}
                                         invalidFields={invalidFields} entity={entity} fieldValue={entityData.data[field.name]}/>
                             );
                         })}

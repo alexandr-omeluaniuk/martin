@@ -26,6 +26,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } from '@material-ui/pickers';
 import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR } from '../../config/datatypes';
@@ -45,9 +48,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function FormField(props) {
-    const { field, entity, invalidFields, fieldValue, onChangeFieldValue } = props;
+    const { field, entity, invalidFields, fieldValue, onChangeFieldValue, onFieldEdit} = props;
     const { t } = useTranslation();
     const classes = useStyles();
+    const inputRef = React.useRef();
+    // ----------------------------------------------------- STATE ------------------------------------------------------------------------
+    const [readOnly, setReadOnly] = React.useState(onFieldEdit ? true : false);
     // -------------------------------------------------- FUNCTIONS -----------------------------------------------------------------------
     const sizeOf = (val) => {
         if (val === "false") {
@@ -58,6 +64,29 @@ function FormField(props) {
             return val;
         } else {
             return parseInt(val);
+        }
+    };
+    
+    const editButton = () => {
+        return onFieldEdit ? (
+                <InputAdornment position="end">
+                    <IconButton disabled={!readOnly} onClick={() => {
+                        if (readOnly) {
+                            setReadOnly(false);
+                            inputRef.current.focus();
+                        }
+                    }}>
+                        <Icon>edit</Icon>
+                    </IconButton>
+                </InputAdornment>
+        ) : null;
+    };
+    
+    const onBlurInput = (event) => {
+        if (onFieldEdit) {
+            event.preventDefault();
+            event.stopPropagation();
+            setReadOnly(true);
         }
     };
     
@@ -72,15 +101,16 @@ function FormField(props) {
             let isMobilePhoneNumber = field.validators.filter(v => { return v.type === MOBILE_PHONE_NUMBER; }).length > 0;
             if (isMobilePhoneNumber) {
                 return (
-                        <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''}
+                        <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''} inputRef={inputRef}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
-                            helperText={invalidFields.get(name)}/>
+                            helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}/>
                 );
             } else {
                 return (
                         <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
-                                value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)}
-                                helperText={invalidFields.get(name)}/>
+                                value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
+                                helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
+                                onBlur={(e) => onBlurInput(e)}/>
                 );
             }
         } else if (field.fieldType === TYPE_DATE) {

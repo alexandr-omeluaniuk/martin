@@ -32,6 +32,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
+import Tooltip from '@material-ui/core/Tooltip';
 import { NavLink } from "react-router-dom";
 import { drawerWidth } from '../../constants/style';
 
@@ -84,9 +85,11 @@ export default function SideNavBar(props) {
                                 onItemSelected(item);
                             }}>
                                 <ListItem button selected={window.location.pathname === item.path}>
-                                    <ListItemIcon>
-                                        <Icon>{item.icon}</Icon>
-                                    </ListItemIcon>
+                                    <Tooltip title={item.label}>
+                                        <ListItemIcon>
+                                            <Icon>{item.icon}</Icon>
+                                        </ListItemIcon>
+                                    </Tooltip>
                                     <ListItemText primary={item.label} />
                                 </ListItem>
                             </NavLink>
