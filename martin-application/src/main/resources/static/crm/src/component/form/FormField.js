@@ -34,7 +34,7 @@ import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } f
 import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR, V_NOT_NULL, V_NOT_EMPTY,
     V_MOBILE_PHONE_NUMBER } from '../../service/DataTypeService';
 import { useTranslation } from 'react-i18next';
-import MultiChoiceInput from '../input/MultiChoiceInput';
+import EnumMultiChoiceInput from '../input/EnumMultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
 import AvatarInput from '../input/AvatarInput';
 import moment from 'moment';
@@ -125,10 +125,12 @@ function FormField(props) {
             );
         } else if (field.fieldType === TYPE_SET) {
             let value = fieldValue ? new Set(fieldValue) : new Set();
-            return (
-                    <MultiChoiceInput entity={entity} field={name} label={label} genericClass={field.genericClass}
-                        isEnum={field.genericClassEnum} selected={value} onChange={onChangeFieldValue}/>
-            );
+            if (field.genericClass && field.genericClassEnum) {
+                return (
+                        <EnumMultiChoiceInput entity={entity} fieldName={name} label={label} genericClass={field.genericClass}
+                            selected={value} onChange={onChangeFieldValue}/>
+                );
+            }
         } else if (field.fieldType === TYPE_AVATAR) {
             return (
                     <AvatarInput label={label} value={fieldValue ? fieldValue : ''}

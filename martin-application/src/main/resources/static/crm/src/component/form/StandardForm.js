@@ -65,8 +65,7 @@ function StandardForm(props) {
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // ------------------------------------------ FUNCTIONS -------------------------------------------------------------------------------
     const onChangeFieldValue = (name, value) => {
-        let field = layout.fields.filter(f => {return f.name === name;})[0];
-        formData.set(name, DataTypeService.convertUIValue(field, value, formData.get(name)));
+        formData.set(name, value);
         setFormData(new Map(formData));
         setInvalidFields(isFormValid());
     };

@@ -32,15 +32,27 @@ import InputLabel from '@material-ui/core/InputLabel';
 import DataService from '../../service/DataService';
 import { useTranslation } from 'react-i18next';
 
-export default function MultiChoiceInput(props) {
-    const { entity, field, label, genericClass, isEnum, onChange, selected } = props;
+export default function EnumMultiChoiceInput(props) {
+    const { entity, fieldName, label, genericClass, onChange, selected } = props;
     const { t } = useTranslation();
     // ------------------------------------------ STATE -----------------------------------------------------------------------------------
     const [data, setData] = React.useState(null);
+    // ------------------------------------------ FUNCTIONS -------------------------------------------------------------------------------
+    const onChangeInner = (field, item) => {
+        let arr = Array.from(selected);
+        if (arr.includes(item)) {
+            arr = arr.filter(v => {
+                return v !== item;
+            });
+        } else {
+            arr.push(item);
+        }
+        onChange(field, arr);
+    }
     // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
     useEffect(() => {
         if (!data) {
-            DataService.requestGet('/entity/collection/' + entity + '/' + field).then(resp => {
+            DataService.requestGet('/entity/collection/' + entity + '/' + fieldName).then(resp => {
                 setData(resp);
             });
         }
@@ -59,10 +71,10 @@ export default function MultiChoiceInput(props) {
                             return (
                                 <TableRow padding="none" key={i}>
                                     <TableCell padding="checkbox">
-                                        <Checkbox checked={isEnum ? selected.has(item) : false} onClick={event => {onChange(field, isEnum ? item : null)}}/>
+                                        <Checkbox checked={selected.has(item)} onClick={event => {onChangeInner(fieldName, item)}}/>
                                     </TableCell>
                                     <TableCell>
-                                        {isEnum ? t('enum.' + genericClass + '.' + item) : item}
+                                        {t('enum.' + genericClass + '.' + item)}
                                     </TableCell>
                                 </TableRow>
                             );
