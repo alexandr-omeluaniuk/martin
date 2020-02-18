@@ -114,14 +114,15 @@ function FormField(props) {
                 return (
                         <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''} inputRef={inputRef}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
-                            helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}/>
+                            helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}
+                            onBlur={onBlurInput} onKeyUp={onEnterInput}/>
                 );
             } else {
                 return (
                         <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                                 value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
                                 helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
-                                onBlur={(e) => onBlurInput(e)} onKeyUp={onEnterInput}/>
+                                onBlur={onBlurInput} onKeyUp={onEnterInput}/>
                 );
             }
         } else if (field.fieldType === TYPE_DATE) {

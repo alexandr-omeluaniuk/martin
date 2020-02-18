@@ -51,6 +51,7 @@ function EntityCard(props) {
     // --------------------------------------------------- STATE --------------------------------------------------------------------------
     const [update, setUpdate] = React.useState(false);
     const [entityData, setEntityData] = React.useState(null);
+    const [dataSnapshot, setDataSnapshot] = React.useState(null);
     const [activeTab, setActiveTab] = React.useState(0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
@@ -62,10 +63,13 @@ function EntityCard(props) {
         let validation = DataTypeService.validateField(field, value, t);
         setInvalidFields(validation);
         if (validation.size === 0) {
-            DataService.requestPut('/entity/' + entity, entityData.data).then(resp => {
-                setUpdate(!update);
-                DataService.showNotification(t('notification.changesSaved'), '', 'success', 1000);
-            });
+            let newDataSnapshot = JSON.stringify(entityData.data);
+            if (newDataSnapshot !== dataSnapshot) {
+                DataService.requestPut('/entity/' + entity, entityData.data).then(resp => {
+                    setUpdate(!update);
+                    DataService.showNotification(t('notification.changesSaved'), '', 'success', 1000);
+                });
+            }
         } else {
             setUpdate(!update);
         }
@@ -74,6 +78,7 @@ function EntityCard(props) {
     useEffect(() => {
         DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
             setEntityData(resp);
+            setDataSnapshot(JSON.stringify(resp.data));
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [entity, id, update]);

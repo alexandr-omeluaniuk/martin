@@ -39,12 +39,13 @@ function PhoneMask(props) {
 }
 
 function MobilePhoneNumberInput(props) {
-    const { label, value, onChange, fullWidth, helperText, endAdornment, readOnly, inputRef } = props;
+    const { label, value, onChange, fullWidth, helperText, endAdornment, readOnly, inputRef, onBlur, onKeyUp } = props;
     return (
             <FormControl fullWidth={fullWidth} error={helperText ? true : false}>
                 <InputLabel htmlFor="formatted-text-mask-input">{label}</InputLabel>
                 <Input value={value} onChange={onChange} id="formatted-text-mask-input"
-                    inputComponent={PhoneMask} endAdornment={endAdornment} readOnly={readOnly} inputRef={inputRef}/>
+                    inputComponent={PhoneMask} endAdornment={endAdornment} readOnly={readOnly} inputRef={inputRef}
+                    onBlur={onBlur} onKeyUp={onKeyUp}/>
                 <FormHelperText error={helperText ? true : false}>{helperText ? helperText : ''}</FormHelperText>
             </FormControl>
     );
