@@ -31,8 +31,8 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } from '@material-ui/pickers';
-import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR } from '../../config/datatypes';
-import { NOT_NULL, NOT_EMPTY, MOBILE_PHONE_NUMBER } from '../../config/validators';
+import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR, V_NOT_NULL, V_NOT_EMPTY,
+    V_MOBILE_PHONE_NUMBER } from '../../service/DataTypeService';
 import { useTranslation } from 'react-i18next';
 import MultiChoiceInput from '../input/MultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
@@ -93,12 +93,12 @@ function FormField(props) {
     const renderFormField = (field) => {
         let label = t('models.' + entity + '.' + field.name);
         var isRequired = field.validators.filter(v => {
-            return v.type === NOT_NULL || v.type === NOT_EMPTY;
+            return v.type === V_NOT_NULL || v.type === V_NOT_EMPTY;
         }).length > 0;
         label += isRequired ? ' *' : '';
         let name = field.name;
         if (field.fieldType === TYPE_STRING) {
-            let isMobilePhoneNumber = field.validators.filter(v => { return v.type === MOBILE_PHONE_NUMBER; }).length > 0;
+            let isMobilePhoneNumber = field.validators.filter(v => { return v.type === V_MOBILE_PHONE_NUMBER; }).length > 0;
             if (isMobilePhoneNumber) {
                 return (
                         <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''} inputRef={inputRef}

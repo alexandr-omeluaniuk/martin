@@ -38,10 +38,8 @@ import Button from '@material-ui/core/Button';
 import moment from 'moment';
 import "moment/locale/ru";
 import { green } from '@material-ui/core/colors';
-import { TYPE_STRING, TYPE_DATE } from '../../config/datatypes';
-import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL, MOBILE_PHONE_NUMBER, REGEX_MOBILE_PHONE_NUMBER } from '../../config/validators';
+import DataTypeService, { TYPE_STRING, TYPE_DATE } from '../../service/DataTypeService';
 import FormField from './FormField';
-import { convertUIValue } from '../../config/datatypes';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -70,35 +68,16 @@ function StandardForm(props) {
     // ------------------------------------------ FUNCTIONS -------------------------------------------------------------------------------
     const onChangeFieldValue = (name, value) => {
         let field = layout.fields.filter(f => {return f.name === name;})[0];
-        formData.set(name, convertUIValue(field, value, formData.get(name)));
+        formData.set(name, DataTypeService.convertUIValue(field, value, formData.get(name)));
         setFormData(new Map(formData));
         setInvalidFields(isFormValid());
     };
     const isFormValid = () => {
         let newInvalidField = new Map();
         layout.fields.filter(f => {return !f.hidden;}).forEach(field => {
-            field.validators.forEach(v => {
-                let fieldName = field.name;
-                let value = formData.has(fieldName) ? formData.get(fieldName) : null;
-                if (v.type === NOT_NULL && (value === null || value === undefined)) {
-                    newInvalidField.set(fieldName, t('validation.notnull'));
-                }
-                if (v.type === NOT_EMPTY && (value === null || value === undefined || value.length === 0)) {
-                    newInvalidField.set(fieldName, t('validation.notempty'));
-                }
-                if (v.type === SIZE && value && (value.length > v.attributes.max)) {
-                    newInvalidField.set(fieldName, t('validation.maxLength', {length: v.attributes.max}));
-                }
-                if (v.type === SIZE && value && (value.length < v.attributes.min)) {
-                    newInvalidField.set(fieldName, t('validation.minLength', {length: v.attributes.min}));
-                }
-                if (v.type === EMAIL && value && !REGEX_EMAIL.test(value)) {
-                    newInvalidField.set(fieldName, t('validation.email'));
-                }
-                if (v.type === MOBILE_PHONE_NUMBER && value && !REGEX_MOBILE_PHONE_NUMBER.test(value)) {
-                    newInvalidField.set(fieldName, t('validation.phone'));
-                }
-            });
+            let fieldName = field.name;
+            let value = formData.has(fieldName) ? formData.get(fieldName) : null;
+            newInvalidField = new Map([...newInvalidField, ...DataTypeService.validateField(field, value, t)]);
         });
         return newInvalidField;
     };
@@ -108,11 +87,7 @@ function StandardForm(props) {
             let data = {};
             for (const [key, value] of formData.entries()) {
                 let field = layout.fields.filter(f => { return f.name === key; })[0];
-                if (field.fieldType === TYPE_DATE) {
-                    data[key] = value.format(t('constants.momentJsDateFormat'));
-                } else {
-                    data[key] = value;
-                }
+                data[key] = DataTypeService.convertUIValueToServerFormat(field, value);
             }
             handleClose();
             if (formData.has('id')) {

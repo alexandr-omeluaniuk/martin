@@ -25,7 +25,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DataService from '../../service/DataService';
 import { useTranslation } from 'react-i18next';
 import StandardForm from '../form/StandardForm';
-import { renderTableCell, renderLinkTableCell } from '../../config/datatypes';
+import DataTypeService from '../../service/DataTypeService';
 import AppURLs from '../../constants/AppURLs';
 import { NavLink } from "react-router-dom";
 
@@ -177,9 +177,9 @@ function EnhancedTable(props) {
                                                     }}/>
                                         </TableCell>
                                         {headCells.map((column, i) => {
-                                            let cellValue = renderTableCell(column, row[column.id], t);
+                                            let cellValue = DataTypeService.renderTableCell(column, row[column.id], t);
                                             if (column.link) {
-                                                cellValue = renderLinkTableCell(entity, row, cellValue);
+                                                cellValue = DataTypeService.renderLinkTableCell(entity, row, cellValue);
                                             }
                                             if (i === 0) {
                                                 return (

@@ -33,10 +33,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import DataService from '../service/DataService';
-import { TYPE_AVATAR } from '../config/datatypes';
+import DataTypeService, { TYPE_AVATAR } from '../service/DataTypeService';
 import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
-import { convertUIValue } from '../config/datatypes';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
@@ -55,7 +54,7 @@ function EntityCard(props) {
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
     const onChangeFieldValue = (name, value) => {
         let field = entityData.layout.fields.filter(f => {return f.name === name;})[0];
-        entityData.data[name] = convertUIValue(field, value, entityData.data[name]);
+        entityData.data[name] = DataTypeService.convertUIValue(field, value, entityData.data[name]);
         setEntityData(JSON.parse(JSON.stringify(entityData)));
     };
     const onFieldEdit = () => {

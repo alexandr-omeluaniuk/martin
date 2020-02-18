@@ -41,7 +41,7 @@ import Copyright from './component/Copyright';
 import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
 import { history } from './index';
-import { REGEX_EMAIL } from './config/validators';
+import { V_REGEX_EMAIL } from './service/DataTypeService';
 import background from './assets/login-background.jpg'
 
 const useStyles = makeStyles(theme => ({
@@ -86,7 +86,7 @@ export default function Welcome() {
     const [loginError, setLoginError] = useState('');
     const validate = (e, p) => {
         let isPasswordValid = p && p.length >= 8;
-        let isEmailValid = REGEX_EMAIL.test(e);
+        let isEmailValid = V_REGEX_EMAIL.test(e);
         setEmailValid(isEmailValid);
         setPasswordValid(isPasswordValid);
         setLoginError('');
