@@ -57,6 +57,7 @@ export const V_MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
 // ----------------------------------------------------------------------------------------------------------------------------------------
 
 export default class DataTypeService {
+        
     static renderTableCell = (fieldMeta, value, t) => {
         let renderValue = value;
         if (fieldMeta.enumField) {
@@ -75,12 +76,14 @@ export default class DataTypeService {
         }
         return renderValue;
     }
+    
     static renderLinkTableCell = (entity, entityData, cellValue) => {
         let link = AppURLs.links.entity + '/' + entity + '/' + entityData.id;
         return (
                 <NavLink to={link}>{cellValue}</NavLink>
         );
     }
+    
     static convertUIValueToServerFormat = (field, value) => {
         let result = value;
         if (field.fieldType === TYPE_DATE) {
@@ -88,6 +91,7 @@ export default class DataTypeService {
         }
         return result;
     }
+    
     static convertServerValueToUIFormat = (field, value) => {
         if (field.fieldType === TYPE_DATE) {
             value = moment(value, SERVER_DATE_FORMAT);
@@ -96,6 +100,7 @@ export default class DataTypeService {
         }
         return value;
     }
+    
     static validateField = (field, value, t) => {
         let invalidFields = new Map();
         let fieldName = field.name;
