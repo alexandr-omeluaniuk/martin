@@ -27,6 +27,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import { NavLink } from "react-router-dom";
 import AppURLs from '../constants/AppURLs';
+import moment from 'moment';
+import "moment/locale/ru";
 
 const SERVER_DATE_FORMAT = 'DD.MM.YYYY';
 
@@ -100,6 +102,14 @@ export default class DataTypeService {
             result = value.format(SERVER_DATE_FORMAT);
         }
         return result;
+    }
+    static convertServerValueToUIFormat = (field, value) => {
+        if (field.fieldType === TYPE_DATE) {
+            value = moment(value, SERVER_DATE_FORMAT);
+        } else if (field.fieldType === TYPE_STRING) {
+            value = value === null || value === undefined ? '' : value;
+        }
+        return value;
     }
     static validateField = (field, value, t) => {
         let invalidFields = new Map();

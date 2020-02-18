@@ -35,10 +35,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import moment from 'moment';
-import "moment/locale/ru";
 import { green } from '@material-ui/core/colors';
-import DataTypeService, { TYPE_STRING, TYPE_DATE } from '../../service/DataTypeService';
+import DataTypeService from '../../service/DataTypeService';
 import FormField from './FormField';
 
 const useStyles = makeStyles(theme => ({
@@ -112,13 +110,7 @@ function StandardForm(props) {
             let dataMap = new Map();
             layout.fields.forEach(field => {
                 if (data[field.name] !== undefined) {
-                    let value = data[field.name];
-                    if (field.fieldType === TYPE_DATE) {
-                        value = moment(value, t('constants.momentJsDateFormat'));
-                    } else if (field.fieldType === TYPE_STRING) {
-                        value = value === null || value === undefined ? '' : value;
-                    }
-                    dataMap.set(field.name, value);
+                    dataMap.set(field.name, DataTypeService.convertServerValueToUIFormat(field, data[field.name]));
                 }
             });
             setFormData(dataMap);
