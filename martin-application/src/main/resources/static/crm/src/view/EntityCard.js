@@ -54,7 +54,8 @@ function EntityCard(props) {
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
     const onChangeFieldValue = (name, value) => {
-        entityData.data[name] = value;
+        let field = entityData.layout.fields.filter(f => {return f.name === name;})[0];
+        entityData.data[name] = convertUIValue(field, value, entityData.data[name]);
         setEntityData(JSON.parse(JSON.stringify(entityData)));
     };
     const onFieldEdit = () => {
