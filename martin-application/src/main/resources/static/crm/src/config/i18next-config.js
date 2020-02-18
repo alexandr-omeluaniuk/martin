@@ -11,6 +11,9 @@ i18n.use(initReactI18next).init({
     resources: {
         ru: {
             translation: {
+                notification: {
+                    changesSaved: 'Изменения сохранены'
+                },
                 toolbar: {
                     accountmenu: {
                         logout: 'Выход'

@@ -82,11 +82,22 @@ function FormField(props) {
         ) : null;
     };
     
-    const onBlurInput = (event) => {
+    const commitChanges = (event) => {
         if (onFieldEdit) {
             event.preventDefault();
             event.stopPropagation();
             setReadOnly(true);
+            onFieldEdit(field, fieldValue);
+        }
+    };
+    
+    const onBlurInput = (event) => {
+        commitChanges(event);
+    };
+    
+    const onEnterInput = (event) => {
+        if (event.keyCode === 13) {
+            commitChanges(event);
         }
     };
     
@@ -110,7 +121,7 @@ function FormField(props) {
                         <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                                 value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
                                 helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
-                                onBlur={(e) => onBlurInput(e)}/>
+                                onBlur={(e) => onBlurInput(e)} onKeyUp={onEnterInput}/>
                 );
             }
         } else if (field.fieldType === TYPE_DATE) {

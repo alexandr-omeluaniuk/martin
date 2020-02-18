@@ -28,12 +28,14 @@ function App() {
     const [notificationMessage, setNotificationMessage] = React.useState(null);
     const [notificationDetails, setNotificationDetails] = React.useState(null);
     const [notificationType, setNotificationType] = React.useState('info');
+    const [notificationDuration, setNotificationDuration] = React.useState(6000);
     // ------------------------------------------------ METHODS ---------------------------------------------------------------------------
-    const showNotification = (msg, details, type) => {
+    const showNotification = (msg, details, type, duration) => {
         setNotificationMessage(msg);
         setNotificationDetails(details);
         setNotificationType(type ? type : 'info');
         setOpenNotification(true);
+        setNotificationDuration(duration ? duration : 6000);
     };
     DataService.setNotification(showNotification);
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
@@ -71,7 +73,7 @@ function App() {
                     <MainContent navItems={navItems} />
                 </div>
                 <Notification open={openNotification} setOpen={setOpenNotification} message={notificationMessage} 
-                        details={notificationDetails} severity={notificationType}/>
+                        details={notificationDetails} severity={notificationType} duration={notificationDuration}/>
             </Router>
     );
 }

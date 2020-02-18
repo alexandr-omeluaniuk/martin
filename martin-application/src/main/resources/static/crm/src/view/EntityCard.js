@@ -36,6 +36,7 @@ import DataService from '../service/DataService';
 import { TYPE_AVATAR } from '../service/DataTypeService';
 import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
+import DataTypeService from '../service/DataTypeService';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
@@ -48,6 +49,7 @@ function EntityCard(props) {
     const { t } = useTranslation();
     const classes = useStyles();
     // --------------------------------------------------- STATE --------------------------------------------------------------------------
+    const [update, setUpdate] = React.useState(false);
     const [entityData, setEntityData] = React.useState(null);
     const [activeTab, setActiveTab] = React.useState(0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
@@ -56,8 +58,17 @@ function EntityCard(props) {
         entityData.data[name] = value;
         setEntityData(JSON.parse(JSON.stringify(entityData)));
     };
-    const onFieldEdit = () => {
-        
+    const onFieldEdit = (field, value) => {
+        let validation = DataTypeService.validateField(field, value, t);
+        setInvalidFields(validation);
+        if (validation.size === 0) {
+            DataService.requestPut('/entity/' + entity, entityData.data).then(resp => {
+                setUpdate(!update);
+                DataService.showNotification(t('notification.changesSaved'), '', 'success', 1000);
+            });
+        } else {
+            setUpdate(!update);
+        }
     };
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
     useEffect(() => {
@@ -65,7 +76,7 @@ function EntityCard(props) {
             setEntityData(resp);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [entity, id]);
+    }, [entity, id, update]);
     useEffect(() => {
         return () => {
             DataService.abort();

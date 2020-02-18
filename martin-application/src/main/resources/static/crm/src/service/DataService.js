@@ -26,6 +26,9 @@ class DataService {
     static setNotification(func) {
         _showNotification = func;
     }
+    static showNotification = (message, details, type, duration) => {
+        _showNotification(message, details, type, duration);
+    }
     static requestGet = (url) => {
         return this._request('GET', url);
     };

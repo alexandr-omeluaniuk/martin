@@ -32,17 +32,16 @@ function Alert(props) {
 }
 
 export default function Notification(props) {
-    const { open, setOpen, message, details, severity } = props;
-
+    const { open, setOpen, message, details, severity, duration } = props;
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpen(false);
     };
-
     return (
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+            <Snackbar open={open} autoHideDuration={duration ? duration : 6000} onClose={handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleClose} severity={severity}>
                     {message ? (
                             <Typography component="p" variant="subtitle1">{message}</Typography>
