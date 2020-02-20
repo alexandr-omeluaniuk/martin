@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.martin.platform.spring.config;
+package ss.martin.application.spring.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -22,8 +20,7 @@ import ss.martin.platform.constants.AppURLs;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan({"ss.martin"})
-@EntityScan("ss.martin.platform.entity")
+@ComponentScan("ss.martin")
 public class WebConfig implements WebMvcConfigurer {
     /** Available applications. */
     private static final String[] APPLICATIONS = new String[] {
@@ -55,10 +52,5 @@ public class WebConfig implements WebMvcConfigurer {
                 }
             }
         };
-    }
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
     }
 }

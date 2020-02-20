@@ -28,7 +28,9 @@ spring:
 logging:
   level:
     org:
-      ss:
-        martin: TRACE
+      hibernate: INFO
+    ss:
+      martin: TRACE
+      
 platform:
   rememberMeKey: 80wfj23nf0g03hgjasdf98h3fljs

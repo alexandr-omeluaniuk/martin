@@ -21,17 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.test;
+package ss.martin.platform.spring.config;
 
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import ss.martin.platform.spring.config.ModuleConfig;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- *
+ * JAR module configuration.
  * @author ss
  */
-@SpringBootTest(classes = { ModuleConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@Transactional
-public abstract class AbstractTest {
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan({"ss.martin"})
+public class ModuleConfig {
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
+    }
 }

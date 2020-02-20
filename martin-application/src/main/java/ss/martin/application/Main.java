@@ -6,7 +6,7 @@
 package ss.martin.application;
 
 import org.springframework.boot.SpringApplication;
-import ss.martin.platform.spring.config.WebConfig;
+import ss.martin.application.spring.config.WebConfig;
 
 /**
  * Application entry point.
