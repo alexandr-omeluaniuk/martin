@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
             zIndex: "-1",
             content: '""',
             display: "block",
-            opacity: ".5",
+            opacity: "1",
             backgroundImage: 'url(' + background + ')',
             backgroundSize: "cover",
             backgroundPosition: "center center"

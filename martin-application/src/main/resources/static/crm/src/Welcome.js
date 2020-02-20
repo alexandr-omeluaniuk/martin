@@ -42,7 +42,7 @@ import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
 import { history } from './index';
 import { V_REGEX_EMAIL } from './service/DataTypeService';
-import background from './assets/login-background.jpg'
+import background from './assets/main-background.jpg'
 
 const useStyles = makeStyles(theme => ({
     background: {
