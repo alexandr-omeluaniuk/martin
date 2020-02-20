@@ -37,6 +37,7 @@ import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
+import ss.martin.platform.entity.EntityAudit;
 
 /**
  * Contact.

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.module;
+package ss.martin.module.crm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
