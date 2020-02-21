@@ -21,22 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.constants;
+package ss.martin.platform.entity;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import ss.martin.platform.constants.AppConstants;
 
 /**
- * Application constants.
+ * Calendar event.
  * @author ss
  */
-public final class AppConstants {
-    /** Default date format. */
-    public static final String DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
-    /** Default timestamp format. */
-    public static final String DEFAULT_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:ss";
-    /** Default datetime format. */
-    public static final String DEFAULT_DATETIME_FORMAT = "dd.MM.yyyy HH:mm";
-    /**
-     * Private constructor.
-     */
-    private AppConstants() {
-    }
+@MappedSuperclass
+public abstract class CalendarEvent extends EntityAudit {
+// ============================================ FIELDS ================================================================
+    /** Event start datetime. */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    @Column(name = "event_start", nullable = false)
+    private Date start;
+    /** Event start datetime. */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "event_end")
+    private Date end;
 }

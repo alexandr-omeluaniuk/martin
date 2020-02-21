@@ -37,6 +37,8 @@ public class Layout {
     private String cardTitle;
     /** Card sub title. */
     private String cardSubTitle;
+    /** Has audit info. */
+    private boolean audit;
     // ====================================== SET & GET ===============================================================
     /**
      * @return the fields
@@ -73,6 +75,18 @@ public class Layout {
      */
     public void setCardSubTitle(String cardSubTitle) {
         this.cardSubTitle = cardSubTitle;
+    }
+    /**
+     * @return the audit
+     */
+    public boolean isAudit() {
+        return audit;
+    }
+    /**
+     * @param audit the audit to set
+     */
+    public void setAudit(boolean audit) {
+        this.audit = audit;
     }
     // ====================================== PRIVATE CLASSES =========================================================
     /**

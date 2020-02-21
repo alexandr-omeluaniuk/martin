@@ -32,6 +32,7 @@ import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 import DataService from '../service/DataService';
 import { TYPE_AVATAR } from '../service/DataTypeService';
 import FormField from '../component/form/FormField';
@@ -41,6 +42,10 @@ import DataTypeService from '../service/DataTypeService';
 const useStyles = makeStyles(theme => ({
     tabs: {
         marginBottom: theme.spacing(2)
+    },
+    captionLabel: {
+        color: 'grey',
+        marginRight: theme.spacing(2)
     }
 }));
 
@@ -74,6 +79,40 @@ function EntityCard(props) {
             setUpdate(!update);
         }
     };
+    const auditInfo = () => {
+        return (
+                <Grid container spacing={2}>
+                    <Grid item lg={6} md={6} sm={12}>
+                        <Typography variant="caption" display="block" gutterBottom className={classes.captionLabel}>
+                            {t('common.created')}
+                        </Typography>
+                        <Typography variant="caption" display="block" gutterBottom>
+                            {(entityData.data.createdBy.firstname ? entityData.data.createdBy.firstname + ' ' : '')}
+                            {entityData.data.createdBy.lastname}
+                        </Typography>
+                        <Typography variant="caption" display="block" gutterBottom>
+                            {entityData.data.createdDate}
+                        </Typography>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12}>
+                        {entityData.data.lastModifiedBy ? (
+                            <React.Fragment>
+                                <Typography variant="caption" display="block" gutterBottom className={classes.captionLabel}>
+                                    {t('common.modified')}
+                                </Typography>
+                                <Typography variant="caption" display="block" gutterBottom>
+                                    {(entityData.data.lastModifiedBy.firstname ? entityData.data.lastModifiedBy.firstname + ' ' : '')}
+                                    {entityData.data.lastModifiedBy.lastname}
+                                </Typography>
+                                <Typography variant="caption" display="block" gutterBottom>
+                                    {entityData.data.lastModifiedDate}
+                                </Typography>
+                            </React.Fragment>
+                        ) : null}
+                    </Grid>
+                </Grid>
+        );
+    };
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
     useEffect(() => {
         DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
@@ -100,6 +139,7 @@ function EntityCard(props) {
     let subHeader = entityData.layout.cardSubTitle && entityData.data[entityData.layout.cardSubTitle]
             ? entityData.data[entityData.layout.cardSubTitle] : '';
     let generalTabIcon = (<Icon>{entityData.listView.icon}</Icon>);
+    console.log(entityData.data);
     return (
             <Card>
                 <CardHeader avatar={ava} title={title} subheader={subHeader}>
@@ -123,6 +163,7 @@ function EntityCard(props) {
                             );
                         })}
                     </Grid>
+                    {entityData.layout.audit ? auditInfo() : null}
                 </CardContent>
             </Card>
     );

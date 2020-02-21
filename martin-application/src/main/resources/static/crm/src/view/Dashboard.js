@@ -7,7 +7,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { useTranslation } from 'react-i18next';
 import CalendarView from './CalendarView';
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 
 function Dashboard(props) {
     const classes = useStyles();
-    const { t } = useTranslation();
     // ----------------------------------------------------- RENDER -----------------------------------------------------------------------
     return (
             <Paper className={classes.root}>

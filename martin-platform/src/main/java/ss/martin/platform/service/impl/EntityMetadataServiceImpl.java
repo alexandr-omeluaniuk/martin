@@ -54,6 +54,7 @@ import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.EntityAudit;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.service.EntityMetadataService;
 import ss.martin.platform.ui.Layout;
@@ -85,6 +86,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
         Layout layout = new Layout();
         layout.setFields(new ArrayList<>());
+        layout.setAudit(hasAuditInfo(clazz));
         for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
                 layout.getFields().add(createEntityLayoutField(field));
@@ -233,6 +235,23 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         result.addAll(Arrays.asList(clazz.getDeclaredFields()));
         if (clazz.getSuperclass() != null) {
             result.addAll(getClassFields(clazz.getSuperclass()));
+        }
+        return result;
+    }
+    /**
+     * Check if entity has audit information.
+     * @param clazz entity class.
+     * @return true if has.
+     * @throws Exception error.
+     */
+    private boolean hasAuditInfo(Class clazz) throws Exception {
+        boolean result = false;
+        if (EntityAudit.class.equals(clazz)) {
+            return true;
+        } else {
+            if (clazz.getSuperclass() != null) {
+                result = hasAuditInfo(clazz.getSuperclass());
+            }
         }
         return result;
     }

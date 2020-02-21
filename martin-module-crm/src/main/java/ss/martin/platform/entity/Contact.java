@@ -37,7 +37,6 @@ import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
-import ss.martin.platform.entity.EntityAudit;
 
 /**
  * Contact.
@@ -58,14 +57,14 @@ public class Contact extends EntityAudit {
     private String avatar;
     /** First name. */
     @ListViewColumn
-    @FormField(xs = "6")
+    @FormField(lg = "6", md = "6", sm = "12")
     @CardSubTitle
     @Size(max = 255)
     @Column(name = "firstname", length = 255)
     private String firstname;
     /** Last name. */
     @ListViewColumn
-    @FormField(xs = "6")
+    @FormField(lg = "6", md = "6", sm = "12")
     @CardTitle
     @NotEmpty
     @Size(max = 255)
@@ -73,14 +72,14 @@ public class Contact extends EntityAudit {
     private String lastname;
     /** Email. */
     @ListViewColumn
-    @FormField(xs = "6")
+    @FormField(lg = "6", md = "6", sm = "12")
     @Email
     @Size(max = 255)
     @Column(name = "email", length = 255)
     private String email;
     /** Mobile phone. */
     @ListViewColumn(align = ListViewColumnAlign.right)
-    @FormField(xs = "6")
+    @FormField(lg = "6", md = "6", sm = "12")
     @MobilePhoneNumber
     @Column(name = "phone_mobile", length = 17)
     private String phoneMobile;
