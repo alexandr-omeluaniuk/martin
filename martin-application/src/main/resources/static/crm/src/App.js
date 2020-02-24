@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Router } from "react-router-dom";
 import SecurityService from './service/SecurityService';
@@ -8,6 +8,8 @@ import DataService from './service/DataService';
 import Notification from './component/window/Notification';
 import SideNavBar from './component/toolbar/SideNavBar';
 import MainContent from './component/toolbar/MainContent';
+import { ruRU, enUS } from '@material-ui/core/locale';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -18,6 +20,8 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
     const classes = useStyles();
+    const theme = useTheme();
+    const { i18n } = useTranslation();
     // ------------------------------------------------ STATE -----------------------------------------------------------------------------
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState('');
@@ -41,6 +45,12 @@ function App() {
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (!navItems) {
+            let lang = i18n.language;
+            if (lang === 'ru') {
+                theme.props = ruRU.props;
+            } else if (lang === 'en') {
+                theme.props = enUS.props;
+            }
             SecurityService.getNavigation().then(p => {
                 setNavItems(p);
                 let currentRoute = p.filter(item => { return window.location.pathname === item.path; });

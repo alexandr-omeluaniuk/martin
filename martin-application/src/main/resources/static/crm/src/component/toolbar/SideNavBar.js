@@ -93,6 +93,7 @@ export default function SideNavBar(props) {
                         } else {
                             label = t('sideNavBar.' + item.sideNavBar);
                         }
+                        item.label = label;
                         return (
                             <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
                                 onItemSelected(item);
