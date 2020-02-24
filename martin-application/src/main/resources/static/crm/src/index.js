@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Welcome from './Welcome';
@@ -34,15 +34,17 @@ const theme = createMuiTheme({
 }, ruRU);
 
 ReactDOM.render(
-        <ThemeProvider theme={theme}>
-            <Router history={history}>
-                <Switch>
-                {indexRoutes.map((prop, key) => {
-                    return <Route path={prop.path} component={prop.component} key={key} />;
-                })}
-                </Switch>
-            </Router>
-        </ThemeProvider>,
+        <Suspense fallback={<div>Loading... </div>}>
+            <ThemeProvider theme={theme}>
+                <Router history={history}>
+                    <Switch>
+                    {indexRoutes.map((prop, key) => {
+                        return <Route path={prop.path} component={prop.component} key={key} />;
+                    })}
+                    </Switch>
+                </Router>
+            </ThemeProvider>
+        </Suspense>,
     document.getElementById("root")
 );
 
