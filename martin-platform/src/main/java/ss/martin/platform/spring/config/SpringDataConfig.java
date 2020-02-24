@@ -23,14 +23,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import ss.martin.platform.entity.SystemUser;
-import ss.martin.platform.service.EntityService;
 
 /**
  * Spring Data configuration.
  * @author Alexandr Omeluaniuk
  */
 @Configuration
-@EntityScan(EntityService.ENTITY_PACKAGE)
+@EntityScan("ss.martin")
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class SpringDataConfig {
     /** Auditor aware. */

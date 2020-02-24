@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.constants.ApplicationModule;
-import ss.martin.platform.entity.Contact;
+import ss.martin.module.crm.entity.Contact;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.security.ApplicationModuleProvider;
 import ss.martin.platform.service.EntityMetadataService;

@@ -34,8 +34,6 @@ import ss.martin.platform.wrapper.EntitySearchResponse;
  * @author ss
  */
 public interface EntityService {
-    /** Entity package. */
-    static final String ENTITY_PACKAGE = "ss.martin.platform.entity.";
     /**
      * Search entities.
      * @param clazz entity class.

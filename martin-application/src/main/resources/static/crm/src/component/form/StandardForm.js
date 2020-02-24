@@ -134,7 +134,7 @@ function StandardForm(props) {
     return (
             <Dialog open={open} onClose={handleClose} scroll={'paper'} maxWidth={'md'} fullWidth={true}>
                 <MuiDialogTitle disableTypography className={classes.root}>
-                    <Typography variant="h6">{t('models.titles.' + entity)}</Typography>
+                    <Typography variant="h6">{t('model.' + entity + '.label.single')}</Typography>
                     <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
                         <Icon>close</Icon>
                     </IconButton>

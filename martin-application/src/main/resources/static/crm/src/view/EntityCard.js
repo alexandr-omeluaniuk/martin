@@ -139,7 +139,6 @@ function EntityCard(props) {
     let subHeader = entityData.layout.cardSubTitle && entityData.data[entityData.layout.cardSubTitle]
             ? entityData.data[entityData.layout.cardSubTitle] : '';
     let generalTabIcon = (<Icon>{entityData.listView.icon}</Icon>);
-    console.log(entityData.data);
     return (
             <Card>
                 <CardHeader avatar={ava} title={title} subheader={subHeader}>
@@ -149,7 +148,7 @@ function EntityCard(props) {
                     <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
                         setActiveTab(index);
                     }} className={classes.tabs} >
-                        <Tab icon={generalTabIcon} label={t('models.titles.' + entity)}></Tab>
+                        <Tab icon={generalTabIcon} label={t('model.' + entity + '.label.single')}></Tab>
                     </Tabs>
                     <Grid container spacing={2}>
                         {entityData.layout.fields.filter(f => { return f.fieldType !== TYPE_AVATAR; }).map((field, idx) => {

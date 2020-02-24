@@ -59,11 +59,11 @@ class SecurityService {
                 if (permissions) {
                     permissions.sideBarNavItems.forEach(meta => {
                         let label = '';
-                        if (t['enum']['ApplicationModule'][meta.className]) {
-                            label = t['enum']['ApplicationModule'][meta.className];
-                        } else if (t['models']['titles']['many'][meta.className]) {
-                            label = t['models']['titles']['many'][meta.className];
-                        }
+//                        if (t['enum']['ApplicationModule'][meta.className]) {
+//                            label = t['enum']['ApplicationModule'][meta.className];
+//                        } else if (t['model']['title'][meta.className]['label']['many']) {
+//                            label = t['model']['title'][meta.className]['label']['many'];
+//                        }
                         navItems.push({
                             icon: meta.icon ? meta.icon : 'help',
                             label: label,

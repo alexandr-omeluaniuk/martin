@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity;
+package ss.martin.module.crm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +37,7 @@ import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
+import ss.martin.platform.entity.EntityAudit;
 
 /**
  * Contact.

@@ -69,6 +69,7 @@ function App() {
                     <SideNavBar open={open} setOpen={setOpen} navItems={navItems} onItemSelected={(item) => {
                         setTitle(item.label);
                         setIcon(item.icon);
+                        setOpen(false);
                     }}/>
                     <MainContent navItems={navItems} />
                 </div>

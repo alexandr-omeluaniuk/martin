@@ -59,7 +59,7 @@ function TabPanel(props) {
                             {metadata.tabs.map((item, i) => {
                                 const icon = (<Icon>{item.icon}</Icon>);
                                 return (
-                                        <Tab icon={icon} label={t('models.titles.many.' + item.className)} key={i}></Tab>
+                                        <Tab icon={icon} label={t('model.' + item.className + '.label.many')} key={i}></Tab>
                                 );
                             })}
                         </Tabs>

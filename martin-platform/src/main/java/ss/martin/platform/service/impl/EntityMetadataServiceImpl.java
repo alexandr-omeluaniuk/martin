@@ -105,7 +105,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     public ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception {
         ListView metadata = new ListView();
         metadata.setListViewColumns(new ArrayList());
-        metadata.setClassName(clazz.getSimpleName());
+        metadata.setClassName(clazz.getName());
         MaterialIcon materialIcon = clazz.getAnnotation(MaterialIcon.class);
         if (materialIcon != null) {
             metadata.setIcon(materialIcon.icon());

@@ -67,7 +67,7 @@ public class EntityRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse searchEntities(@PathVariable("entity") String entityName,
             @RequestBody EntitySearchRequest searchRequest) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         return entityService.searchEntities(entityClass, searchRequest);
     }
     /**
@@ -80,7 +80,7 @@ public class EntityRESTController {
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public DataModelWrapper getEntityById(@PathVariable("entity") String entityName,
             @PathVariable("id") Long id) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         DataModelWrapper wrapper = new DataModelWrapper();
         wrapper.setLayout(entityMetadataService.getEntityLayout(entityClass));
         wrapper.setListView(entityMetadataService.getEntityListView(entityClass));
@@ -100,7 +100,7 @@ public class EntityRESTController {
     public Object createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.createEntity(entity);
     }
@@ -115,7 +115,7 @@ public class EntityRESTController {
     public RESTResponse updateEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         entityService.updateEntity(entity);
         return new RESTResponse();
@@ -130,7 +130,7 @@ public class EntityRESTController {
     @RequestMapping(value = "/delete/{entity}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public RESTResponse deleteEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
             throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         entityService.massDeleteEntities(ids, entityClass);
         return new RESTResponse();
     }
@@ -145,7 +145,7 @@ public class EntityRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List getDataForCollectionField(@PathVariable("entity") String entityName,
             @PathVariable("field") String field) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         return entityService.getDataForCollectionField(entityClass, field);
     }
 }

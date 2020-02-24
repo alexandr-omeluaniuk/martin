@@ -54,38 +54,60 @@ i18n.use(initReactI18next).init({
                     notempty: 'Обязательное поле',
                     phone: 'Неверный номер телефона'
                 },
-                models: {
-                    titles: {
-                        Subscription: 'Подписка',
-                        SystemUser: 'Пользователь',
-                        Contact: 'Контакт',
-                        many: {
-                            Subscription: 'Подписки',
-                            SystemUser: 'Пользователи',
-                            Contact: 'Контакты'
+                model: {
+                    ss: {
+                        martin: {
+                            platform: {
+                                entity: {
+                                    Subscription: {
+                                        label: {
+                                            single: 'Подписка',
+                                            many: 'Подписки'
+                                        },
+                                        field: {
+                                            organizationName: 'Название организации',
+                                            started: 'Начало подписки',
+                                            expirationDate: 'Окончание подписки',
+                                            subscriptionAdminEmail: 'Адрес электронной почты администратора',
+                                            modules: 'Доступные приложения'
+                                        }
+                                    },
+                                    SystemUser: {
+                                        label: {
+                                            single: 'Пользователь',
+                                            many: 'Пользователи'
+                                        },
+                                        field: {
+                                            avatar: 'Аватар',
+                                            firstname: 'Имя',
+                                            lastname: 'Фамилия',
+                                            status: 'Статус',
+                                            standardRole: 'Стандартная роль',
+                                            email: 'Email'
+                                        }
+                                    }
+                                }
+                            },
+                            module: {
+                                crm: {
+                                    entity: {
+                                        Contact: {
+                                            label: {
+                                                single: 'Контакт',
+                                                many: 'Контакты'
+                                            },
+                                            field: {
+                                                avatar: 'Аватар',
+                                                firstname: 'Имя',
+                                                lastname: 'Фамилия',
+                                                email: 'Адрес электронной почты',
+                                                phoneMobile: 'Мобильный телефон'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    },
-                    Subscription: {
-                        organizationName: 'Название организации',
-                        started: 'Начало подписки',
-                        expirationDate: 'Окончание подписки',
-                        subscriptionAdminEmail: 'Адрес электронной почты администратора',
-                        modules: 'Доступные приложения'
-                    },
-                    SystemUser: {
-                        avatar: 'Аватар',
-                        firstname: 'Имя',
-                        lastname: 'Фамилия',
-                        status: 'Статус',
-                        standardRole: 'Стандартная роль',
-                        email: 'Email'
-                    },
-                    Contact: {
-                        avatar: 'Аватар',
-                        firstname: 'Имя',
-                        lastname: 'Фамилия',
-                        email: 'Адрес электронной почты',
-                        phoneMobile: 'Мобильный телефон'
                     }
                 },
                 components: {

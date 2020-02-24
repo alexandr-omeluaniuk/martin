@@ -18,7 +18,7 @@ function EnhancedTableHead(props) {
         onRequestSort(event, property);
     };
     headCells.forEach(hc => {
-        hc.label = t('models.' + entity + '.'+ hc.id);
+        hc.label = t('model.' + entity + '.field.'+ hc.id);
     });
     return (
             <TableHead>

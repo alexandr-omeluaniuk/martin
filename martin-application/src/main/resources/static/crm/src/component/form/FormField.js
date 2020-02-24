@@ -102,7 +102,7 @@ function FormField(props) {
     };
     
     const renderFormField = (field) => {
-        let label = t('models.' + entity + '.' + field.name);
+        let label = t('model.' + entity + '.field.' + field.name);
         var isRequired = field.validators.filter(v => {
             return v.type === V_NOT_NULL || v.type === V_NOT_EMPTY;
         }).length > 0;
