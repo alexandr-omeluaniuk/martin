@@ -9,7 +9,7 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 import AppURLs from './constants/AppURLs';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { ruRU } from '@material-ui/core/locale';
+import { ruRU, enEn } from '@material-ui/core/locale';
 import purple from '@material-ui/core/colors/purple';
 import pink from '@material-ui/core/colors/pink';
 

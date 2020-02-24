@@ -30,13 +30,20 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
+import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 import Copyright from './component/Copyright';
 import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
@@ -73,12 +80,20 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2)
+    },
+    langIcon: {
+        marginRight: theme.spacing(1)
+    },
+    fullWidth: {
+        width: '100%'
     }
 }));
 
 export default function Welcome() {
     const classes = useStyles();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const anchorRef = React.useRef(null);
+    const [open, setOpen] = React.useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailValid, setEmailValid] = useState(true);
@@ -132,10 +147,57 @@ export default function Welcome() {
             });
         }
     };
+    const handleClose = event => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+        setOpen(false);
+    };
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+        setOpen(false);
+    };
+    const languagePicker = () => {
+        let languages = i18n.options.whitelist.filter(l => { return l !== 'cimode'; });
+        return (
+                <Box mb={2} className={classes.fullWidth}>
+                    <ButtonGroup variant="contained" color="secondary" ref={anchorRef} className={classes.fullWidth}>
+                        <Button className={classes.fullWidth} onClick={() => setOpen(!open)}>
+                            <Icon className={classes.langIcon}>language</Icon> {t('language.' + i18n.language)}
+                        </Button>
+                        <Button color="secondary" size="small" aria-controls={open ? 'split-button-menu' : undefined} 
+                                aria-expanded={open ? 'true' : undefined} onClick={() => setOpen(!open)}>
+                            <Icon>arrow_drop_down</Icon>
+                        </Button>
+                    </ButtonGroup>
+                    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                        {({ TransitionProps, placement }) => (
+                            <Grow {...TransitionProps} className={classes.fullWidth} style={{
+                                    transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+                            }}>
+                                <Paper className={classes.fullWidth}>
+                                    <ClickAwayListener onClickAway={handleClose}>
+                                        <MenuList className={classes.fullWidth}>
+                                            {languages.map((option, index) => (
+                                                <MenuItem key={index} selected={i18n.language === option} className={classes.fullWidth}
+                                                    onClick={event => changeLanguage(option)}>
+                                                    {t('language.' + option)}
+                                                </MenuItem>
+                                            ))}
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                        )}
+                    </Popper>
+                </Box>
+        );
+    };
     return (
             <div className={classes.background}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                {languagePicker()}
                 <Paper className={classes.paper} elevation={4}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />

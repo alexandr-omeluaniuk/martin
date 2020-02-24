@@ -14,8 +14,8 @@ i18n.use(LanguageDetector).use(XHR).use(initReactI18next).init({
         loadPath: '/locales/{{lng}}/{{ns}}.json'
     },
     fallbackLng: "ru",
-    lng: "ru",
     debug: false,
+    whitelist: ["ru", "en"],
     interpolation: {
         escapeValue: false
     }

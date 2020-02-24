@@ -1,7 +1,7 @@
 {
     "language": {
-        "ru": "Русский",
-        "en": "Английский"
+        "ru": "Russian",
+        "en": "English"
     },
     "notification": {
         "changesSaved": "Изменения сохранены"
@@ -18,11 +18,11 @@
         "dashboard": "Обзор"
     },
     "loginPage": {
-        "signIn": "Войти в систему",
-        "forgotPassword": "Забыли пароль?",
-        "emailAddress": "Адрес электронной почты",
-        "password": "Пароль",
-        "rememberMe": "Запомнить меня",
+        "signIn": "Sign In",
+        "forgotPassword": "Forgot password?",
+        "emailAddress": "Email address",
+        "password": "Password",
+        "rememberMe": "Remember me",
         "err": {
             "userNotFound": "Данный адрес электронной почты не зарегистрирован",
             "badPassword": "Неверный пароль",
