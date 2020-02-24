@@ -35,6 +35,7 @@ import List from '@material-ui/core/List';
 import Tooltip from '@material-ui/core/Tooltip';
 import { NavLink } from "react-router-dom";
 import { drawerWidth } from '../../constants/style';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     navLink: {
@@ -71,6 +72,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SideNavBar(props) {
+    const { t } = useTranslation();
     const classes = useStyles();
     const { navItems , open, setOpen, onItemSelected} = props;
     const createSideBarNavigation = () => {
@@ -80,17 +82,28 @@ export default function SideNavBar(props) {
         return (
                 <div>
                     {navItems.map((item, i) => {
+                        let label = '';
+                        if (item.metadata) {
+                            let meta = item.metadata;
+                            if (meta.source === 'APPLICATION_MODULE') {
+                                label = t('enum.ApplicationModule.' + meta.className);
+                            } else if (meta.source === 'ENTITY') {
+                                label = t('model.' + meta.className + '.label.many');
+                            }
+                        } else {
+                            label = t('sideNavBar.' + item.sideNavBar);
+                        }
                         return (
                             <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
                                 onItemSelected(item);
                             }}>
                                 <ListItem button selected={window.location.pathname === item.path}>
-                                    <Tooltip title={item.label}>
+                                    <Tooltip title={label}>
                                         <ListItemIcon>
                                             <Icon>{item.icon}</Icon>
                                         </ListItemIcon>
                                     </Tooltip>
-                                    <ListItemText primary={item.label} />
+                                    <ListItemText primary={label} />
                                 </ListItem>
                             </NavLink>
                         );

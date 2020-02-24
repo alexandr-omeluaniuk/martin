@@ -25,7 +25,6 @@
 import DataService from './DataService';
 import AppURLs from '../constants/AppURLs';
 import Dashboard from '../view/Dashboard';
-import i18n from '../config/i18next-config';
 
 class SecurityService {
     static _permissions;
@@ -45,28 +44,20 @@ class SecurityService {
     }
     
     static getNavigation = () => {
-        let t = i18n.store.data[i18n.language].translation;
         let service = this;
         return new Promise((resolve, reject) => {
             service.getPermissions().then(permissions => {
                 let navItems = [];
                 navItems.push({
+                    sideNavBar: 'dashboard',
                     icon: 'dashboard',
-                    label: t['menu']['dashboard'],
                     path: AppURLs.links.view + '/dashboard',
                     component: Dashboard
                 });
                 if (permissions) {
                     permissions.sideBarNavItems.forEach(meta => {
-                        let label = '';
-//                        if (t['enum']['ApplicationModule'][meta.className]) {
-//                            label = t['enum']['ApplicationModule'][meta.className];
-//                        } else if (t['model']['title'][meta.className]['label']['many']) {
-//                            label = t['model']['title'][meta.className]['label']['many'];
-//                        }
                         navItems.push({
                             icon: meta.icon ? meta.icon : 'help',
-                            label: label,
                             path: AppURLs.links.view + '/' + meta.className,
                             metadata: meta
                         });

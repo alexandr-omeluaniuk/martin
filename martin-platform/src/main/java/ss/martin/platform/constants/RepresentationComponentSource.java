@@ -21,36 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.ui;
-
-import ss.martin.platform.constants.RepresentationComponentSource;
-import ss.martin.platform.constants.RepresentationComponentType;
+package ss.martin.platform.constants;
 
 /**
- * UI representation component.
+ * UI representation component source.
  * @author ss
  */
-public abstract class RepresentationComponent {
-    /** Representation component type. */
-    protected RepresentationComponentType type;
-    /** Representation component source. */
-    private RepresentationComponentSource source;
-    /**
-     * @return the type
-     */
-    public RepresentationComponentType getType() {
-        return type;
-    }
-    /**
-     * @return the source
-     */
-    public RepresentationComponentSource getSource() {
-        return source;
-    }
-    /**
-     * @param source the source to set
-     */
-    public void setSource(RepresentationComponentSource source) {
-        this.source = source;
-    }
+public enum RepresentationComponentSource {
+    /** Entity. */
+    ENTITY,
+    /** Application module. */
+    APPLICATION_MODULE;
 }

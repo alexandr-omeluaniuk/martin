@@ -6,8 +6,9 @@
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import LanguageDetector from 'i18next-browser-languagedetector';
 
-i18n.use(initReactI18next).init({
+i18n.use(LanguageDetector).use(initReactI18next).init({
     resources: {
         ru: {
             translation: {
@@ -22,7 +23,7 @@ i18n.use(initReactI18next).init({
                 constants: {
                     momentJsDateFormat: 'DD.MM.YYYY'
                 },
-                menu: {
+                sideNavBar: {
                     dashboard: "Обзор"
                 },
                 loginPage: {
@@ -150,9 +151,8 @@ i18n.use(initReactI18next).init({
             }
         }
     },
-    lng: "ru",
     fallbackLng: "ru",
-    debug: false,
+    debug: true,
     interpolation: {
         escapeValue: false
     }

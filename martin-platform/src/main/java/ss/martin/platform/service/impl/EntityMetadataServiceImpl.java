@@ -53,6 +53,7 @@ import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
+import ss.martin.platform.constants.RepresentationComponentSource;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityAudit;
 import ss.martin.platform.exception.PlatformException;
@@ -104,6 +105,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     @Override
     public ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception {
         ListView metadata = new ListView();
+        metadata.setSource(RepresentationComponentSource.ENTITY);
         metadata.setListViewColumns(new ArrayList());
         metadata.setClassName(clazz.getName());
         MaterialIcon materialIcon = clazz.getAnnotation(MaterialIcon.class);
