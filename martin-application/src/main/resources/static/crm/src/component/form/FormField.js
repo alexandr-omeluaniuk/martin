@@ -32,7 +32,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } from '@material-ui/pickers';
 import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR, V_NOT_NULL, V_NOT_EMPTY,
-    V_MOBILE_PHONE_NUMBER } from '../../service/DataTypeService';
+    TYPE_TEXTAREA, TYPE_MOBILE_PHONE_NUMBER } from '../../service/DataTypeService';
 import { useTranslation } from 'react-i18next';
 import EnumMultiChoiceInput from '../input/EnumMultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
@@ -109,22 +109,12 @@ function FormField(props) {
         label += isRequired ? ' *' : '';
         let name = field.name;
         if (field.fieldType === TYPE_STRING) {
-            let isMobilePhoneNumber = field.validators.filter(v => { return v.type === V_MOBILE_PHONE_NUMBER; }).length > 0;
-            if (isMobilePhoneNumber) {
-                return (
-                        <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''} inputRef={inputRef}
-                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
-                            helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}
+            return (
+                    <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
+                            value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
+                            helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
                             onBlur={onBlurInput} onKeyUp={onEnterInput}/>
-                );
-            } else {
-                return (
-                        <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
-                                value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
-                                helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
-                                onBlur={onBlurInput} onKeyUp={onEnterInput}/>
-                );
-            }
+            );
         } else if (field.fieldType === TYPE_DATE) {
             moment.locale(i18n.language);
             let value = fieldValue ? fieldValue : null;
@@ -147,6 +137,20 @@ function FormField(props) {
             return (
                     <AvatarInput label={label} value={fieldValue ? fieldValue : ''}
                         onChange={(data) => onChangeFieldValue(name, data)}/>
+            );
+        } else if (field.fieldType === TYPE_TEXTAREA) {
+            return (
+                    <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
+                                value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
+                                helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
+                                onBlur={onBlurInput} onKeyUp={onEnterInput} multiline rows={field.attributes.rows}/>
+            );
+        } else if (field.fieldType === TYPE_MOBILE_PHONE_NUMBER) {
+            return (
+                    <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''} inputRef={inputRef}
+                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
+                            helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}
+                            onBlur={onBlurInput} onKeyUp={onEnterInput}/>
             );
         }
         return null;

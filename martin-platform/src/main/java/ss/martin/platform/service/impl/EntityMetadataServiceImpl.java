@@ -53,6 +53,7 @@ import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
+import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.RepresentationComponentSource;
 import ss.martin.platform.entity.CalendarEvent;
@@ -164,8 +165,11 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             LOG.trace("field [" + field.getName() + "], annotations [" + annotations.length + "]");
         }
         Layout.Field layoutField = new Layout.Field();
+        layoutField.setAttributes(new HashMap<>());
         layoutField.setName(field.getName());
         Avatar avatar = field.getAnnotation(Avatar.class);
+        TextArea textArea = field.getAnnotation(TextArea.class);
+        MobilePhoneNumber mobilePhoneNumber = field.getAnnotation(MobilePhoneNumber.class);
         if (Date.class.equals(field.getType())) {
             Temporal temporal = field.getAnnotation(Temporal.class);
             if (temporal == null || temporal.value() == null) {
@@ -176,6 +180,11 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             }
         } else if (avatar != null) {
             layoutField.setFieldType(Avatar.class.getSimpleName());
+        } else if (mobilePhoneNumber != null) {
+            layoutField.setFieldType(MobilePhoneNumber.class.getSimpleName());
+        } else if (textArea != null) {
+            layoutField.setFieldType(TextArea.class.getSimpleName());
+            layoutField.getAttributes().put("rows", String.valueOf(textArea.rows()));
         } else {
             layoutField.setFieldType(field.getType().getSimpleName());
         }

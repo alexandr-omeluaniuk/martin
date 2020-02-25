@@ -32,6 +32,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.MaterialIcon;
+import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.CalendarEvent;
 
@@ -55,6 +56,7 @@ public class ContactVisit extends CalendarEvent {
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
     /** Note. */
+    @TextArea(rows = 2)
     @FormField(xs = "12")
     @Size(max = AppConstants.LONG_TEXT_SIZE)
     @Column(name = "note", length = AppConstants.LONG_TEXT_SIZE)

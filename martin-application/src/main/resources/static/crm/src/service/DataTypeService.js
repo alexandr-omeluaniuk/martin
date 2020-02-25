@@ -40,6 +40,10 @@ export const TYPE_DATE = 'DATE';
 export const TYPE_SET = "Set";
 
 export const TYPE_AVATAR = "Avatar";
+
+export const TYPE_TEXTAREA = 'TextArea';
+
+export const TYPE_MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
 // ----------------------------------------------- VALIDATORS -----------------------------------------------------------------------------
 export const V_REGEX_EMAIL = /\S+@\S+\.\S+/;
 

@@ -215,6 +215,8 @@ public class Layout {
         private String genericClass;
         /** Is generic class enum?. */
         private boolean genericClassEnum;
+        /** Attributes. */
+        private Map<String, String> attributes;
         /**
          * @return the name
          */
@@ -298,6 +300,18 @@ public class Layout {
          */
         public void setGenericClassEnum(boolean genericClassEnum) {
             this.genericClassEnum = genericClassEnum;
+        }
+        /**
+         * @return the attributes
+         */
+        public Map<String, String> getAttributes() {
+            return attributes;
+        }
+        /**
+         * @param attributes the attributes to set
+         */
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = attributes;
         }
     }
 }
