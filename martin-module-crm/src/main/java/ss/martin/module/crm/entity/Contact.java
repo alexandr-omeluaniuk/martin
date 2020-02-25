@@ -42,6 +42,7 @@ import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.HiddenField;
+import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.EntityAudit;
 
 /**
@@ -59,29 +60,29 @@ public class Contact extends EntityAudit {
     @Avatar
     @ListViewColumn
     @FormField(xs = "12")
-    @Column(name = "avatar", length = 65536)
+    @Column(name = "avatar", length = AppConstants.LONG_TEXT_SIZE)
     private String avatar;
     /** First name. */
     @ListViewColumn
     @FormField(lg = "6", md = "6", sm = "12")
     @CardSubTitle
-    @Size(max = 255)
-    @Column(name = "firstname", length = 255)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "firstname", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String firstname;
     /** Last name. */
     @ListViewColumn
     @FormField(lg = "6", md = "6", sm = "12")
     @CardTitle
     @NotEmpty
-    @Size(max = 255)
-    @Column(name = "lastname", length = 255, nullable = false)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "lastname", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false)
     private String lastname;
     /** Email. */
     @ListViewColumn
     @FormField(lg = "6", md = "6", sm = "12")
     @Email
-    @Size(max = 255)
-    @Column(name = "email", length = 255)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "email", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String email;
     /** Mobile phone. */
     @ListViewColumn(align = ListViewColumnAlign.right)

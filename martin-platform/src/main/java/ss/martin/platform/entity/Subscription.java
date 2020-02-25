@@ -64,8 +64,8 @@ public class Subscription extends DataModel {
     // =========================================== FIELDS =============================================================
     /** Organization name. */
     @NotEmpty
-    @Size(max = 255)
-    @Column(name = "organization_name")
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "organization_name", length = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "12")
     @ListViewColumn
     private String organizationName;
@@ -89,8 +89,8 @@ public class Subscription extends DataModel {
     @NotEmpty
     @Email
     @FormField(xs = "12")
-    @Size(max = 255)
-    @Column(name = "admin_email", length = 255, nullable = false, updatable = false)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "admin_email", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false, updatable = false)
     private String subscriptionAdminEmail;
     /** Application modules. */
     @ListViewColumn

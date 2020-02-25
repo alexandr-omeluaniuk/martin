@@ -7,7 +7,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import CalendarView from './CalendarView';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -21,7 +20,7 @@ function Dashboard(props) {
     // ----------------------------------------------------- RENDER -----------------------------------------------------------------------
     return (
             <Paper className={classes.root}>
-                <CalendarView/>
+            Dashboard
             </Paper>
     );
 }

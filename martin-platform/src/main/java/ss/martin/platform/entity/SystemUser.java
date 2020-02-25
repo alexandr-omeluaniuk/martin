@@ -41,6 +41,7 @@ import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.SideBarNavigationItem;
+import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SystemUserStatus;
@@ -62,36 +63,36 @@ public class SystemUser extends TenantEntity {
     @Avatar
     @ListViewColumn
     @FormField(xs = "12")
-    @Column(name = "avatar", length = 65536)
+    @Column(name = "avatar", length = AppConstants.LONG_TEXT_SIZE)
     private String avatar;
     /** Email. */
     @Email
     @FormField(xs = "12")
     @ListViewColumn
     @NotEmpty
-    @Size(max = 255)
-    @Column(name = "email", nullable = false, length = 255)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "email", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
     private String email;
     /** Password. */
     @JsonIgnore
     @HiddenField
-    @Size(max = 255)
-    @Column(name = "password", length = 255)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "password", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String password;
     /** First name. */
-    @Size(max = 255)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "6")
     @CardSubTitle
     @ListViewColumn
-    @Column(name = "firstname", length = 255)
+    @Column(name = "firstname", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String firstname;
     /** Last name. */
-    @Size(max = 255)
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "6")
     @CardTitle
     @ListViewColumn
     @NotEmpty
-    @Column(name = "lastname", nullable = false, length = 255)
+    @Column(name = "lastname", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
     private String lastname;
     /** Status. */
     @NotNull

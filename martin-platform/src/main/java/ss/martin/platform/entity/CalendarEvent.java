@@ -30,7 +30,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import ss.martin.platform.anno.ui.FormField;
+import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.constants.AppConstants;
+import ss.martin.platform.constants.ListViewColumnAlign;
 
 /**
  * Calendar event.
@@ -40,12 +43,16 @@ import ss.martin.platform.constants.AppConstants;
 public abstract class CalendarEvent extends EntityAudit {
 // ============================================ FIELDS ================================================================
     /** Event start datetime. */
+    @ListViewColumn(align = ListViewColumnAlign.right)
+    @FormField(lg = "6", md = "6", sm = "12")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     @Column(name = "event_start", nullable = false)
     private Date start;
     /** Event start datetime. */
+    @ListViewColumn(align = ListViewColumnAlign.right)
+    @FormField(lg = "6", md = "6", sm = "12")
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @Temporal(TemporalType.TIMESTAMP)

@@ -30,7 +30,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.MaterialIcon;
+import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.CalendarEvent;
 
 /**
@@ -43,16 +45,19 @@ import ss.martin.platform.entity.CalendarEvent;
 public class ContactVisit extends CalendarEvent {
 // ================================================= FIELDS ===========================================================
     /** Subject. */
-    @Size(max = 255)
-    @Column(name = "subject", length = 255)
+    @FormField(lg = "6", md = "6", sm = "12")
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "subject", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String subject;
     /** Contact. */
+    @FormField(lg = "6", md = "6", sm = "12")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", nullable = false)
     private Contact contact;
     /** Note. */
-    @Size(max = 65536)
-    @Column(name = "note", length = 65536)
+    @FormField(xs = "12")
+    @Size(max = AppConstants.LONG_TEXT_SIZE)
+    @Column(name = "note", length = AppConstants.LONG_TEXT_SIZE)
     private String note;
 // ================================================= SET & GET ========================================================    
     /**

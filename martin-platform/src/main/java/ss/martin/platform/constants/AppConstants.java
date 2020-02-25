@@ -34,6 +34,10 @@ public final class AppConstants {
     public static final String DEFAULT_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:ss";
     /** Default datetime format. */
     public static final String DEFAULT_DATETIME_FORMAT = "dd.MM.yyyy HH:mm";
+    /** Simple text size. */
+    public static final int SIMPLE_TEXT_SIZE = 255;
+    /** Long text size. */
+    public static final int LONG_TEXT_SIZE = 2147483647;
     /**
      * Private constructor.
      */

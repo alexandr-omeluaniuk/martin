@@ -31,6 +31,8 @@ import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
 import ListView from '../view/ListView';
 import CalendarView from '../view/CalendarView';
+import { history } from '../index';
+import AppURLs from '../constants/AppURLs';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -47,7 +49,7 @@ function TabPanel(props) {
     const { t } = useTranslation();
     const { metadata } = props;
     // ----------------------------------------------------- STATE ------------------------------------------------------------------------
-    const [activeTab, setActiveTab] = React.useState(0);
+    const [activeTab, setActiveTab] = React.useState(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
     // ----------------------------------------------------- RENDER -----------------------------------------------------------------------
     return (
             <Paper className={classes.root}>
@@ -56,6 +58,7 @@ function TabPanel(props) {
                         <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} 
                                 className={classes.tabs} onChange={(e, index) => {
                             setActiveTab(index);
+                            history.push(AppURLs.links.view + '/' + metadata.className + '#' + index);
                         }}>
                             {metadata.tabs.map((item, i) => {
                                 const icon = (<Icon>{item.icon}</Icon>);

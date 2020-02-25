@@ -28,15 +28,40 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import interactionPlugin from "@fullcalendar/interaction";
+import { useTranslation } from 'react-i18next';
+import StandardForm from '../component/form/StandardForm';
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
+import '../assets/css/fullcalendar-material.css';
 
 function CalendarView(props) {
+    const { metadata } = props;
+    const { i18n } = useTranslation();
+    //console.log(metadata);
+    // ----------------------------------------------- STATE ------------------------------------------------------------------------------
+    const [formOpen, setFormOpen] = React.useState(false);
+    const [editId, setEditId] = React.useState(null);
+    
+    const dateClick = (info) => {
+        console.log(info);
+        setFormOpen(true);
+    };
+    console.log(metadata.className);
     return (
-            <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin ]} />
+            <React.Fragment>
+            <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
+                locale={i18n.language} aspectRatio={3} events={[
+                    { title: 'event 1', date: '2020-02-27' },
+                    { title: 'event 2', date: '2020-02-28' }
+                ]} dateClick={dateClick}
+            />
+            <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={metadata.className} afterSaveCallback={null}
+                id={null}/>       
+            </React.Fragment>
     );
 }
 

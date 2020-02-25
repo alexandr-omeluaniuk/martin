@@ -145,6 +145,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     public CalendarView getEntityCalendarView(Class<? extends CalendarEvent> clazz) throws Exception {
         CalendarView component = new CalendarView();
         component.setClassName(clazz.getName());
+        component.setSource(RepresentationComponentSource.ENTITY);
         Optional.ofNullable(clazz.getAnnotation(MaterialIcon.class)).ifPresent((anno) -> {
             component.setIcon(anno.icon());
         });
