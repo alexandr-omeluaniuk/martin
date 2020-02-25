@@ -31,6 +31,7 @@ import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SecurityContext;
+import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -46,6 +47,9 @@ class CoreDAOImpl implements CoreDAO {
     /** Security context. */
     @Autowired
     private SecurityContext securityContext;
+    /** Reflection utilities. */
+    @Autowired
+    private ReflectionUtils reflectionUtils;
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T createIgnoreSubscription(final T entity) {
@@ -57,8 +61,8 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> T create(final T entity) {
-        if (entity instanceof TenantEntity) {
+    public <T extends DataModel> T create(final T entity) throws Exception {
+        if (reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
             TenantEntity tenantEntity = (TenantEntity) entity;
             tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
         }
@@ -67,8 +71,8 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> T update(final T entity) {
-        if (entity instanceof TenantEntity) {
+    public <T extends DataModel> T update(final T entity) throws Exception {
+        if (reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
             TenantEntity tenantEntity = (TenantEntity) entity;
             tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
         }
@@ -134,28 +138,13 @@ class CoreDAOImpl implements CoreDAO {
     }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
-            EntitySearchRequest searchRequest) {
+            EntitySearchRequest searchRequest) throws Exception {
         Subscription subscription = securityContext.currentUser().getSubscription();
         List<Predicate> predicates = new ArrayList<>();
-        if (isTenantEntity(clazz)) {
+        if (reflectionUtils.hasSuperClass(clazz, TenantEntity.class)) {
             Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
             predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription), subscription));
         }
         return predicates;
-    }
-    /**
-     * Check if class is inherited from tenant entity.
-     * @param clazz class.
-     * @return true if class has TenantEntity super class.
-     */
-    private boolean isTenantEntity(Class clazz) {
-        Class curClass = clazz;
-        while (curClass.getSuperclass() != null) {
-            if (curClass.getSuperclass().equals(TenantEntity.class)) {
-                return true;
-            }
-            curClass = curClass.getSuperclass();
-        }
-        return false;
     }
 }

@@ -32,9 +32,11 @@ import ss.martin.platform.constants.ApplicationModule;
 import ss.martin.module.crm.entity.Contact;
 import ss.martin.module.crm.entity.ContactVisit;
 import ss.martin.platform.constants.RepresentationComponentSource;
+import ss.martin.platform.entity.CalendarEvent;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.security.ApplicationModuleProvider;
 import ss.martin.platform.service.EntityMetadataService;
+import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.ui.RepresentationComponent;
 import ss.martin.platform.ui.TabPanel;
 
@@ -50,6 +52,9 @@ class CRM implements ApplicationModuleProvider {
     /** Entity metadata service. */
     @Autowired
     private EntityMetadataService entityMetadataService;
+    /** Reflection utilities. */
+    @Autowired
+    private ReflectionUtils reflectionUtils;
     @Override
     public ApplicationModule module() {
         return ApplicationModule.CRM;
@@ -67,7 +72,12 @@ class CRM implements ApplicationModuleProvider {
         component.setClassName(module().name());
         for (Class<? extends DataModel> model : dataModel()) {
             try {
-                component.getTabs().add(entityMetadataService.getEntityListView(model));
+                if (reflectionUtils.hasSuperClass(model, CalendarEvent.class)) {
+                    Class<? extends CalendarEvent> cl = (Class<? extends CalendarEvent>) model;
+                    component.getTabs().add(entityMetadataService.getEntityCalendarView(cl));
+                } else {
+                    component.getTabs().add(entityMetadataService.getEntityListView(model));
+                }
             } catch (Exception ex) {
                 LOG.warn("having problem with metadata creation for class [" + model.getSimpleName() + "]", ex);
             }

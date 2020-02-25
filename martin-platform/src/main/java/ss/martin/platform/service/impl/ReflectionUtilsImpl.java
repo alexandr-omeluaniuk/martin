@@ -21,38 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.service;
+package ss.martin.platform.service.impl;
 
-import ss.martin.platform.entity.CalendarEvent;
-import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.ui.CalendarView;
-import ss.martin.platform.ui.Layout;
-import ss.martin.platform.ui.ListView;
+import org.springframework.stereotype.Service;
+import ss.martin.platform.service.ReflectionUtils;
 
 /**
- * Entity metadata service.
+ * Reflection utilities implementation.
  * @author ss
  */
-public interface EntityMetadataService {
-    /**
-     * Get entity layout.
-     * @param clazz entity class.
-     * @return entity layout.
-     * @throws Exception layout can not be created.
-     */
-    Layout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
-    /**
-     * Get entity list view.
-     * @param clazz entity class.
-     * @return entity list view.
-     * @throws Exception error.
-     */
-    ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception;
-    /**
-     * Get calendar view for entity.
-     * @param clazz entity class.
-     * @return calendar view.
-     * @throws Exception error.
-     */
-    CalendarView getEntityCalendarView(Class<? extends CalendarEvent> clazz) throws Exception;
+@Service
+class ReflectionUtilsImpl implements ReflectionUtils {
+    @Override
+    public boolean hasSuperClass(Class clazz, Class superClass) throws Exception {
+        Class curClass = clazz;
+        while (curClass.getSuperclass() != null) {
+            if (curClass.getSuperclass().equals(superClass)) {
+                return true;
+            }
+            curClass = curClass.getSuperclass();
+        }
+        return false;
+    }
 }

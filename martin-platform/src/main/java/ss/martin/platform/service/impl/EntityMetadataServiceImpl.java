@@ -44,6 +44,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
@@ -54,10 +55,13 @@ import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.RepresentationComponentSource;
+import ss.martin.platform.entity.CalendarEvent;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityAudit;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.service.EntityMetadataService;
+import ss.martin.platform.service.ReflectionUtils;
+import ss.martin.platform.ui.CalendarView;
 import ss.martin.platform.ui.Layout;
 import ss.martin.platform.ui.ListView;
 
@@ -73,6 +77,9 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     private static final Map<Class<? extends DataModel>, Layout> LAYOUTS_CACHE = new ConcurrentHashMap<>();
     /** Excluded fields. */
     private static final Set<String> EXCLUDED_FIELDS = new HashSet<>();
+    /** Reflection utilities. */
+    @Autowired
+    private ReflectionUtils reflectionUtils;
     /**
      * Static initialization.
      */
@@ -87,7 +94,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
         Layout layout = new Layout();
         layout.setFields(new ArrayList<>());
-        layout.setAudit(hasAuditInfo(clazz));
+        layout.setAudit(reflectionUtils.hasSuperClass(clazz, EntityAudit.class));
         for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
                 layout.getFields().add(createEntityLayoutField(field));
@@ -104,14 +111,13 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     }
     @Override
     public ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception {
-        ListView metadata = new ListView();
-        metadata.setSource(RepresentationComponentSource.ENTITY);
-        metadata.setListViewColumns(new ArrayList());
-        metadata.setClassName(clazz.getName());
-        MaterialIcon materialIcon = clazz.getAnnotation(MaterialIcon.class);
-        if (materialIcon != null) {
-            metadata.setIcon(materialIcon.icon());
-        }
+        ListView component = new ListView();
+        component.setSource(RepresentationComponentSource.ENTITY);
+        component.setListViewColumns(new ArrayList());
+        component.setClassName(clazz.getName());
+        Optional.ofNullable(clazz.getAnnotation(MaterialIcon.class)).ifPresent((anno) -> {
+            component.setIcon(anno.icon());
+        });
         for (Field field : clazz.getDeclaredFields()) {
             ListViewColumn listViewColumnAnno = field.getAnnotation(ListViewColumn.class);
             if (listViewColumnAnno != null) {
@@ -130,10 +136,19 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                         listViewColumn.setGenericClassEnum(genericClass.isEnum());
                     }
                 });
-                metadata.getListViewColumns().add(listViewColumn);
+                component.getListViewColumns().add(listViewColumn);
             }
         }
-        return metadata;
+        return component;
+    }
+    @Override
+    public CalendarView getEntityCalendarView(Class<? extends CalendarEvent> clazz) throws Exception {
+        CalendarView component = new CalendarView();
+        component.setClassName(clazz.getName());
+        Optional.ofNullable(clazz.getAnnotation(MaterialIcon.class)).ifPresent((anno) -> {
+            component.setIcon(anno.icon());
+        });
+        return component;
     }
     // =================================================== PRIVATE ====================================================
     /**
@@ -237,23 +252,6 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         result.addAll(Arrays.asList(clazz.getDeclaredFields()));
         if (clazz.getSuperclass() != null) {
             result.addAll(getClassFields(clazz.getSuperclass()));
-        }
-        return result;
-    }
-    /**
-     * Check if entity has audit information.
-     * @param clazz entity class.
-     * @return true if has.
-     * @throws Exception error.
-     */
-    private boolean hasAuditInfo(Class clazz) throws Exception {
-        boolean result = false;
-        if (EntityAudit.class.equals(clazz)) {
-            return true;
-        } else {
-            if (clazz.getSuperclass() != null) {
-                result = hasAuditInfo(clazz.getSuperclass());
-            }
         }
         return result;
     }

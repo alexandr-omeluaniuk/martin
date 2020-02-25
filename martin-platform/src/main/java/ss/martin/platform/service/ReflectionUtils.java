@@ -23,36 +23,17 @@
  */
 package ss.martin.platform.service;
 
-import ss.martin.platform.entity.CalendarEvent;
-import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.ui.CalendarView;
-import ss.martin.platform.ui.Layout;
-import ss.martin.platform.ui.ListView;
-
 /**
- * Entity metadata service.
+ * Reflection utilities.
  * @author ss
  */
-public interface EntityMetadataService {
+public interface ReflectionUtils {
     /**
-     * Get entity layout.
-     * @param clazz entity class.
-     * @return entity layout.
-     * @throws Exception layout can not be created.
-     */
-    Layout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
-    /**
-     * Get entity list view.
-     * @param clazz entity class.
-     * @return entity list view.
+     * Is class has superclass.
+     * @param clazz current class.
+     * @param superClass super class.
+     * @return true if has.
      * @throws Exception error.
      */
-    ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception;
-    /**
-     * Get calendar view for entity.
-     * @param clazz entity class.
-     * @return calendar view.
-     * @throws Exception error.
-     */
-    CalendarView getEntityCalendarView(Class<? extends CalendarEvent> clazz) throws Exception;
+    boolean hasSuperClass(Class clazz, Class superClass) throws Exception;
 }

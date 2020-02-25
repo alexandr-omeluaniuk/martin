@@ -30,6 +30,7 @@ import Tab from '@material-ui/core/Tab';
 import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
 import ListView from '../view/ListView';
+import CalendarView from '../view/CalendarView';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -64,8 +65,14 @@ function TabPanel(props) {
                             })}
                         </Tabs>
                         {metadata.tabs.map((tabItem, i) => {
-                            if (tabItem.type === 'LIST_VIEW') {
-                                return (<ListView metadata={tabItem} key={i}/>);
+                            if (i === activeTab) {
+                                if (tabItem.type === 'LIST_VIEW') {
+                                    return (<ListView metadata={tabItem} key={i}/>);
+                                } else if (tabItem.type === 'CALENDAR_VIEW') {
+                                    return (<CalendarView metadata={tabItem} key={i}/>)
+                                } else {
+                                    return null;
+                                }
                             } else {
                                 return null;
                             }
