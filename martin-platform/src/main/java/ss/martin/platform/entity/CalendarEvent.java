@@ -46,8 +46,34 @@ public abstract class CalendarEvent extends EntityAudit {
     @Column(name = "event_start", nullable = false)
     private Date start;
     /** Event start datetime. */
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "event_end")
+    @Column(name = "event_end", nullable = false)
     private Date end;
+// ============================================ SET & GET =============================================================
+    /**
+     * @return the start
+     */
+    public Date getStart() {
+        return start;
+    }
+    /**
+     * @param start the start to set
+     */
+    public void setStart(Date start) {
+        this.start = start;
+    }
+    /**
+     * @return the end
+     */
+    public Date getEnd() {
+        return end;
+    }
+    /**
+     * @param end the end to set
+     */
+    public void setEnd(Date end) {
+        this.end = end;
+    }
 }

@@ -40,9 +40,4 @@ public @interface MaterialIcon {
      * @return material icon.
      */
     public String icon() default "help";
-    /**
-     * Material icon color (see Material UI palette).
-     * @return icon color.
-     */
-    public String color() default "";
 }

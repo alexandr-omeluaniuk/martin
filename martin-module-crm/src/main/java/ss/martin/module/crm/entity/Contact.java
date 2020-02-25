@@ -23,8 +23,12 @@
  */
 package ss.martin.module.crm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -37,6 +41,7 @@ import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
+import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.entity.EntityAudit;
 
 /**
@@ -84,6 +89,11 @@ public class Contact extends EntityAudit {
     @MobilePhoneNumber
     @Column(name = "phone_mobile", length = 17)
     private String phoneMobile;
+    /** Contact visits. */
+    @HiddenField
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+    private List<ContactVisit> visits;
 // ========================================== SET & GET ===============================================================
     /**
      * @return the firstname
@@ -144,6 +154,18 @@ public class Contact extends EntityAudit {
      */
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+    /**
+     * @return the visits
+     */
+    public List<ContactVisit> getVisits() {
+        return visits;
+    }
+    /**
+     * @param visits the visits to set
+     */
+    public void setVisits(List<ContactVisit> visits) {
+        this.visits = visits;
     }
 // ====================================================================================================================
     @Override

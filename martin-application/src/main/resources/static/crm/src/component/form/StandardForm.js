@@ -153,7 +153,7 @@ function StandardForm(props) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button className={classes.saveButton} onClick={saveChanges}><Icon>done</Icon> {t('components.window.save')}</Button>
+                    <Button className={classes.saveButton} onClick={saveChanges}><Icon>done</Icon> {t('components.standardForm.save')}</Button>
                 </DialogActions>
             </Dialog>
     );

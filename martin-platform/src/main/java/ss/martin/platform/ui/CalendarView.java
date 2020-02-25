@@ -21,17 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.constants;
+package ss.martin.platform.ui;
+
+import ss.martin.platform.constants.RepresentationComponentType;
 
 /**
- * UI representation component type.
+ * Calendar view.
  * @author ss
  */
-public enum RepresentationComponentType {
-    /** List view. */
-    LIST_VIEW,
-    /** Calendar view. */
-    CALENDAR_VIEW,
-    /** Tab panel. */
-    TAB_PANEL;
+public class CalendarView extends RepresentationComponent {
+    /** Entity class id. */
+    private String className;
+    /** Data model material icon. */
+    private String icon;
+    /**
+     * Constructor.
+     */
+    public CalendarView() {
+        this.type = RepresentationComponentType.CALENDAR_VIEW;
+    }
+    /**
+     * @return the className
+     */
+    public String getClassName() {
+        return className;
+    }
+    /**
+     * @param className the className to set
+     */
+    public void setClassName(String className) {
+        this.className = className;
+    }
+    /**
+     * @return the icon
+     */
+    public String getIcon() {
+        return icon;
+    }
+    /**
+     * @param icon the icon to set
+     */
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 }

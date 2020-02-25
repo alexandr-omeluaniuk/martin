@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.constants.ApplicationModule;
 import ss.martin.module.crm.entity.Contact;
+import ss.martin.module.crm.entity.ContactVisit;
 import ss.martin.platform.constants.RepresentationComponentSource;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.security.ApplicationModuleProvider;
@@ -55,7 +56,7 @@ class CRM implements ApplicationModuleProvider {
     }
     @Override
     public Class<? extends DataModel>[] dataModel() {
-        return new Class[] {Contact.class};
+        return new Class[] {Contact.class, ContactVisit.class};
     }
     @Override
     public RepresentationComponent representationComponent() {

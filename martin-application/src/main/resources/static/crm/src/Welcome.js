@@ -163,7 +163,7 @@ export default function Welcome() {
                 <Box mb={2} className={classes.fullWidth}>
                     <ButtonGroup variant="contained" color="secondary" ref={anchorRef} className={classes.fullWidth}>
                         <Button className={classes.fullWidth} onClick={() => setOpen(!open)}>
-                            <Icon className={classes.langIcon}>language</Icon> {t('language.' + i18n.language)}
+                            <Icon className={classes.langIcon}>g_translate</Icon> {t('language.' + i18n.language)}
                         </Button>
                         <Button color="secondary" size="small" aria-controls={open ? 'split-button-menu' : undefined} 
                                 aria-expanded={open ? 'true' : undefined} onClick={() => setOpen(!open)}>
