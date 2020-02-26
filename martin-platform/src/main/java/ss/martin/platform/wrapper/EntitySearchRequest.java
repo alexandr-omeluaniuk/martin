@@ -23,6 +23,8 @@
  */
 package ss.martin.platform.wrapper;
 
+import java.util.List;
+
 /**
  * Entity search request.
  * @author ss
@@ -37,6 +39,8 @@ public class EntitySearchRequest {
     private String order;
     /** Order by field. */
     private String orderBy;
+    /** Filter parameters, key is field name, value is field value. */
+    private List<FilterCondition> filter;
     // =========================================== SET & GET ==========================================================
     /**
      * @return the page
@@ -85,5 +89,128 @@ public class EntitySearchRequest {
      */
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+    }
+    /**
+     * @return the filter
+     */
+    public List<FilterCondition> getFilter() {
+        return filter;
+    }
+    /**
+     * @param filter the filter to set
+     */
+    public void setFilter(List<FilterCondition> filter) {
+        this.filter = filter;
+    }
+    /**
+     * Filter condition.
+     * Contains predicates / inner conditions which are combined by common boolean operator.
+     */
+    public static class FilterCondition {
+        /** Predicates. */
+        private List<FilterPredicate> predicates;
+        /** Inner conditions. */
+        private List<FilterCondition> conditions;
+        /** Operator. */
+        private BoolConditionOperator operator;
+        /**
+         * @return the predicates
+         */
+        public List<FilterPredicate> getPredicates() {
+            return predicates;
+        }
+        /**
+         * @param predicates the predicates to set
+         */
+        public void setPredicates(List<FilterPredicate> predicates) {
+            this.predicates = predicates;
+        }
+        /**
+         * @return the operator
+         */
+        public BoolConditionOperator getOperator() {
+            return operator;
+        }
+        /**
+         * @param operator the operator to set
+         */
+        public void setOperator(BoolConditionOperator operator) {
+            this.operator = operator;
+        }
+        /**
+         * @return the conditions
+         */
+        public List<FilterCondition> getConditions() {
+            return conditions;
+        }
+        /**
+         * @param conditions the conditions to set
+         */
+        public void setConditions(List<FilterCondition> conditions) {
+            this.conditions = conditions;
+        }
+    }
+    /**
+     * Filter predicate, pair field name-value plus operator for comparison.
+     */
+    public static class FilterPredicate {
+        /** Field name. */
+        private String field;
+        /** Value */
+        private Object value;
+        /** Operator. */
+        private ComparisonOperator operator;
+        /**
+         * @return the field
+         */
+        public String getField() {
+            return field;
+        }
+        /**
+         * @param field the field to set
+         */
+        public void setField(String field) {
+            this.field = field;
+        }
+        /**
+         * @return the value
+         */
+        public Object getValue() {
+            return value;
+        }
+        /**
+         * @param value the value to set
+         */
+        public void setValue(Object value) {
+            this.value = value;
+        }
+        /**
+         * @return the operator
+         */
+        public ComparisonOperator getOperator() {
+            return operator;
+        }
+        /**
+         * @param operator the operator to set
+         */
+        public void setOperator(ComparisonOperator operator) {
+            this.operator = operator;
+        }
+    }
+    /**
+     * Comparison operators.
+     */
+    public static enum ComparisonOperator {
+        /** Equals. */
+        EQUALS;
+    }
+    /**
+     * Boolean condition operators.
+     */
+    public static enum BoolConditionOperator {
+        /** OR. */
+        OR,
+        /** AND. */
+        AND;
     }
 }
