@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -184,7 +185,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             layoutField.setFieldType(MobilePhoneNumber.class.getSimpleName());
         } else if (textArea != null) {
             layoutField.setFieldType(TextArea.class.getSimpleName());
-            layoutField.getAttributes().put("rows", String.valueOf(textArea.rows()));
+            layoutField.getAttributes().put("rows", textArea.rows());
         } else {
             layoutField.setFieldType(field.getType().getSimpleName());
         }
@@ -204,9 +205,12 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             if (gt instanceof ParameterizedType) {
                 ParameterizedType parType = (ParameterizedType) gt;
                 Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-                layoutField.setGenericClass(genericClass.getSimpleName());
-                layoutField.setGenericClassEnum(genericClass.isEnum());
+                layoutField.getAttributes().put("genericClass", genericClass.getSimpleName());
+                layoutField.getAttributes().put("genericClassEnum", genericClass.isEnum());
             }
+        });
+        Optional.ofNullable(field.getAnnotation(ManyToOne.class)).ifPresent((anno) -> {
+            layoutField.getAttributes().put(ManyToOne.class.getSimpleName(), true);
         });
         return layoutField;
     }

@@ -70,7 +70,7 @@ export default class DataTypeService {
         let renderValue = value;
         if (fieldMeta.enumField) {
             renderValue = t('enum.' + fieldMeta.enumField + '.' + value);
-        } else if (fieldMeta.genericClassEnum) {
+        } else if (fieldMeta.attributes && fieldMeta.attributes.genericClassEnum) {
             let sb = '';
             value.forEach(v => {
                 sb += t('enum.' + fieldMeta.genericClass + '.' + v) + ' | ';

@@ -129,9 +129,9 @@ function FormField(props) {
             );
         } else if (field.fieldType === TYPE_SET) {
             let value = fieldValue ? new Set(fieldValue) : new Set();
-            if (field.genericClass && field.genericClassEnum) {
+            if (field.attributes && field.attributes.genericClass && field.attributes.genericClassEnum) {
                 return (
-                        <EnumMultiChoiceInput entity={entity} fieldName={name} label={label} genericClass={field.genericClass}
+                        <EnumMultiChoiceInput entity={entity} fieldName={name} label={label} genericClass={field.attributes.genericClass}
                             selected={value} onChange={onChangeFieldValue}/>
                 );
             }

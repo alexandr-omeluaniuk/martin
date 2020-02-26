@@ -211,12 +211,8 @@ public class Layout {
         private Grid grid;
         /** Validators. */
         private List<Validator> validators;
-        /** Generic class. */
-        private String genericClass;
-        /** Is generic class enum?. */
-        private boolean genericClassEnum;
         /** Attributes. */
-        private Map<String, String> attributes;
+        private Map<String, Object> attributes;
         /**
          * @return the name
          */
@@ -278,39 +274,15 @@ public class Layout {
             this.validators = validators;
         }
         /**
-         * @return the genericClass
-         */
-        public String getGenericClass() {
-            return genericClass;
-        }
-        /**
-         * @param genericClass the genericClass to set
-         */
-        public void setGenericClass(String genericClass) {
-            this.genericClass = genericClass;
-        }
-        /**
-         * @return the genericClassEnum
-         */
-        public boolean isGenericClassEnum() {
-            return genericClassEnum;
-        }
-        /**
-         * @param genericClassEnum the genericClassEnum to set
-         */
-        public void setGenericClassEnum(boolean genericClassEnum) {
-            this.genericClassEnum = genericClassEnum;
-        }
-        /**
          * @return the attributes
          */
-        public Map<String, String> getAttributes() {
+        public Map<String, Object> getAttributes() {
             return attributes;
         }
         /**
          * @param attributes the attributes to set
          */
-        public void setAttributes(Map<String, String> attributes) {
+        public void setAttributes(Map<String, Object> attributes) {
             this.attributes = attributes;
         }
     }
