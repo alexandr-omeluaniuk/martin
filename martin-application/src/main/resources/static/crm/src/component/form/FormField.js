@@ -30,9 +30,9 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
 import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR, V_NOT_NULL, V_NOT_EMPTY,
-    TYPE_TEXTAREA, TYPE_MOBILE_PHONE_NUMBER } from '../../service/DataTypeService';
+    TYPE_TEXTAREA, TYPE_MOBILE_PHONE_NUMBER, TYPE_TYPESTAMP } from '../../service/DataTypeService';
 import { useTranslation } from 'react-i18next';
 import EnumMultiChoiceInput from '../input/EnumMultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
@@ -151,6 +151,14 @@ function FormField(props) {
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
                             helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}
                             onBlur={onBlurInput} onKeyUp={onEnterInput}/>
+            );
+        } else if (field.fieldType === TYPE_TYPESTAMP) {
+            return (
+                    <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
+                        <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
+                            autoOk={true} label={label} ampm={false} showTodayButton={true} className={classes.fullWidth}
+                            format={t('constants.momentJsDateTimeFormat')}/>
+                    </MuiPickersUtilsProvider>
             );
         }
         return null;

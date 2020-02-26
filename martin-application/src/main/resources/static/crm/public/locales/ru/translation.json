@@ -12,7 +12,8 @@
         }
     },
     "constants": {
-        "momentJsDateFormat": "DD.MM.YYYY"
+        "momentJsDateFormat": "DD.MM.YYYY",
+        "momentJsDateTimeFormat": "DD.MM.YYYY HH:mm"
     },
     "sideNavBar": {
         "dashboard": "Обзор"
@@ -104,7 +105,9 @@
                                 "field": {
                                     "contact": "Контакт",
                                     "subject": "Тема",
-                                    "note": "Для заметок"
+                                    "note": "Для заметок",
+                                    "start": "Начало визита",
+                                    "end": "Окончание визита"
                                 }
                             }
                         }

@@ -45,22 +45,24 @@ function CalendarView(props) {
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [formOpen, setFormOpen] = React.useState(false);
     const [editId, setEditId] = React.useState(null);
-    
+    const [predefinedValues, setPredefinedValues] = React.useState(null);
+    // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
     const dateClick = (info) => {
-        console.log(info);
+        let map = new Map();
+        map.set('start', info.date);
+        map.set('end', info.date);
+        setPredefinedValues(map);
         setFormOpen(true);
     };
-    console.log(metadata.className);
     return (
             <React.Fragment>
-            <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-                locale={i18n.language} aspectRatio={3} events={[
-                    { title: 'event 1', date: '2020-02-27' },
-                    { title: 'event 2', date: '2020-02-28' }
-                ]} dateClick={dateClick}
-            />
-            <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={metadata.className} afterSaveCallback={null}
-                id={null}/>       
+                <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
+                    locale={i18n.language} aspectRatio={3} events={[
+                        { title: 'event 1', date: '2020-02-27' },
+                        { title: 'event 2', date: '2020-02-28' }
+                    ]} dateClick={dateClick} />
+                <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={metadata.className}
+                    predefinedValues={predefinedValues} afterSaveCallback={null} id={editId}/>       
             </React.Fragment>
     );
 }

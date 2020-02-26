@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 function StandardForm(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { entity, open, handleClose, afterSaveCallback, id } = props;
+    const { entity, open, handleClose, afterSaveCallback, id, predefinedValues } = props;
     // ------------------------------------------ STATE -----------------------------------------------------------------------------------
     const [layout, setLayout] = React.useState(null);
     const [formData, setFormData] = React.useState(new Map());
@@ -120,7 +120,11 @@ function StandardForm(props) {
     useEffect(() => {
         if (open) {
             setInvalidFields(new Map());
-            setFormData(new Map());
+            if (!id && predefinedValues) {
+                setFormData(new Map(predefinedValues));
+            } else {
+                setFormData(new Map());
+            }
             DataService.requestGet('/entity/' + entity + '/' + (id ? id : 0)).then(resp => {
                 load(resp.layout, resp.data);
             });
