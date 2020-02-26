@@ -27,6 +27,8 @@ import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import DataService from '../../service/DataService';
 
 function LookupField(props) {
@@ -35,23 +37,33 @@ function LookupField(props) {
     const inputRef = React.useRef();
     // ----------------------------------------------------- STATE ------------------------------------------------------------------------
     const [readOnly, setReadOnly] = React.useState(true);
+    const [openDropdown, setOpenDropdown] = React.useState(false);
     const [displayedValue, setDisplayedValue] = React.useState('');
+    const [searchResult, setSearchResult] = React.useState([]);
+    const [anchorEl, setAnchorEl] = React.useState(null);
     // ----------------------------------------------------- FUNCTIONS --------------------------------------------------------------------
-    const startSearch = () => {
+    const startSearch = (e) => {
         setReadOnly(false);
+        setAnchorEl(e.currentTarget);
         inputRef.current.focus();
     };
     
     const doSearch = (e) => {
-        setDisplayedValue(e.target.value);
-        DataService.requestPost('/entity/search/' + field.attributes.relationshipType, {
-            page: 1,
-            pageSize: 5,
-            //order: order,
-            //orderBy: orderBy
-        }).then(resp => {
-            console.log(resp.data);
-        });
+        let searchToken = e.target.value;
+        setDisplayedValue(searchToken);
+        if (searchToken.length > 1) {
+            DataService.requestPost('/entity/search/' + field.attributes.relationshipType, {
+                page: 1,
+                pageSize: 5,
+                //order: order,
+                //orderBy: orderBy
+            }).then(resp => {
+                setSearchResult(resp.data);
+            });
+        } else {
+            setSearchResult([]);
+            setAnchorEl(null);
+        }
     };
     
     const start = () => {
@@ -72,12 +84,34 @@ function LookupField(props) {
         );
     };
     
+    const menuItems = () => {
+        if (searchResult.length === 0) {
+            return (
+                    <MenuItem>No Results</MenuItem>
+            );
+        } else {
+            const items = [];
+            searchResult.forEach(item => {
+                items.push((
+                    <MenuItem key={item.id}>{item.firstname} {item.lastname}</MenuItem>
+                ));
+            });
+            return items;
+        }
+    };
+    
     return (
-        <TextField label={label} fullWidth={true} value={displayedValue} InputProps={{
-            startAdornment: start(),
-            endAdornment: end(),
-            readOnly: readOnly
-        }} helperText={helperText} error={error} name={name} inputRef={inputRef} onChange={doSearch}/>
+        <React.Fragment>
+            <TextField label={label} fullWidth={true} value={displayedValue} InputProps={{
+                startAdornment: start(),
+                endAdornment: end(),
+                readOnly: readOnly
+            }} helperText={helperText} error={error} name={name} inputRef={inputRef} onChange={doSearch}/>
+            <Menu elevation={0} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}} open={searchResult.length > 0}
+                transformOrigin={{vertical: 'top', horizontal: 'center'}} anchorEl={anchorEl}>
+                {menuItems()}
+            </Menu>
+        </React.Fragment>
     );
 }
 
