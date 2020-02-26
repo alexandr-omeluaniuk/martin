@@ -137,7 +137,9 @@
         "clear": "Очистить",
         "open": "Открыть",
         "created": "Создал",
-        "modified": "Изменил"
+        "modified": "Изменил",
+        "cancel": "Отмена",
+        "today": "Сегодня"
     },
     "enum": {
         "SystemUserStatus": {

@@ -39,6 +39,7 @@ import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
 import AvatarInput from '../input/AvatarInput';
 import moment from 'moment';
 import "moment/locale/ru";
+import "moment/locale/de";
 import i18n from '../../config/i18next-config';
 
 const useStyles = makeStyles(theme => ({
@@ -122,7 +123,8 @@ function FormField(props) {
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <KeyboardDatePicker disableToolbar variant="inline" format={t('constants.momentJsDateFormat')} margin="normal"
                             label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
-                            className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
+                            className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}
+                            clearLabel={t('common.clear')} cancelLabel={t('common.cancel')} todayLabel={t('common.today')}/>
                     </MuiPickersUtilsProvider>
             );
         } else if (field.fieldType === TYPE_SET) {
@@ -157,7 +159,8 @@ function FormField(props) {
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
                             autoOk={true} label={label} ampm={false} showTodayButton={true} className={classes.fullWidth}
-                            format={t('constants.momentJsDateTimeFormat')}/>
+                            format={t('constants.momentJsDateTimeFormat')} clearLabel={t('common.clear')}
+                            cancelLabel={t('common.cancel')} todayLabel={t('common.today')}/>
                     </MuiPickersUtilsProvider>
             );
         }

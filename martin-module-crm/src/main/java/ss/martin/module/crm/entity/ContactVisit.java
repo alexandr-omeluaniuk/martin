@@ -29,6 +29,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.MaterialIcon;
@@ -51,6 +52,7 @@ public class ContactVisit extends CalendarEvent {
     @Column(name = "subject", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String subject;
     /** Contact. */
+    @NotNull
     @FormField(lg = "6", md = "6", sm = "12")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", nullable = false)
