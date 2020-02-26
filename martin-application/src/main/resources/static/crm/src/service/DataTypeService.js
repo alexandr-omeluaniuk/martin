@@ -37,17 +37,19 @@ const SERVER_DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
 // ----------------------------------------------- FIELD TYPES ----------------------------------------------------------------------------
 export const TYPE_STRING = 'String';
 
-export const TYPE_DATE = 'DATE';
+export const TYPE_DATE = "DATE";
 
 export const TYPE_SET = "Set";
 
 export const TYPE_AVATAR = "Avatar";
 
-export const TYPE_TEXTAREA = 'TextArea';
+export const TYPE_TEXTAREA = "TextArea";
 
-export const TYPE_MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
+export const TYPE_MOBILE_PHONE_NUMBER = "MobilePhoneNumber";
 
-export const TYPE_TYPESTAMP = 'TIMESTAMP';
+export const TYPE_TIMESTAMP = "TIMESTAMP";
+
+export const TYPE_MANY_TO_ONE = "ManyToOne";
 // ----------------------------------------------- VALIDATORS -----------------------------------------------------------------------------
 export const V_REGEX_EMAIL = /\S+@\S+\.\S+/;
 
@@ -96,7 +98,7 @@ export default class DataTypeService {
         let result = value;
         if (field.fieldType === TYPE_DATE) {
             result = value.format(SERVER_DATE_FORMAT);
-        } else if (field.fieldType === TYPE_TYPESTAMP) {
+        } else if (field.fieldType === TYPE_TIMESTAMP) {
             result = moment(value).format(SERVER_DATETIME_FORMAT);
         }
         return result;
@@ -105,7 +107,7 @@ export default class DataTypeService {
     static convertServerValueToUIFormat = (field, value) => {
         if (field.fieldType === TYPE_DATE) {
             value = moment(value, SERVER_DATE_FORMAT);
-        } else if (field.fieldType === TYPE_TYPESTAMP) {
+        } else if (field.fieldType === TYPE_TIMESTAMP) {
             value = moment(value, SERVER_DATETIME_FORMAT);
         } else if (field.fieldType === TYPE_STRING) {
             value = value === null || value === undefined ? '' : value;

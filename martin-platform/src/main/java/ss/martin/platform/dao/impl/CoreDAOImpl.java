@@ -114,7 +114,7 @@ class CoreDAOImpl implements CoreDAO {
         Root<T> c = criteria.from(cl);
         List<Predicate> predicates = createSearchCriteria(cb, c, cl, searchRequest);
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
-        Optional.of(searchRequest.getOrderBy()).ifPresent((orderBy) -> {
+        Optional.ofNullable(searchRequest.getOrderBy()).ifPresent((orderBy) -> {
             if ("asc".equals(searchRequest.getOrder())) {
                 criteria.orderBy(cb.asc(c.get(orderBy)));
             } else {
@@ -145,6 +145,9 @@ class CoreDAOImpl implements CoreDAO {
             Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
             predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription), subscription));
         }
+        Optional.ofNullable(searchRequest.getFilter()).ifPresent((filter) -> {
+            
+        });
         return predicates;
     }
 }

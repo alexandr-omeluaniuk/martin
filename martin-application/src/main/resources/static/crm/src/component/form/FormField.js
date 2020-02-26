@@ -32,11 +32,12 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
 import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR, V_NOT_NULL, V_NOT_EMPTY,
-    TYPE_TEXTAREA, TYPE_MOBILE_PHONE_NUMBER, TYPE_TYPESTAMP } from '../../service/DataTypeService';
+    TYPE_TEXTAREA, TYPE_MOBILE_PHONE_NUMBER, TYPE_TIMESTAMP, TYPE_MANY_TO_ONE } from '../../service/DataTypeService';
 import { useTranslation } from 'react-i18next';
 import EnumMultiChoiceInput from '../input/EnumMultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
 import AvatarInput from '../input/AvatarInput';
+import LookupField from '../input/LookupField';
 import moment from 'moment';
 import "moment/locale/ru";
 import "moment/locale/de";
@@ -154,7 +155,7 @@ function FormField(props) {
                             helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}
                             onBlur={onBlurInput} onKeyUp={onEnterInput}/>
             );
-        } else if (field.fieldType === TYPE_TYPESTAMP) {
+        } else if (field.fieldType === TYPE_TIMESTAMP) {
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
@@ -162,6 +163,11 @@ function FormField(props) {
                             format={t('constants.momentJsDateTimeFormat')} clearLabel={t('common.clear')}
                             cancelLabel={t('common.cancel')} todayLabel={t('common.today')}/>
                     </MuiPickersUtilsProvider>
+            );
+        } else if (field.fieldType === TYPE_MANY_TO_ONE) {
+            return (
+                    <LookupField field={field} value={fieldValue} label={label} onChange={onChangeFieldValue} 
+                        helperText={invalidFields.get(name)} name={name} error={invalidFields.has(name)}/>
             );
         }
         return null;

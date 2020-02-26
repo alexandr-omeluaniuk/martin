@@ -227,6 +227,6 @@ public class SystemUser extends TenantEntity {
     }
     @Override
     public String toString() {
-        return "org.ss.mvd.entity.User[ id=" + getId() + " ]";
+        return "ss.martin.platform.entity.SystemUser[ id=" + getId() + " ]";
     }
 }

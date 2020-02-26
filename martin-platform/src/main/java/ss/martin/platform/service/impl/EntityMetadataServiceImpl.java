@@ -157,6 +157,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     /**
      * Create entity layout field from entity field.
      * @param field entity field.
+     * @param entityClass entity class.
      * @return layout field.
      * @throws Exception error.
      */
@@ -210,7 +211,11 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             }
         });
         Optional.ofNullable(field.getAnnotation(ManyToOne.class)).ifPresent((anno) -> {
-            layoutField.getAttributes().put(ManyToOne.class.getSimpleName(), true);
+            layoutField.setFieldType(ManyToOne.class.getSimpleName());
+            layoutField.getAttributes().put("relationshipType", field.getType().getName());
+            Optional.ofNullable(field.getType().getAnnotation(MaterialIcon.class)).ifPresent((anno2) -> {
+                layoutField.getAttributes().put("icon", anno2.icon());
+            });
         });
         return layoutField;
     }
