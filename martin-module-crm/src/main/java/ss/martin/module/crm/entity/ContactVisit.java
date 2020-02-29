@@ -32,6 +32,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.ui.FormField;
+import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.constants.AppConstants;
@@ -53,6 +54,7 @@ public class ContactVisit extends CalendarEvent {
     private String subject;
     /** Contact. */
     @NotNull
+    @LookupField(template = "{firstname} {lastname}", orderBy = "lastname")
     @FormField(lg = "6", md = "6", sm = "12")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", nullable = false)

@@ -202,7 +202,9 @@ public class EntitySearchRequest {
      */
     public static enum ComparisonOperator {
         /** Equals. */
-        EQUALS;
+        EQUALS,
+        /** Like. */
+        LIKE;
     }
     /**
      * Boolean condition operators.

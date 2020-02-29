@@ -53,6 +53,7 @@ import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
+import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
@@ -216,6 +217,11 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             Optional.ofNullable(field.getType().getAnnotation(MaterialIcon.class)).ifPresent((anno2) -> {
                 layoutField.getAttributes().put("icon", anno2.icon());
             });
+        });
+        Optional.ofNullable(field.getAnnotation(LookupField.class)).ifPresent((anno) -> {
+            layoutField.getAttributes().put("lookupFieldTemplate", anno.template());
+            layoutField.getAttributes().put("lookupFieldOrderBy", anno.orderBy());
+            layoutField.getAttributes().put("lookupFieldOrder", anno.order());
         });
         return layoutField;
     }

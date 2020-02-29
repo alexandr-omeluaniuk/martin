@@ -146,8 +146,34 @@ class CoreDAOImpl implements CoreDAO {
             predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription), subscription));
         }
         Optional.ofNullable(searchRequest.getFilter()).ifPresent((filter) -> {
-            
+            filter.forEach((f) -> {
+                predicates.add(fromFilter(f, cb, c));
+            });
         });
         return predicates;
+    }
+    
+    private Predicate fromFilter(EntitySearchRequest.FilterCondition filter, CriteriaBuilder cb, Root c) {
+        List<Predicate> innerPredicates = new ArrayList<>();
+        filter.getPredicates().forEach((filterPredicate) -> {
+            if (EntitySearchRequest.ComparisonOperator.EQUALS.equals(filterPredicate.getOperator())) {
+                innerPredicates.add(cb.equal(c.get(filterPredicate.getField()), filterPredicate.getValue()));
+            } else if (EntitySearchRequest.ComparisonOperator.LIKE.equals(filterPredicate.getOperator())) {
+                innerPredicates.add(cb.like(c.get(filterPredicate.getField()),
+                        String.valueOf(filterPredicate.getValue())));
+            }
+        });
+        Optional.ofNullable(filter.getConditions()).ifPresent((conditions) -> {
+            conditions.forEach((cond) -> {
+                innerPredicates.add(fromFilter(filter, cb, c));
+            });
+        });
+        if (EntitySearchRequest.BoolConditionOperator.AND.equals(filter.getOperator())) {
+            return cb.and(innerPredicates.toArray(new Predicate[0]));
+        } else if (EntitySearchRequest.BoolConditionOperator.OR.equals(filter.getOperator())) {
+            return cb.or(innerPredicates.toArray(new Predicate[0]));
+        } else {
+            throw new RuntimeException("Boolean operator for filter condition is required!");
+        }
     }
 }

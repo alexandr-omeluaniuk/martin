@@ -64,8 +64,20 @@ function LookupField(props) {
             DataService.requestPost('/entity/search/' + field.attributes.relationshipType, {
                 page: 1,
                 pageSize: 5,
-                //order: order,
-                //orderBy: orderBy
+                order: field.attributes.lookupFieldOrder,
+                orderBy: field.attributes.lookupFieldOrderBy,
+                filter: [{
+                        operator: 'OR',
+                        predicates: [{
+                                field: 'firstname',
+                                operator: 'LIKE',
+                                value: '%' + searchToken + '%'
+                        }, {
+                                field: 'lastname',
+                                operator: 'LIKE',
+                                value: '%' + searchToken + '%'
+                        }]
+                }]
             }).then(resp => {
                 setSearchResult(resp.data);
                 setOpen(true);
@@ -79,13 +91,21 @@ function LookupField(props) {
         setOpen(false);
         onChange(field.name, item);
     };
+    
+    const renderLabel = (item) => {
+        let label = '';
+        if (item) {
+            let template = field.attributes.lookupFieldTemplate ? field.attributes.lookupFieldTemplate : 'No lookup template!!!';
+            for (let k in item) {
+                template = template.replace('{' + k + '}', item[k]);
+            }
+            label = template;
+        }
+        return label;
+    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
-        let label = '';
-        if (value) {
-            label = value.firstname + ' ' + value.lastname;
-        }
-        setDisplayedValue(label);
+        setDisplayedValue(renderLabel(value));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     // -------------------------------------------------------- RENDERING -----------------------------------------------------------------
@@ -128,7 +148,7 @@ function LookupField(props) {
             const items = [];
             searchResult.forEach(item => {
                 items.push((
-                    <MenuItem key={item.id} onClick={() => onItemSelect(item)}>{item.firstname} {item.lastname}</MenuItem>
+                    <MenuItem key={item.id} onClick={() => onItemSelect(item)}>{renderLabel(item)}</MenuItem>
                 ));
             });
             return items;
