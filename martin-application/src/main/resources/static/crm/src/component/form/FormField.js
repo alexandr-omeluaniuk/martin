@@ -167,7 +167,7 @@ function FormField(props) {
         } else if (field.fieldType === TYPE_MANY_TO_ONE) {
             return (
                     <LookupField field={field} value={fieldValue} label={label} onChange={onChangeFieldValue} 
-                        helperText={invalidFields.get(name)} name={name} error={invalidFields.has(name)}/>
+                        helperText={invalidFields.get(name)} name={name} error={invalidFields.has(name)} readOnly={readOnly}/>
             );
         }
         return null;

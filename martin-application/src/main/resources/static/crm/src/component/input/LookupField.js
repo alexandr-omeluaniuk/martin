@@ -22,29 +22,38 @@
  * THE SOFTWARE.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Menu from '@material-ui/core/Menu';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import DataService from '../../service/DataService';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+    menu: {
+        zIndex: 1000
+    }
+}));
 
 function LookupField(props) {
     const { field, label, value, helperText, name, error, onChange } = props;
-    console.log(field);
     const inputRef = React.useRef();
+    const classes = useStyles();
     // ----------------------------------------------------- STATE ------------------------------------------------------------------------
-    const [readOnly, setReadOnly] = React.useState(true);
-    const [openDropdown, setOpenDropdown] = React.useState(false);
+    const [readOnly, setReadOnly] = React.useState(props.readOnly);
     const [displayedValue, setDisplayedValue] = React.useState('');
     const [searchResult, setSearchResult] = React.useState([]);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [open, setOpen] = React.useState(false);
     // ----------------------------------------------------- FUNCTIONS --------------------------------------------------------------------
     const startSearch = (e) => {
         setReadOnly(false);
-        setAnchorEl(e.currentTarget);
         inputRef.current.focus();
     };
     
@@ -59,13 +68,27 @@ function LookupField(props) {
                 //orderBy: orderBy
             }).then(resp => {
                 setSearchResult(resp.data);
+                setOpen(true);
             });
         } else {
             setSearchResult([]);
-            setAnchorEl(null);
         }
     };
     
+    const onItemSelect = (item) => {
+        setOpen(false);
+        onChange(field.name, item);
+    };
+    // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
+    useEffect(() => {
+        let label = '';
+        if (value) {
+            label = value.firstname + ' ' + value.lastname;
+        }
+        setDisplayedValue(label);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+    // -------------------------------------------------------- RENDERING -----------------------------------------------------------------
     const start = () => {
         return (
             <InputAdornment position="start">
@@ -75,13 +98,25 @@ function LookupField(props) {
     };
     
     const end = () => {
-        return (
-            <InputAdornment position="end">
-                <IconButton onClick={startSearch}>
-                    <Icon>search</Icon>
-                </IconButton>
-            </InputAdornment>
-        );
+        if (readOnly) {
+            return (
+                <InputAdornment position="end">
+                    <IconButton onClick={startSearch}>
+                        <Icon>search</Icon>
+                    </IconButton>
+                </InputAdornment>
+            );
+        } else if (value) {
+            return (
+                <InputAdornment position="end">
+                    <IconButton onClick={() => {
+                        onChange(field.name, null);
+                    }}>
+                        <Icon>close</Icon>
+                    </IconButton>
+                </InputAdornment>
+            );
+        }
     };
     
     const menuItems = () => {
@@ -93,7 +128,7 @@ function LookupField(props) {
             const items = [];
             searchResult.forEach(item => {
                 items.push((
-                    <MenuItem key={item.id}>{item.firstname} {item.lastname}</MenuItem>
+                    <MenuItem key={item.id} onClick={() => onItemSelect(item)}>{item.firstname} {item.lastname}</MenuItem>
                 ));
             });
             return items;
@@ -107,10 +142,20 @@ function LookupField(props) {
                 endAdornment: end(),
                 readOnly: readOnly
             }} helperText={helperText} error={error} name={name} inputRef={inputRef} onChange={doSearch}/>
-            <Menu elevation={0} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}} open={searchResult.length > 0}
-                transformOrigin={{vertical: 'top', horizontal: 'center'}} anchorEl={anchorEl}>
-                {menuItems()}
-            </Menu>
+            <Popper open={open} anchorEl={inputRef.current} role={undefined} transition disablePortal={true}
+                    placement={'bottom-start'} className={classes.menu}>
+                {({ TransitionProps, placement }) => (
+                    <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                        <Paper>
+                            <ClickAwayListener onClickAway={() => setOpen(false)}>
+                                <MenuList>
+                                    {menuItems()}
+                                </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                )}
+            </Popper>
         </React.Fragment>
     );
 }
