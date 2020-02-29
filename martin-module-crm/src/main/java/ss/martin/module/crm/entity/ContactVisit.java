@@ -31,11 +31,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import ss.martin.platform.anno.ui.FilterCondition;
+import ss.martin.platform.anno.ui.FilterPredicate;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.constants.AppConstants;
+import ss.martin.platform.constants.JPABoolConditionOperator;
+import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.entity.CalendarEvent;
 
 /**
@@ -54,7 +58,13 @@ public class ContactVisit extends CalendarEvent {
     private String subject;
     /** Contact. */
     @NotNull
-    @LookupField(template = "{firstname} {lastname}", orderBy = "lastname")
+    @LookupField(template = "{firstname} {lastname}", orderBy = "lastname", filter = @FilterCondition(
+            operator = JPABoolConditionOperator.OR,
+            predicates = {
+                @FilterPredicate(field = "firstname", operator = JPAComparisonOperator.LIKE, valueTemplate = "%{val}%"),
+                @FilterPredicate(field = "lastname", operator = JPAComparisonOperator.LIKE, valueTemplate = "%{val}%")
+            }
+    ))
     @FormField(lg = "6", md = "6", sm = "12")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", nullable = false)

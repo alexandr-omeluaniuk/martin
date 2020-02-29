@@ -27,32 +27,28 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import ss.martin.platform.constants.JPAComparisonOperator;
 
 /**
- * Lookup field settings.
+ * Filter predicate.
  * @author ss
  */
 @Target(value = {ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface LookupField {
+public @interface FilterPredicate {
     /**
-     * Displayed label template, like {name} or '{firstname} {lastname}'
-     * @return template.
+     * Field name.
+     * @return field name.
      */
-    public String template();
+    public String field();
     /**
-     * Order by field.
-     * @return order by field.
+     * Comparison operator.
+     * @return operator.
      */
-    public String orderBy() default "id";
+    public JPAComparisonOperator operator();
     /**
-     * Sort order.
-     * @return sort order.
+     * Value template. For operator LIKE, should be like this '%{val}%'.
+     * @return value template.
      */
-    public String order() default "asc";
-    /**
-     * Filter conditions.
-     * @return filter conditions.
-     */
-    public FilterCondition[] filter() default {};
+    public String valueTemplate() default "{val}";
 }

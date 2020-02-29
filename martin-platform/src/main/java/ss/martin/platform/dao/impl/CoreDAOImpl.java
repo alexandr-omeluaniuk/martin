@@ -23,6 +23,8 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import ss.martin.platform.constants.JPABoolConditionOperator;
+import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.DataModel_;
@@ -156,9 +158,9 @@ class CoreDAOImpl implements CoreDAO {
     private Predicate fromFilter(EntitySearchRequest.FilterCondition filter, CriteriaBuilder cb, Root c) {
         List<Predicate> innerPredicates = new ArrayList<>();
         filter.getPredicates().forEach((filterPredicate) -> {
-            if (EntitySearchRequest.ComparisonOperator.EQUALS.equals(filterPredicate.getOperator())) {
+            if (JPAComparisonOperator.EQUALS.equals(filterPredicate.getOperator())) {
                 innerPredicates.add(cb.equal(c.get(filterPredicate.getField()), filterPredicate.getValue()));
-            } else if (EntitySearchRequest.ComparisonOperator.LIKE.equals(filterPredicate.getOperator())) {
+            } else if (JPAComparisonOperator.LIKE.equals(filterPredicate.getOperator())) {
                 innerPredicates.add(cb.like(c.get(filterPredicate.getField()),
                         String.valueOf(filterPredicate.getValue())));
             }
@@ -168,9 +170,9 @@ class CoreDAOImpl implements CoreDAO {
                 innerPredicates.add(fromFilter(filter, cb, c));
             });
         });
-        if (EntitySearchRequest.BoolConditionOperator.AND.equals(filter.getOperator())) {
+        if (JPABoolConditionOperator.AND.equals(filter.getOperator())) {
             return cb.and(innerPredicates.toArray(new Predicate[0]));
-        } else if (EntitySearchRequest.BoolConditionOperator.OR.equals(filter.getOperator())) {
+        } else if (JPABoolConditionOperator.OR.equals(filter.getOperator())) {
             return cb.or(innerPredicates.toArray(new Predicate[0]));
         } else {
             throw new RuntimeException("Boolean operator for filter condition is required!");

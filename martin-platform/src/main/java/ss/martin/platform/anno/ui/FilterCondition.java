@@ -27,32 +27,23 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import ss.martin.platform.constants.JPABoolConditionOperator;
 
 /**
- * Lookup field settings.
+ * Filter condition.
  * @author ss
  */
 @Target(value = {ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface LookupField {
+public @interface FilterCondition {
     /**
-     * Displayed label template, like {name} or '{firstname} {lastname}'
-     * @return template.
+     * Filter predicates.
+     * @return predicates.
      */
-    public String template();
+    public FilterPredicate[] predicates();
     /**
-     * Order by field.
-     * @return order by field.
+     * Filter operator.
+     * @return operator.
      */
-    public String orderBy() default "id";
-    /**
-     * Sort order.
-     * @return sort order.
-     */
-    public String order() default "asc";
-    /**
-     * Filter conditions.
-     * @return filter conditions.
-     */
-    public FilterCondition[] filter() default {};
+    public JPABoolConditionOperator operator();
 }

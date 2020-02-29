@@ -24,6 +24,8 @@
 package ss.martin.platform.wrapper;
 
 import java.util.List;
+import ss.martin.platform.constants.JPABoolConditionOperator;
+import ss.martin.platform.constants.JPAComparisonOperator;
 
 /**
  * Entity search request.
@@ -112,7 +114,7 @@ public class EntitySearchRequest {
         /** Inner conditions. */
         private List<FilterCondition> conditions;
         /** Operator. */
-        private BoolConditionOperator operator;
+        private JPABoolConditionOperator operator;
         /**
          * @return the predicates
          */
@@ -128,13 +130,13 @@ public class EntitySearchRequest {
         /**
          * @return the operator
          */
-        public BoolConditionOperator getOperator() {
+        public JPABoolConditionOperator getOperator() {
             return operator;
         }
         /**
          * @param operator the operator to set
          */
-        public void setOperator(BoolConditionOperator operator) {
+        public void setOperator(JPABoolConditionOperator operator) {
             this.operator = operator;
         }
         /**
@@ -159,7 +161,7 @@ public class EntitySearchRequest {
         /** Value */
         private Object value;
         /** Operator. */
-        private ComparisonOperator operator;
+        private JPAComparisonOperator operator;
         /**
          * @return the field
          */
@@ -187,32 +189,14 @@ public class EntitySearchRequest {
         /**
          * @return the operator
          */
-        public ComparisonOperator getOperator() {
+        public JPAComparisonOperator getOperator() {
             return operator;
         }
         /**
          * @param operator the operator to set
          */
-        public void setOperator(ComparisonOperator operator) {
+        public void setOperator(JPAComparisonOperator operator) {
             this.operator = operator;
         }
-    }
-    /**
-     * Comparison operators.
-     */
-    public static enum ComparisonOperator {
-        /** Equals. */
-        EQUALS,
-        /** Like. */
-        LIKE;
-    }
-    /**
-     * Boolean condition operators.
-     */
-    public static enum BoolConditionOperator {
-        /** OR. */
-        OR,
-        /** AND. */
-        AND;
     }
 }

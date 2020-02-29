@@ -21,38 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package ss.martin.platform.constants;
 
 /**
- * Lookup field settings.
+ * JPA comparison operators.
  * @author ss
  */
-@Target(value = {ElementType.FIELD})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface LookupField {
-    /**
-     * Displayed label template, like {name} or '{firstname} {lastname}'
-     * @return template.
-     */
-    public String template();
-    /**
-     * Order by field.
-     * @return order by field.
-     */
-    public String orderBy() default "id";
-    /**
-     * Sort order.
-     * @return sort order.
-     */
-    public String order() default "asc";
-    /**
-     * Filter conditions.
-     * @return filter conditions.
-     */
-    public FilterCondition[] filter() default {};
+public enum JPAComparisonOperator {
+    /** Equals. */
+    EQUALS,
+    /** Like. */
+    LIKE;
 }

@@ -161,7 +161,7 @@ function LookupField(props) {
                 startAdornment: start(),
                 endAdornment: end(),
                 readOnly: readOnly
-            }} helperText={helperText} error={error} name={name} inputRef={inputRef} onChange={doSearch}/>
+            }} helperText={helperText} error={error} name={name} inputRef={inputRef} onChange={doSearch} autoComplete='off'/>
             <Popper open={open} anchorEl={inputRef.current} role={undefined} transition disablePortal={true}
                     placement={'bottom-start'} className={classes.menu}>
                 {({ TransitionProps, placement }) => (

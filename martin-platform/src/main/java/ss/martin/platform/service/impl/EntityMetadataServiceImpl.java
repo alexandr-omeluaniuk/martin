@@ -50,6 +50,8 @@ import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
+import ss.martin.platform.anno.ui.FilterCondition;
+import ss.martin.platform.anno.ui.FilterPredicate;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
@@ -67,6 +69,7 @@ import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.ui.CalendarView;
 import ss.martin.platform.ui.Layout;
 import ss.martin.platform.ui.ListView;
+import ss.martin.platform.wrapper.EntitySearchRequest;
 
 /**
  * Entity metadata service implementation.
@@ -222,6 +225,23 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             layoutField.getAttributes().put("lookupFieldTemplate", anno.template());
             layoutField.getAttributes().put("lookupFieldOrderBy", anno.orderBy());
             layoutField.getAttributes().put("lookupFieldOrder", anno.order());
+            List<EntitySearchRequest.FilterCondition> filterConditions = new ArrayList<>();
+            Optional.ofNullable(anno.filter()).ifPresent((filter) -> {
+                for (FilterCondition fc : filter) {
+                    EntitySearchRequest.FilterCondition cond = new EntitySearchRequest.FilterCondition();
+                    cond.setOperator(fc.operator());
+                    cond.setPredicates(new ArrayList<>());
+                    for (FilterPredicate fp : fc.predicates()) {
+                        EntitySearchRequest.FilterPredicate predicate = new EntitySearchRequest.FilterPredicate();
+                        predicate.setField(fp.field());
+                        predicate.setOperator(fp.operator());
+                        predicate.setValue(fp.valueTemplate());
+                        cond.getPredicates().add(predicate);
+                    }
+                    filterConditions.add(cond);
+                }
+            });
+            layoutField.getAttributes().put("lookupFieldFilter", filterConditions);
         });
         return layoutField;
     }
