@@ -61,29 +61,25 @@ function LookupField(props) {
         let searchToken = e.target.value;
         setDisplayedValue(searchToken);
         if (searchToken.length > 1) {
+            let filter = field.attributes.lookupFieldFilter ? field.attributes.lookupFieldFilter : [];
+            filter.forEach(cond => {
+                cond.predicates.forEach(predicate => {
+                    predicate.value = predicate.value.replace('{val}', searchToken);
+                });
+            });
             DataService.requestPost('/entity/search/' + field.attributes.relationshipType, {
                 page: 1,
                 pageSize: 5,
                 order: field.attributes.lookupFieldOrder,
                 orderBy: field.attributes.lookupFieldOrderBy,
-                filter: [{
-                        operator: 'OR',
-                        predicates: [{
-                                field: 'firstname',
-                                operator: 'LIKE',
-                                value: '%' + searchToken + '%'
-                        }, {
-                                field: 'lastname',
-                                operator: 'LIKE',
-                                value: '%' + searchToken + '%'
-                        }]
-                }]
+                filter: filter
             }).then(resp => {
                 setSearchResult(resp.data);
                 setOpen(true);
             });
         } else {
             setSearchResult([]);
+            setOpen(false);
         }
     };
     
@@ -142,7 +138,7 @@ function LookupField(props) {
     const menuItems = () => {
         if (searchResult.length === 0) {
             return (
-                    <MenuItem>No Results</MenuItem>
+                    <MenuItem disabled={true}>No Results</MenuItem>
             );
         } else {
             const items = [];
