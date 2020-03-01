@@ -99,7 +99,7 @@ function MainContent(props) {
     return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="lg" className={classes.container} id="main-container">
                     { routes }
                     <Box pt={4}>
                         <Copyright />

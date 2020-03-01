@@ -128,7 +128,14 @@
         "standardForm": {
             "save": "Сохранить"
         },
-        "copyright": "Авторские права"
+        "copyright": "Авторские права",
+        "calendar": {
+            "view": {
+                "dayGridMonth": "Месячный обзор",
+                "listWeek": "Недельный обзор",
+                "timeGridWeek": "Недельное расписание"
+            }
+        }
     },
     "common": {
         "delete": "Удалить",
@@ -141,7 +148,10 @@
         "cancel": "Отмена",
         "today": "Сегодня",
         "noResults": "Нет результатов",
-        "search": "Искать"
+        "search": "Искать",
+        "today": "Сегодня",
+        "forward": "Вперед",
+        "back": "Назад"
     },
     "enum": {
         "SystemUserStatus": {
