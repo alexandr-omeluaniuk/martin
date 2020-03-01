@@ -29,12 +29,14 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import Tooltip from '@material-ui/core/Tooltip';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import DataService from '../../service/DataService';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     menu: {
@@ -46,6 +48,7 @@ function LookupField(props) {
     const { field, label, value, helperText, name, error, onChange } = props;
     const inputRef = React.useRef();
     const classes = useStyles();
+    const { t } = useTranslation();
     // ----------------------------------------------------- STATE ------------------------------------------------------------------------
     const [readOnly, setReadOnly] = React.useState(props.readOnly);
     const [displayedValue, setDisplayedValue] = React.useState('');
@@ -117,19 +120,23 @@ function LookupField(props) {
         if (readOnly) {
             return (
                 <InputAdornment position="end">
-                    <IconButton onClick={startSearch}>
-                        <Icon>search</Icon>
-                    </IconButton>
+                    <Tooltip title={t('common.search')}>
+                        <IconButton onClick={startSearch}>
+                            <Icon>search</Icon>
+                        </IconButton>
+                    </Tooltip>
                 </InputAdornment>
             );
         } else if (value) {
             return (
                 <InputAdornment position="end">
-                    <IconButton onClick={() => {
-                        onChange(field.name, null);
-                    }}>
-                        <Icon>close</Icon>
-                    </IconButton>
+                    <Tooltip title={t('common.clear')}>
+                        <IconButton onClick={() => {
+                            onChange(field.name, null);
+                        }}>
+                            <Icon>close</Icon>
+                        </IconButton>
+                    </Tooltip>
                 </InputAdornment>
             );
         }
@@ -138,7 +145,7 @@ function LookupField(props) {
     const menuItems = () => {
         if (searchResult.length === 0) {
             return (
-                    <MenuItem disabled={true}>No Results</MenuItem>
+                    <MenuItem disabled={true} onClick={setOpen(false)}>{t('common.noResults')}</MenuItem>
             );
         } else {
             const items = [];

@@ -139,7 +139,9 @@
         "created": "Создал",
         "modified": "Изменил",
         "cancel": "Отмена",
-        "today": "Сегодня"
+        "today": "Сегодня",
+        "noResults": "Нет результатов",
+        "search": "Искать"
     },
     "enum": {
         "SystemUserStatus": {

@@ -41,7 +41,6 @@ import LookupField from '../input/LookupField';
 import moment from 'moment';
 import "moment/locale/ru";
 import "moment/locale/de";
-import i18n from '../../config/i18next-config';
 
 const useStyles = makeStyles(theme => ({
     fullWidth: {
@@ -51,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 function FormField(props) {
     const { field, entity, invalidFields, fieldValue, onChangeFieldValue, onFieldEdit} = props;
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const classes = useStyles();
     const inputRef = React.useRef();
     // ----------------------------------------------------- STATE ------------------------------------------------------------------------
