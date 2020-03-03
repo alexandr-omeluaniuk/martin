@@ -47,7 +47,7 @@ public abstract class EntityAudit extends TenantEntity {
     @JoinColumn(name = "created_by", nullable = false, updatable = false)
     private SystemUser createdBy;
     /** Created date. */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_TIMESTAMP_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", nullable = false, updatable = false)
@@ -58,7 +58,7 @@ public abstract class EntityAudit extends TenantEntity {
     @JoinColumn(name = "last_modified_by")
     private SystemUser lastModifiedBy;
     /** Last modified date. */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_TIMESTAMP_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_modified_date")

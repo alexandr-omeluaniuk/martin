@@ -61,6 +61,10 @@ function CalendarView(props) {
         setPredefinedValues(map);
         setFormOpen(true);
     };
+    const eventClick = (eventClickInfo) => {
+        setEditId(eventClickInfo.event.extendedProps.raw.id);
+        setFormOpen(true);
+    };
     const aspectRatio = () => {
         let aspectRatio = 3;
         let container = document.getElementById('main-container');
@@ -105,7 +109,9 @@ function CalendarView(props) {
     return (
             <React.Fragment>
                 <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-                    locale={i18n.language} aspectRatio={aspectRatio()} ref={calendarRef} events={events} dateClick={dateClick} header={{
+                    locale={i18n.language} aspectRatio={aspectRatio()} ref={calendarRef} events={events} dateClick={dateClick} 
+                    eventClick={eventClick}
+                    header={{
                         left: 'today prev,next',
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,listWeek'
