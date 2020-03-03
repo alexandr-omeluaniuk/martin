@@ -131,9 +131,9 @@
         "copyright": "Авторские права",
         "calendar": {
             "view": {
-                "dayGridMonth": "Месячный обзор",
-                "listWeek": "Недельный обзор",
-                "timeGridWeek": "Недельное расписание"
+                "dayGridMonth": "Месяц",
+                "listWeek": "Список",
+                "timeGridWeek": "Неделя"
             }
         }
     },

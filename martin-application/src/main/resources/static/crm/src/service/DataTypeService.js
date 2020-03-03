@@ -32,7 +32,7 @@ import "moment/locale/ru";
 
 export const SERVER_DATE_FORMAT = 'DD.MM.YYYY';
 
-const SERVER_DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
+export const SERVER_DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
 
 // ----------------------------------------------- FIELD TYPES ----------------------------------------------------------------------------
 export const TYPE_STRING = 'String';

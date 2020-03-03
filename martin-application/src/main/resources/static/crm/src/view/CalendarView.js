@@ -32,15 +32,8 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from "@fullcalendar/interaction";
 import { useTranslation } from 'react-i18next';
 import StandardForm from '../component/form/StandardForm';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import ReactDOM from 'react-dom';
 import DataService from '../service/DataService';
-import AppURLs from '../constants/AppURLs';
-import { SERVER_DATE_FORMAT } from '../service/DataTypeService';
+import { SERVER_DATE_FORMAT, SERVER_DATETIME_FORMAT } from '../service/DataTypeService';
 import moment from 'moment';
 
 import '@fullcalendar/core/main.css';
@@ -56,9 +49,9 @@ function CalendarView(props) {
     const theme = useTheme();
     let calendarRef = React.createRef();
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
-    const [update, setUpdate] = React.useState(false);
     const [formOpen, setFormOpen] = React.useState(false);
     const [editId, setEditId] = React.useState(null);
+    const [calendar, setCalendar] = React.useState(null);
     const [predefinedValues, setPredefinedValues] = React.useState(null);
     // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
     const dateClick = (info) => {
@@ -68,16 +61,12 @@ function CalendarView(props) {
         setPredefinedValues(map);
         setFormOpen(true);
     };
-    const changeView = (view) => {
-        calendarRef.current.calendar.changeView(view);
-        setUpdate(!update);
-    };
     const aspectRatio = () => {
         let aspectRatio = 3;
         let container = document.getElementById('main-container');
         if (container) {
             let height = container.offsetWidth - theme.spacing(8);
-            let width = window.innerHeight - (theme.spacing(10) + 64 + 72);
+            let width = window.innerHeight - (theme.spacing(10) + 64 + 96);
             aspectRatio = height / width;
         }
         return aspectRatio;
@@ -88,55 +77,27 @@ function CalendarView(props) {
             from: moment(fetchInfo.start).format(SERVER_DATE_FORMAT),
             to: moment(fetchInfo.end).format(SERVER_DATE_FORMAT)
         }).then(resp => {
-            console.log(resp);
+            let newEvents = [];
+            resp.forEach(raw => {
+                newEvents.push({
+                    id: raw.id,
+                    title: 'Test',
+                    start: moment(raw.start, SERVER_DATETIME_FORMAT).toDate(),
+                    end: moment(raw.end, SERVER_DATETIME_FORMAT).toDate(),
+                    raw: raw
+                });
+            });
+            successCallback(newEvents);
         });
-        successCallback([]);
+    };
+    const refetchEvents = () => {
+        calendar.refetchEvents();
     };
     // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
     useEffect(() => {
-        ReactDOM.render(
-            <React.Fragment>
-                <Tooltip title={t('common.back')}>
-                    <IconButton color="secondary" onClick={() => {
-                        calendarRef.current.calendar.prev();
-                        setUpdate(!update);
-                    }}>
-                        <Icon>keyboard_arrow_left</Icon>
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title={t('common.forward')}>
-                    <IconButton color="secondary" onClick={() => {
-                        calendarRef.current.calendar.next();
-                        setUpdate(!update);
-                    }}>
-                        <Icon>keyboard_arrow_right</Icon>
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title={t('common.today')}>
-                    <IconButton color="secondary" variant="contained" onClick={() => {
-                        calendarRef.current.calendar.today();
-                        setUpdate(!update);
-                    }}><Icon>today</Icon></IconButton>
-                </Tooltip>
-            </React.Fragment>,
-        document.getElementsByClassName('fc-left')[0]);
-        ReactDOM.render(
-            <React.Fragment>
-                <ButtonGroup color="secondary" variant="contained">
-                    <Tooltip title={t('components.calendar.view.dayGridMonth')}>
-                        <Button onClick={() => changeView('dayGridMonth')}><Icon>view_module</Icon></Button>
-                    </Tooltip>
-                    <Tooltip title={t('components.calendar.view.listWeek')}>
-                        <Button onClick={() => changeView('listWeek')}><Icon>view_list</Icon></Button>
-                    </Tooltip>
-                    <Tooltip title={t('components.calendar.view.timeGridWeek')}>
-                        <Button onClick={() => changeView('timeGridWeek')}><Icon>view_week</Icon></Button>
-                    </Tooltip>
-                </ButtonGroup>
-            </React.Fragment>,
-        document.getElementsByClassName('fc-right')[0]);
         if (calendarRef && calendarRef.current) {
             calendarRef.current.calendar.setOption('aspectRatio', aspectRatio());
+            setCalendar(calendarRef.current.calendar);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     });
@@ -145,12 +106,24 @@ function CalendarView(props) {
             <React.Fragment>
                 <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
                     locale={i18n.language} aspectRatio={aspectRatio()} ref={calendarRef} events={events} dateClick={dateClick} header={{
-                        left: '',
+                        left: 'today prev,next',
                         center: 'title',
-                        right: ''
+                        right: 'dayGridMonth,timeGridWeek,listWeek'
+                    }} views={{
+                        dayGridMonth: {
+                            buttonText: t('components.calendar.view.dayGridMonth')
+                        },
+                        listWeek: {
+                            buttonText: t('components.calendar.view.listWeek')
+                        },
+                        timeGridWeek: {
+                            buttonText: t('components.calendar.view.timeGridWeek')
+                        }
+                    }} buttonText={{
+                        today: t('common.today')
                     }}/>
                 <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={metadata.className}
-                    predefinedValues={predefinedValues} afterSaveCallback={null} id={editId}/> 
+                        predefinedValues={predefinedValues} afterSaveCallback={refetchEvents} id={editId}/> 
             </React.Fragment>
     );
 }
