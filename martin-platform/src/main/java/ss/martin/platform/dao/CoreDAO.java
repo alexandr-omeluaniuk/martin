@@ -69,5 +69,6 @@ public interface CoreDAO {
      * @return search response.
      * @throws Exception error.
      */
-    <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest) throws Exception;
+    <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest)
+            throws Exception;
 }

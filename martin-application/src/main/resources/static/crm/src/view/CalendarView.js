@@ -38,19 +38,23 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import ReactDOM from 'react-dom';
+import DataService from '../service/DataService';
+import AppURLs from '../constants/AppURLs';
+import { SERVER_DATE_FORMAT } from '../service/DataTypeService';
+import moment from 'moment';
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
 //import '../assets/css/fullcalendar-material.css';
+import '../assets/css/calendar-view.css';
 
 function CalendarView(props) {
     const { metadata } = props;
     const { t, i18n } = useTranslation();
     const theme = useTheme();
     let calendarRef = React.createRef();
-    //console.log(metadata);
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [update, setUpdate] = React.useState(false);
     const [formOpen, setFormOpen] = React.useState(false);
@@ -77,6 +81,16 @@ function CalendarView(props) {
             aspectRatio = height / width;
         }
         return aspectRatio;
+    };
+    const events = (fetchInfo, successCallback, failureCallback) => {
+        DataService.requestPost('/calendar/search', {
+            classes: [metadata.className],
+            from: moment(fetchInfo.start).format(SERVER_DATE_FORMAT),
+            to: moment(fetchInfo.end).format(SERVER_DATE_FORMAT)
+        }).then(resp => {
+            console.log(resp);
+        });
+        successCallback([]);
     };
     // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
     useEffect(() => {
@@ -130,10 +144,7 @@ function CalendarView(props) {
     return (
             <React.Fragment>
                 <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-                    locale={i18n.language} aspectRatio={aspectRatio()} ref={calendarRef} events={[
-                        { title: 'event 1', date: '2020-02-27' },
-                        { title: 'event 2', date: '2020-02-28' }
-                    ]} dateClick={dateClick} header={{
+                    locale={i18n.language} aspectRatio={aspectRatio()} ref={calendarRef} events={events} dateClick={dateClick} header={{
                         left: '',
                         center: 'title',
                         right: ''

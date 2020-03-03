@@ -23,6 +23,8 @@
  */
 package ss.martin.platform.wrapper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
@@ -32,6 +34,8 @@ import ss.martin.platform.constants.JPAComparisonOperator;
  * @author ss
  */
 public class EntitySearchRequest {
+    /** Default limit for SQL requests. */
+    private static final int DEFAULT_LIMIT = 10000;
     // =========================================== FIELDS =============================================================
     /** Page number. Required. */
     private Integer page;
@@ -43,6 +47,34 @@ public class EntitySearchRequest {
     private String orderBy;
     /** Filter parameters, key is field name, value is field value. */
     private List<FilterCondition> filter;
+    /** Ignore count request. Required for optimization. */
+    private boolean ignoreCount;
+    // =========================================== ACTIONS ============================================================
+    /**
+     * Create new request.
+     * @return new search request.
+     */
+    public static EntitySearchRequest createRequest() {
+        EntitySearchRequest request = new EntitySearchRequest();
+        request.setPage(1);
+        request.setPageSize(DEFAULT_LIMIT);
+        request.setFilter(new ArrayList<>());
+        request.setIgnoreCount(true);
+        return request;
+    }
+    /**
+     * Add filter.
+     * @param predicates filter predicates.
+     * @param operator filter operator.
+     * @return search request.
+     */
+    public EntitySearchRequest addFilter(FilterPredicate[] predicates, JPABoolConditionOperator operator) {
+        FilterCondition condition = new FilterCondition();
+        condition.setOperator(JPABoolConditionOperator.OR);
+        condition.setPredicates(Arrays.asList(predicates));
+        this.getFilter().add(condition);
+        return this;
+    }
     // =========================================== SET & GET ==========================================================
     /**
      * @return the page
@@ -105,6 +137,18 @@ public class EntitySearchRequest {
         this.filter = filter;
     }
     /**
+     * @return the ignoreCount
+     */
+    public boolean isIgnoreCount() {
+        return ignoreCount;
+    }
+    /**
+     * @param ignoreCount the ignoreCount to set
+     */
+    public void setIgnoreCount(boolean ignoreCount) {
+        this.ignoreCount = ignoreCount;
+    }
+    /**
      * Filter condition.
      * Contains predicates / inner conditions which are combined by common boolean operator.
      */
@@ -162,6 +206,22 @@ public class EntitySearchRequest {
         private Object value;
         /** Operator. */
         private JPAComparisonOperator operator;
+        /**
+         * Constructor.
+         */
+        public FilterPredicate() {
+        }
+        /**
+         * Constructor.
+         * @param field field.
+         * @param operator operator.
+         * @param value value.
+         */
+        public FilterPredicate(String field, JPAComparisonOperator operator, Object value) {
+            this.field = field;
+            this.operator = operator;
+            this.value= value;
+        }
         /**
          * @return the field
          */

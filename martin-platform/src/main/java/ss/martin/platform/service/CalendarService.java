@@ -21,19 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.constants;
+package ss.martin.platform.service;
+
+import java.util.List;
+import ss.martin.platform.entity.CalendarEvent;
+import ss.martin.platform.wrapper.CalendarSearchRequest;
 
 /**
- * JPA comparison operators.
+ * Calendar service.
  * @author ss
  */
-public enum JPAComparisonOperator {
-    /** Equals. */
-    EQUALS,
-    /** Greater than or equal to. */
-    GREATER_THAN_OR_EQUAL_TO,
-    /** Less than or equal to. */
-    LESS_THAN_OR_EQUAL_TO,
-    /** Like. */
-    LIKE;
+public interface CalendarService {
+    /**
+     * Search events.
+     * @param searchRequest
+     * @return
+     * @throws Exception 
+     */
+    List<CalendarEvent> search(CalendarSearchRequest searchRequest) throws Exception;
 }

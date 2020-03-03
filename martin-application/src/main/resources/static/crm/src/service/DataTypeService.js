@@ -30,7 +30,7 @@ import AppURLs from '../constants/AppURLs';
 import moment from 'moment';
 import "moment/locale/ru";
 
-const SERVER_DATE_FORMAT = 'DD.MM.YYYY';
+export const SERVER_DATE_FORMAT = 'DD.MM.YYYY';
 
 const SERVER_DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
 

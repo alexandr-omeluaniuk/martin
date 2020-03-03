@@ -128,14 +128,16 @@ class CoreDAOImpl implements CoreDAO {
                 .setMaxResults(searchRequest.getPageSize()).getResultList();
         response.setData(entities);
         // entities count
-        CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
-        Root<T> cCount = criteriaCount.from(cl);
-        Expression<Long> sum = cb.count(cCount);
-        predicates = createSearchCriteria(cb, cCount, cl, searchRequest);
-        criteriaCount.select(sum).where(predicates.toArray(new Predicate[0]));
-        List<Long> maxList = em.createQuery(criteriaCount).getResultList();
-        Long count = maxList.iterator().next();
-        response.setTotal(count == null ? 0 : Integer.valueOf(String.valueOf(count)));
+        if (!searchRequest.isIgnoreCount()) {
+            CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
+            Root<T> cCount = criteriaCount.from(cl);
+            Expression<Long> sum = cb.count(cCount);
+            predicates = createSearchCriteria(cb, cCount, cl, searchRequest);
+            criteriaCount.select(sum).where(predicates.toArray(new Predicate[0]));
+            List<Long> maxList = em.createQuery(criteriaCount).getResultList();
+            Long count = maxList.iterator().next();
+            response.setTotal(count == null ? 0 : Integer.valueOf(String.valueOf(count)));
+        }
         return response;
     }
     // =========================================== PRIVATE ============================================================
@@ -163,6 +165,12 @@ class CoreDAOImpl implements CoreDAO {
             } else if (JPAComparisonOperator.LIKE.equals(filterPredicate.getOperator())) {
                 innerPredicates.add(cb.like(c.get(filterPredicate.getField()),
                         String.valueOf(filterPredicate.getValue())));
+            } else if (JPAComparisonOperator.GREATER_THAN_OR_EQUAL_TO.equals(filterPredicate.getOperator())) {
+                innerPredicates.add(cb.greaterThanOrEqualTo(c.get(filterPredicate.getField()),
+                        (Comparable) filterPredicate.getValue()));
+            } else if (JPAComparisonOperator.LESS_THAN_OR_EQUAL_TO.equals(filterPredicate.getOperator())) {
+                innerPredicates.add(cb.lessThanOrEqualTo(c.get(filterPredicate.getField()),
+                        (Comparable) filterPredicate.getValue()));
             }
         });
         Optional.ofNullable(filter.getConditions()).ifPresent((conditions) -> {
