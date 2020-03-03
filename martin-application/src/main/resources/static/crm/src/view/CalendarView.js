@@ -43,6 +43,8 @@ import '@fullcalendar/list/main.css';
 //import '../assets/css/fullcalendar-material.css';
 import '../assets/css/calendar-view.css';
 
+var calendarComponent;
+
 function CalendarView(props) {
     const { metadata } = props;
     const { t, i18n } = useTranslation();
@@ -106,11 +108,11 @@ function CalendarView(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     });
     // ------------------------------------------------------------------------------------------------------------------------------------
-    return (
-            <React.Fragment>
-                <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-                    locale={i18n.language} aspectRatio={aspectRatio()} ref={calendarRef} events={events} dateClick={dateClick} 
-                    eventClick={eventClick}
+    const renderCalendar = () => {
+        if (!calendarComponent) {
+            calendarComponent = (
+                    <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
+                    locale={i18n.language} ref={calendarRef} events={events} dateClick={dateClick} eventClick={eventClick}
                     header={{
                         left: 'today prev,next',
                         center: 'title',
@@ -128,6 +130,13 @@ function CalendarView(props) {
                     }} buttonText={{
                         today: t('common.today')
                     }}/>
+            );
+        }
+        return calendarComponent;
+    };
+    return (
+            <React.Fragment>
+                {renderCalendar()}
                 <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={metadata.className}
                         predefinedValues={predefinedValues} afterSaveCallback={refetchEvents} id={editId}/> 
             </React.Fragment>
