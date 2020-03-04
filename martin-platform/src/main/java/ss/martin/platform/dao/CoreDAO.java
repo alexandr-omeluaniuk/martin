@@ -45,15 +45,17 @@ public interface CoreDAO {
      * @param id entity ID.
      * @param cl entity class.
      * @return entity.
+     * @throws Exception error.
      */
-    <T extends DataModel> T findById(Serializable id, Class<T> cl);
+    <T extends DataModel> T findById(Serializable id, Class<T> cl) throws Exception;
     /**
      * Delete entity.
      * @param <T> entity type.
      * @param id entity ID.
      * @param cl entity class.
+     * @throws Exception error.
      */
-    <T extends DataModel> void delete(Serializable id, Class<T> cl);
+    <T extends DataModel> void delete(Serializable id, Class<T> cl) throws Exception;
     /**
      * Mass deletion.
      * @param <T> entity type.

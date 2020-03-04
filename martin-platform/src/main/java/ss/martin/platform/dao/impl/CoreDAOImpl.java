@@ -83,12 +83,23 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public <T extends DataModel> T findById(final Serializable id, final Class<T> cl) {
+    public <T extends DataModel> T findById(final Serializable id, final Class<T> cl) throws Exception {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = cb.createQuery(cl);
+        Root<T> c = criteria.from(cl);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(c.get(DataModel_.id), id));
+        if (reflectionUtils.hasSuperClass(cl, TenantEntity.class)) {
+            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
+            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription),
+                    securityContext.currentUser().getSubscription()));
+        }
+        criteria.select(c).where(predicates.toArray(new Predicate[0]));
         return em.find(cl, id);
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> void delete(final Serializable id, final Class<T> cl) {
+    public <T extends DataModel> void delete(final Serializable id, final Class<T> cl) throws Exception {
         T entity = findById(id, cl);
         if (entity != null) {
             em.remove(entity);

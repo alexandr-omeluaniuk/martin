@@ -21,26 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.constants;
+package ss.martin.platform.jackson;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import java.io.IOException;
+import java.util.Base64;
 
 /**
- * Application constants.
+ * Byte array deserializer.
  * @author ss
  */
-public final class AppConstants {
-    /** Default date format. */
-    public static final String DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
-    /** Default datetime format. */
-    public static final String DEFAULT_DATETIME_FORMAT = "dd.MM.yyyy HH:mm";
-    /** Simple text size. */
-    public static final int SIMPLE_TEXT_SIZE = 255;
-    /** Long text size. */
-    public static final int LONG_TEXT_SIZE = 2147483647;
-    /** Max file size. */
-    public static final int MAX_FILE_SIZE = 10 * 1024 * 1024;
-    /**
-     * Private constructor.
-     */
-    private AppConstants() {
+public class ByteArrayDeserializer extends StdDeserializer<byte[]> {
+    public ByteArrayDeserializer() { 
+        this(null); 
+    } 
+    public ByteArrayDeserializer(Class<byte[]> t) { 
+        super(t); 
+    }
+    @Override
+    public byte[] deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
+        String value = jp.getText();
+        return Base64.getDecoder().decode(value);
     }
 }

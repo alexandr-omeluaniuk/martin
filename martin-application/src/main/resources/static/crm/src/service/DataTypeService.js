@@ -100,6 +100,12 @@ export default class DataTypeService {
             result = value.format(SERVER_DATE_FORMAT);
         } else if (field.fieldType === TYPE_TIMESTAMP) {
             result = moment(value).format(SERVER_DATETIME_FORMAT);
+        } else if (field.fieldType === TYPE_AVATAR) {
+            result = {
+                id: null,
+                binaryData: value && value.indexOf(',') !== -1 ? value.split(',')[1] : value,
+                mimeType: value && value.indexOf(',') !== -1 ? value.split(',')[0] : value
+            }
         }
         return result;
     }
