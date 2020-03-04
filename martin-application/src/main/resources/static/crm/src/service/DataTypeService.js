@@ -68,7 +68,7 @@ export const V_MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
 
 export default class DataTypeService {
         
-    static renderTableCell = (fieldMeta, value, t) => {
+    static renderTableCell = (entity, fieldMeta, value, t, entityData) => {
         let renderValue = value;
         if (fieldMeta.enumField) {
             renderValue = t('enum.' + fieldMeta.enumField + '.' + value);
@@ -82,7 +82,8 @@ export default class DataTypeService {
             }
             renderValue = sb;
         } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
-            renderValue = value ? (<Avatar src={value} />) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
+            console.log(AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id);
+            renderValue = (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id}><Icon>perm_identity</Icon></Avatar>);
         }
         return renderValue;
     }

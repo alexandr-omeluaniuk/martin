@@ -177,7 +177,7 @@ function EnhancedTable(props) {
                                                     }}/>
                                         </TableCell>
                                         {headCells.map((column, i) => {
-                                            let cellValue = DataTypeService.renderTableCell(column, row[column.id], t);
+                                            let cellValue = DataTypeService.renderTableCell(entity, column, row[column.id], t, row);
                                             if (column.link) {
                                                 cellValue = DataTypeService.renderLinkTableCell(entity, row, cellValue);
                                             }

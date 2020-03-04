@@ -26,6 +26,8 @@ package ss.martin.platform.service;
 import java.util.List;
 import java.util.Set;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -85,4 +87,12 @@ public interface EntityService {
      * @throws Exception error.
      */
     <T extends DataModel> List getDataForCollectionField(Class<T> cl, String fieldName) throws Exception;
+    /**
+     * Get entity avatar.
+     * @param id entity ID.
+     * @param cl entity class.
+     * @return entity avatar.
+     * @throws Exception error.
+     */
+    EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception;
 }

@@ -39,7 +39,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.dao.EntityFileDAO;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.service.EntityService;
@@ -60,6 +63,9 @@ class EntityServiceImpl implements EntityService {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Entity file DAO. */
+    @Autowired
+    private EntityFileDAO entityFileDAO;
     /** Subscription service. */
     @Autowired
     private SubscriptionService subscriptionService;
@@ -111,6 +117,10 @@ class EntityServiceImpl implements EntityService {
             }
         });
         return result;
+    }
+    @Override
+    public EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception {
+        return entityFileDAO.getAvatar(id, cl);
     }
     // ==================================== PRIVATE ===================================================================
     /**

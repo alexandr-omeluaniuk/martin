@@ -60,11 +60,11 @@ import ss.martin.platform.security.SystemUserStatus;
 @MaterialIcon(icon = "supervisor_account")
 @SideBarNavigationItem(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR },
         component = RepresentationComponentType.LIST_VIEW)
-public class SystemUser extends TenantEntity {
+public class SystemUser extends TenantEntity implements HasAvatar {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
-    /** Avatar. Image as base64 string. */
+    /** Avatar. */
     @Avatar
     @ListViewColumn
     @FormField(xs = "12")

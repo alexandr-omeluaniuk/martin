@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.service.EntityMetadataService;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.wrapper.DataModelWrapper;
@@ -147,5 +149,19 @@ public class EntityRESTController {
             @PathVariable("field") String field) throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         return entityService.getDataForCollectionField(entityClass, field);
+    }
+    /**
+     * Get entity avatar.
+     * @param cl entity class.
+     * @param id entity ID.
+     * @return entity avatar or empty value
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/avatar/{class}/{id}", method = RequestMethod.GET,
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getAvatar(@PathVariable("class") Class<? extends HasAvatar> cl, @PathVariable("id") Long id)
+            throws Exception {
+        EntityFile avatar = entityService.getEntityAvatar(id, cl);
+        return avatar == null ? new byte[0] : avatar.getBinaryData();
     }
 }
