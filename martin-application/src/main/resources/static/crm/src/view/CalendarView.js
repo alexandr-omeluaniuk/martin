@@ -23,7 +23,7 @@
  */
 
 import React, { useEffect } from 'react';
-
+import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -35,6 +35,7 @@ import StandardForm from '../component/form/StandardForm';
 import DataService from '../service/DataService';
 import { SERVER_DATE_FORMAT, SERVER_DATETIME_FORMAT } from '../service/DataTypeService';
 import moment from 'moment';
+import Spinner from '../component/util/Spinner';
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
@@ -45,13 +46,21 @@ import '../assets/css/calendar-view.css';
 
 var calendarComponent;
 
+const useStyles = makeStyles(theme => ({
+    container: {
+        position: 'relative'
+    }
+}));
+
 function CalendarView(props) {
     const { metadata } = props;
     const { t, i18n } = useTranslation();
+    const classes = useStyles();
     const theme = useTheme();
     let calendarRef = React.createRef();
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [formOpen, setFormOpen] = React.useState(false);
+    const [showSpinner, setShowSpinner] = React.useState(false);
     const [editId, setEditId] = React.useState(null);
     const [calendar, setCalendar] = React.useState(null);
     const [predefinedValues, setPredefinedValues] = React.useState(null);
@@ -78,6 +87,7 @@ function CalendarView(props) {
         return aspectRatio;
     };
     const events = (fetchInfo, successCallback, failureCallback) => {
+        setShowSpinner(true);
         DataService.requestPost('/calendar/search', {
             classes: [metadata.className],
             from: moment(fetchInfo.start).format(SERVER_DATE_FORMAT),
@@ -94,6 +104,7 @@ function CalendarView(props) {
                 });
             });
             successCallback(newEvents);
+            setShowSpinner(false);
         });
     };
     const refetchEvents = () => {
@@ -107,6 +118,13 @@ function CalendarView(props) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [calendarRef]);
+    useEffect(() => {
+        return () => {
+            setShowSpinner(false);
+            DataService.abort();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     // ------------------------------------------------------------------------------------------------------------------------------------
     const renderCalendar = () => {
         if (!calendarComponent) {
@@ -138,11 +156,12 @@ function CalendarView(props) {
         return calendarComponent;
     };
     return (
-            <React.Fragment>
+            <div className={classes.container}>
                 {renderCalendar()}
                 <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={metadata.className}
-                        predefinedValues={predefinedValues} afterSaveCallback={refetchEvents} id={editId}/> 
-            </React.Fragment>
+                        predefinedValues={predefinedValues} afterSaveCallback={refetchEvents} id={editId}/>
+                <Spinner open={showSpinner}/>
+            </div>
     );
 }
 

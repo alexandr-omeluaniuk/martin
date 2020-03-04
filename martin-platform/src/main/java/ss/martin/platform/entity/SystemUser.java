@@ -24,13 +24,10 @@
 package ss.martin.platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import static javax.persistence.FetchType.LAZY;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -66,8 +63,6 @@ public class SystemUser extends TenantEntity {
     @Avatar
     @ListViewColumn
     @FormField(xs = "12")
-    @Lob
-    @Basic(fetch = LAZY)
     @Column(name = "avatar", length = AppConstants.LONG_TEXT_SIZE)
     private String avatar;
     /** Email. */
