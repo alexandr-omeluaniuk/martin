@@ -38,6 +38,7 @@ import { TYPE_AVATAR } from '../service/DataTypeService';
 import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
 import DataTypeService from '../service/DataTypeService';
+import InlineTabHeader from '../component/util/InlineTabHeader';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
@@ -148,7 +149,9 @@ function EntityCard(props) {
                     <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
                         setActiveTab(index);
                     }} className={classes.tabs} >
-                        <Tab icon={generalTabIcon} label={t('model.' + entity + '.label.single')}></Tab>
+                        <Tab label={(
+                                <InlineTabHeader icon={generalTabIcon} title={t('model.' + entity + '.label.single')}/>
+                        )}></Tab>
                     </Tabs>
                     <Grid container spacing={2}>
                         {entityData.layout.fields.filter(f => { return f.fieldType !== TYPE_AVATAR; }).map((field, idx) => {

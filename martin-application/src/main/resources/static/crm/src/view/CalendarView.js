@@ -87,7 +87,7 @@ function CalendarView(props) {
             resp.forEach(raw => {
                 newEvents.push({
                     id: raw.id,
-                    title: 'Test',
+                    title: raw.eventTitle ? raw.eventTitle : '',
                     start: moment(raw.start, SERVER_DATETIME_FORMAT).toDate(),
                     end: moment(raw.end, SERVER_DATETIME_FORMAT).toDate(),
                     raw: raw
@@ -106,12 +106,12 @@ function CalendarView(props) {
             setCalendar(calendarRef.current.calendar);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    });
+    }, [calendarRef]);
     // ------------------------------------------------------------------------------------------------------------------------------------
     const renderCalendar = () => {
         if (!calendarComponent) {
             calendarComponent = (
-                    <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
+                <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
                     locale={i18n.language} ref={calendarRef} events={events} dateClick={dateClick} eventClick={eventClick}
                     header={{
                         left: 'today prev,next',
@@ -129,6 +129,9 @@ function CalendarView(props) {
                         }
                     }} buttonText={{
                         today: t('common.today')
+                    }} eventTimeFormat={{
+                        hour: '2-digit',
+                        minute: '2-digit'
                     }}/>
             );
         }

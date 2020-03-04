@@ -114,6 +114,14 @@ public class ContactVisit extends CalendarEvent {
     }
 // ====================================================================================================================
     @Override
+    public String getEventTitle() {
+        String title = this.getContact().getFirstname() == null ? "" : (this.getContact().getFirstname() + " ");
+        title += this.getContact().getLastname();
+        this.setEventTitle(title);
+        return title;
+    }
+    
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (getId() != null ? getId().hashCode() : 0);

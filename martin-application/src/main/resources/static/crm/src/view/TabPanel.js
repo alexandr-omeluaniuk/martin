@@ -33,6 +33,7 @@ import ListView from '../view/ListView';
 import CalendarView from '../view/CalendarView';
 import { history } from '../index';
 import AppURLs from '../constants/AppURLs';
+import InlineTabHeader from '../component/util/InlineTabHeader';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -63,7 +64,9 @@ function TabPanel(props) {
                             {metadata.tabs.map((item, i) => {
                                 const icon = (<Icon>{item.icon}</Icon>);
                                 return (
-                                        <Tab icon={icon} label={t('model.' + item.className + '.label.many')} key={i}></Tab>
+                                        <Tab key={i} label={(
+                                            <InlineTabHeader icon={icon} title={t('model.' + item.className + '.label.many')}/>
+                                        )}/>
                                 );
                             })}
                         </Tabs>

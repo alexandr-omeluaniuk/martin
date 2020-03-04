@@ -29,6 +29,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.ListViewColumn;
@@ -58,6 +59,9 @@ public abstract class CalendarEvent extends EntityAudit {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_end", nullable = false)
     private Date end;
+    /** Event title. */
+    @Transient
+    private String eventTitle;
 // ============================================ SET & GET =============================================================
     /**
      * @return the start
@@ -82,5 +86,17 @@ public abstract class CalendarEvent extends EntityAudit {
      */
     public void setEnd(Date end) {
         this.end = end;
+    }
+    /**
+     * @return the eventTitle
+     */
+    public String getEventTitle() {
+        return eventTitle;
+    }
+    /**
+     * @param eventTitle the eventTitle to set
+     */
+    public void setEventTitle(String eventTitle) {
+        this.eventTitle = eventTitle;
     }
 }
