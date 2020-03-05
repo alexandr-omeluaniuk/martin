@@ -83,8 +83,10 @@ export default class DataTypeService {
             renderValue = sb;
         } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
             renderValue = entityData.hasAvatar ?
-                (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id}><Icon>perm_identity</Icon></Avatar>)
-                : (<Avatar><Icon>perm_identity</Icon></Avatar>);
+                (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id + '?timestamp='
+                    + new Date().getTime()}>
+                    <Icon>perm_identity</Icon>
+                </Avatar>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
         }
         return renderValue;
     }
@@ -103,22 +105,26 @@ export default class DataTypeService {
         } else if (field.fieldType === TYPE_TIMESTAMP) {
             result = moment(value).format(SERVER_DATETIME_FORMAT);
         } else if (field.fieldType === TYPE_AVATAR) {
-            result = {
+            result = value ? {
                 id: null,
-                binaryData: value && value.indexOf(',') !== -1 ? value.split(',')[1] : value,
-                mimeType: value && value.indexOf(',') !== -1 ? value.split(',')[0] : value
-            }
+                binaryData: value.indexOf(',') !== -1 ? value.split(',')[1] : value,
+                mimeType: value.indexOf(',') !== -1 ? value.split(',')[0] : value
+            } : null
         }
         return result;
     }
     
-    static convertServerValueToUIFormat = (field, value) => {
+    static convertServerValueToUIFormat = (field, data, entity) => {
+        let value = data[field.name];
         if (field.fieldType === TYPE_DATE) {
             value = moment(value, SERVER_DATE_FORMAT);
         } else if (field.fieldType === TYPE_TIMESTAMP) {
             value = moment(value, SERVER_DATETIME_FORMAT);
         } else if (field.fieldType === TYPE_STRING) {
             value = value === null || value === undefined ? '' : value;
+        } else if (field.fieldType === TYPE_AVATAR) {
+            value = data.hasAvatar ? AppURLs.links.rest + '/entity/avatar/' + entity + '/' + data.id + '?timestamp='
+                    + new Date().getTime() : null;
         }
         return value;
     }

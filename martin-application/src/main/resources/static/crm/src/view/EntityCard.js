@@ -161,7 +161,7 @@ function EntityCard(props) {
                             return (
                                     <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue} onFieldEdit={onFieldEdit}
                                         invalidFields={invalidFields} entity={entity} 
-                                        fieldValue={DataTypeService.convertServerValueToUIFormat(field, entityData.data[field.name])}/>
+                                        fieldValue={DataTypeService.convertServerValueToUIFormat(field, entityData.data, entity)}/>
                             );
                         })}
                     </Grid>

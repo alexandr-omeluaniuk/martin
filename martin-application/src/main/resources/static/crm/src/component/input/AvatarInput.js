@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,11 +30,21 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useTranslation } from 'react-i18next';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+    canvas: {
+        display: 'none'
+    }
+}));
 
 function AvatarInput(props) {
     const { value, label, onChange } = props;
     const { t } = useTranslation();
+    const classes = useStyles();
     let inputRef = React.createRef();
+    let canvasRef = React.createRef();
+    let avatarRef = React.createRef();
     const onFileSelected = (e) => {
         let files = inputRef.current.files;
         if (files[0]) {
@@ -45,9 +55,24 @@ function AvatarInput(props) {
             reader.readAsDataURL(files[0]);
         }
     };
-    let ava = value ? (<Avatar src={value} />) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
+    // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
+    useEffect(() => {
+        if (value.indexOf('/') === 0) {
+            let canvas = canvasRef.current;
+            var ctx = canvas.getContext("2d");
+            var image = document.getElementsByTagName('img', avatarRef.current)[0];
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
+            ctx.drawImage(document.getElementsByTagName('img', image)[0], 0, 0, image.naturalWidth, image.naturalHeight);
+            onChange(canvas.toDataURL());
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+    // ------------------------------------------ RENDERING -------------------------------------------------------------------------------
+    let ava = value ? (<Avatar src={value} ref={avatarRef}/>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
     return (
             <Card>
+                <canvas className={classes.canvas} ref={canvasRef}/>
                 <CardHeader avatar={ava} subheader={label} action={
                 <React.Fragment>
                     <Tooltip title={t('common.upload')}>

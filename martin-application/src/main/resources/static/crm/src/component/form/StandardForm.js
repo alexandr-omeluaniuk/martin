@@ -108,9 +108,7 @@ function StandardForm(props) {
         if (data) {
             let dataMap = new Map();
             layout.fields.forEach(field => {
-                if (data[field.name] !== undefined) {
-                    dataMap.set(field.name, DataTypeService.convertServerValueToUIFormat(field, data[field.name]));
-                }
+                dataMap.set(field.name, DataTypeService.convertServerValueToUIFormat(field, data, entity));
             });
             setFormData(dataMap);
         }
