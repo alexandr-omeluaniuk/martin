@@ -28,13 +28,19 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useTranslation } from 'react-i18next';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import Badge from '@material-ui/core/Badge';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     canvas: {
         display: 'none'
+    },
+    badge: {
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        fontSize: '0.9rem',
+        textAlign: 'center'
     }
 }));
 
@@ -69,30 +75,25 @@ function AvatarInput(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     // ------------------------------------------ RENDERING -------------------------------------------------------------------------------
-    let ava = value ? (<Avatar src={value} ref={avatarRef}/>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
     return (
-            <Card>
+            <Paper elevation={0}>
                 <canvas className={classes.canvas} ref={canvasRef}/>
-                <CardHeader avatar={ava} subheader={label} action={
-                <React.Fragment>
-                    <Tooltip title={t('common.upload')}>
-                        <IconButton onClick={() => {
+                {value ? (
+                    <Badge title={t('common.clear')} badgeContent={'x'} color="secondary" className={classes.badge}
+                            onClick={() => { onChange(null); }}>
+                        <Avatar src={value} ref={avatarRef}/>
+                    </Badge>
+                ) : (
+                    <Tooltip title={t('common.upload') + ' ' + label}>
+                        <IconButton color="secondary" onClick={() => {
                             inputRef.current.click();
                         }}>
-                            <Icon>get_app</Icon>
+                            <Icon>account_circle</Icon>
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={t('common.clear')}>
-                        <IconButton onClick={() => {
-                            onChange(null);
-                        }}>
-                            <Icon>close</Icon>
-                        </IconButton>
-                    </Tooltip>
-                </React.Fragment>
-                }/>
+                )}
                 <input type="file" ref={inputRef} hidden accept="image/x-png,image/gif,image/jpeg" onChange={onFileSelected}/>
-            </Card>
+            </Paper>
     );
 }
 
