@@ -30,7 +30,8 @@ function ListView(props) {
     const { metadata } = props;
     const { t } = useTranslation();
     return (
-            <EnhancedTable headCells={metadata.listViewColumns} title={t('model.' + metadata.className + '.label.many')} entity={metadata.className} />
+            <EnhancedTable headCells={metadata.listViewColumns} title={t('model.' + metadata.className + '.label.many')}
+                entity={metadata.className} metadata={metadata}/>
     );
 }
 

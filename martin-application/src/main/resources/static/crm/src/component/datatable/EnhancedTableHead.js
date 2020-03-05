@@ -39,7 +39,7 @@ function EnhancedTableHead(props) {
                                         </span>
                                     ) : null}
                                 </TableSortLabel>
-                            ) : null}
+                            ) : headCell.label}
                         </TableCell>
                     ))}
                     <TableCell padding="checkbox">

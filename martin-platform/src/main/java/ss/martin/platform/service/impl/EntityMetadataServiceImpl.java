@@ -121,6 +121,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         component.setSource(RepresentationComponentSource.ENTITY);
         component.setListViewColumns(new ArrayList());
         component.setClassName(clazz.getName());
+        component.setAudit(reflectionUtils.hasSuperClass(clazz, EntityAudit.class));
         Optional.ofNullable(clazz.getAnnotation(MaterialIcon.class)).ifPresent((anno) -> {
             component.setIcon(anno.icon());
         });

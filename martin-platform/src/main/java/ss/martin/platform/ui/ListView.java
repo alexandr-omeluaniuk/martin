@@ -38,6 +38,8 @@ public class ListView extends RepresentationComponent {
     private String icon;
     /** List view columns. */
     private List<ListViewColumn> listViewColumns;
+    /** Has audit info. */
+    private boolean audit;
     /**
      * Constructor.
      */
@@ -67,6 +69,18 @@ public class ListView extends RepresentationComponent {
      */
     public void setClassName(String className) {
         this.className = className;
+    }
+    /**
+     * @return the audit
+     */
+    public boolean isAudit() {
+        return audit;
+    }
+    /**
+     * @param audit the audit to set
+     */
+    public void setAudit(boolean audit) {
+        this.audit = audit;
     }
     /**
      * @return the listViewColumns

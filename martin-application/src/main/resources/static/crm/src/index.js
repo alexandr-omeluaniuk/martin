@@ -11,6 +11,7 @@ import AppURLs from './constants/AppURLs';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import purple from '@material-ui/core/colors/purple';
 import pink from '@material-ui/core/colors/pink';
+import Spinner from './component/util/Spinner';
 
 export const history = createBrowserHistory();
 
@@ -33,7 +34,7 @@ const theme = createMuiTheme({
 });
 
 ReactDOM.render(
-        <Suspense fallback={<div>Loading... </div>}>
+        <Suspense fallback={<Spinner open={true}/>}>
             <ThemeProvider theme={theme}>
                 <Router history={history}>
                     <Switch>

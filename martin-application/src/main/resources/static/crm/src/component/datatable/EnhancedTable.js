@@ -56,13 +56,13 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTable(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const {headCells, title, entity } = props;
+    const {headCells, title, entity, metadata } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [rows, setRows] = React.useState([]);
     const [total, setTotal] = React.useState(0);
     const [load, setLoad] = React.useState(true);
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('lastModifiedDate');
+    const [order, setOrder] = React.useState(metadata.audit ? 'desc' : 'asc');
+    const [orderBy, setOrderBy] = React.useState(metadata.audit ? 'lastModifiedDate' : 'id');
     const [selected, setSelected] = React.useState(new Set());
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
@@ -71,18 +71,18 @@ function EnhancedTable(props) {
     const [editId, setEditId] = React.useState(null);
     // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
     const reloadTable = () => {
-        setLoad(true);
+        setLoad(!load);
     };
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-        setLoad(true);
+        reloadTable();
     };
     const massDeletion = () => {
         DataService.requestPut('/entity/delete/' + entity, Array.from(selected)).then(resp => {
             setSelected(new Set());
-            setLoad(true);
+            reloadTable();
         });
     };
     const handleSelectAllClick = event => {
@@ -103,12 +103,10 @@ function EnhancedTable(props) {
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        setLoad(true);
     };
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-        setLoad(true);
     };
     const handleChangeDense = event => {
         setDense(event.target.checked);
@@ -128,20 +126,17 @@ function EnhancedTable(props) {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
-        if (load) {
-            DataService.requestPost('/entity/search/' + entity, {
-                page: page + 1,
-                pageSize: rowsPerPage,
-                order: order,
-                orderBy: orderBy
-            }).then(resp => {
-                if (resp) {
-                    setLoad(false);
-                    setRows(resp.data);
-                    setTotal(resp.total);
-                }
-            });
-        }
+        DataService.requestPost('/entity/search/' + entity, {
+            page: page + 1,
+            pageSize: rowsPerPage,
+            order: order,
+            orderBy: orderBy
+        }).then(resp => {
+            if (resp) {
+                setRows(resp.data);
+                setTotal(resp.total);
+            }
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load, entity, page, rowsPerPage, order, orderBy]);
     useEffect(() => {
