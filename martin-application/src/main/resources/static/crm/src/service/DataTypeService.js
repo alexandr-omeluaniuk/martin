@@ -82,8 +82,9 @@ export default class DataTypeService {
             }
             renderValue = sb;
         } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
-            console.log(AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id);
-            renderValue = (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id}><Icon>perm_identity</Icon></Avatar>);
+            renderValue = entityData.hasAvatar ?
+                (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id}><Icon>perm_identity</Icon></Avatar>)
+                : (<Avatar><Icon>perm_identity</Icon></Avatar>);
         }
         return renderValue;
     }

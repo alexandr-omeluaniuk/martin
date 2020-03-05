@@ -32,5 +32,15 @@ public interface HasAvatar {
      * Get entity avatar.
      * @return avatar.
      */
-    public EntityFile getAvatar();
+    EntityFile getAvatar();
+    /**
+     * Check if entity has avatar.
+     * @return true if has.
+     */
+    boolean isHasAvatar();
+    /**
+     * Set has avatar.
+     * @param hasAvatar has avatar.
+     */
+    void setHasAvatar(boolean hasAvatar);
 }

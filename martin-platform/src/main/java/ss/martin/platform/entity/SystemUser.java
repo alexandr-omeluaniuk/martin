@@ -72,6 +72,10 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "avatar")
     private EntityFile avatar;
+    /** Has avatar. */
+    @HiddenField
+    @Column(name = "has_avatar")
+    private boolean hasAvatar;
     /** Email. */
     @Email
     @FormField(xs = "12")
@@ -207,6 +211,7 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     /**
      * @return the avatar
      */
+    @Override
     public EntityFile getAvatar() {
         return avatar;
     }
@@ -215,6 +220,20 @@ public class SystemUser extends TenantEntity implements HasAvatar {
      */
     public void setAvatar(EntityFile avatar) {
         this.avatar = avatar;
+    }
+    /**
+     * @return the hasAvatar
+     */
+    @Override
+    public boolean isHasAvatar() {
+        return hasAvatar;
+    }
+    /**
+     * @param hasAvatar the hasAvatar to set
+     */
+    @Override
+    public void setHasAvatar(boolean hasAvatar) {
+        this.hasAvatar = hasAvatar;
     }
 // ================================================================================================
     @Override

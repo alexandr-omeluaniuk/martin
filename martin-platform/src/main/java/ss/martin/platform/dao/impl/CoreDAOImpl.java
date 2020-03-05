@@ -28,6 +28,7 @@ import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.DataModel_;
+import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
@@ -64,20 +65,14 @@ class CoreDAOImpl implements CoreDAO {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T create(final T entity) throws Exception {
-        if (reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
-            TenantEntity tenantEntity = (TenantEntity) entity;
-            tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
-        }
+        prePersistAndUpdate(entity);
         em.persist(entity);
         return entity;
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T update(final T entity) throws Exception {
-        if (reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
-            TenantEntity tenantEntity = (TenantEntity) entity;
-            tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
-        }
+        prePersistAndUpdate(entity);
         T updated = em.merge(entity);
         return updated;
     }
@@ -195,6 +190,26 @@ class CoreDAOImpl implements CoreDAO {
             return cb.or(innerPredicates.toArray(new Predicate[0]));
         } else {
             throw new RuntimeException("Boolean operator for filter condition is required!");
+        }
+    }
+    /**
+     * Actions before persist / update operations.
+     * @param entity entity.
+     * @throws Exception error.
+     */
+    private void prePersistAndUpdate(DataModel entity) throws Exception {
+        if (reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
+            TenantEntity tenantEntity = (TenantEntity) entity;
+            tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
+        }
+        if (entity instanceof HasAvatar) {
+            HasAvatar withAvatar = (HasAvatar) entity;
+            withAvatar.setHasAvatar(withAvatar.getAvatar() != null);
+            Optional.ofNullable(withAvatar.getAvatar()).ifPresent((file) -> {
+                file.setOwnerId(entity.getId());
+                file.setOwnerClass(entity.getClass().getName());
+                file.setSubscription(securityContext.currentUser().getSubscription());
+            });
         }
     }
 }

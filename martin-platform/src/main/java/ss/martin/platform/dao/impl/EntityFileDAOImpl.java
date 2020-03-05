@@ -23,16 +23,18 @@
  */
 package ss.martin.platform.dao.impl;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.dao.EntityFileDAO;
-import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.EntityFile_;
 import ss.martin.platform.entity.HasAvatar;
 
 /**
@@ -44,16 +46,17 @@ class EntityFileDAOImpl implements EntityFileDAO {
     /** Entity manager. */
     @PersistenceContext
     private EntityManager em;
-    /** Core DAO. */
-    @Autowired
-    private CoreDAO coreDAO;
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public EntityFile getAvatar(Long ownerId, Class<? extends HasAvatar> clazz) throws Exception {
-        DataModel entity = coreDAO.findById(ownerId, (Class<? extends DataModel>) clazz);
-        HasAvatar entityWithAvatar = (HasAvatar) entity;
-        EntityFile avatar = entityWithAvatar.getAvatar();
-        System.out.println(avatar);
-        return avatar;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<EntityFile> criteria = cb.createQuery(EntityFile.class);
+        Root<EntityFile> c = criteria.from(EntityFile.class);
+        criteria.select(c).where(cb.and(
+                cb.equal(c.get(EntityFile_.ownerId), ownerId),
+                cb.equal(c.get(EntityFile_.ownerClass), clazz.getName())
+        ));
+        List<EntityFile> files = em.createQuery(criteria).getResultList();
+        return files.isEmpty() ? null : files.get(0);
     }
 }

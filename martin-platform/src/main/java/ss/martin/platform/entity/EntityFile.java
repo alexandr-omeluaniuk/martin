@@ -28,6 +28,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.jackson.ByteArrayDeserializer;
 
@@ -37,7 +38,7 @@ import ss.martin.platform.jackson.ByteArrayDeserializer;
  */
 @Entity
 @Table(name = "entity_file")
-public class EntityFile extends DataModel {
+public class EntityFile extends TenantEntity {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ============================================= FIELDS ===============================================================
@@ -50,6 +51,15 @@ public class EntityFile extends DataModel {
     @NotNull
     @Column(name = "mime_type", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false)
     private String mimeType;
+    /** Owner entity ID. */
+    @NotNull
+    @Column(name = "owner_id", nullable = false)
+    private Long ownerId;
+    /** Owner entity class. */
+    @NotNull
+    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Column(name = "owner_class", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
+    private String ownerClass;
 // ============================================= SET & GET ============================================================
     /**
      * @return the binaryData
@@ -74,6 +84,30 @@ public class EntityFile extends DataModel {
      */
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
+    }
+    /**
+     * @return the ownerId
+     */
+    public Long getOwnerId() {
+        return ownerId;
+    }
+    /**
+     * @param ownerId the ownerId to set
+     */
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+    /**
+     * @return the ownerClass
+     */
+    public String getOwnerClass() {
+        return ownerClass;
+    }
+    /**
+     * @param ownerClass the ownerClass to set
+     */
+    public void setOwnerClass(String ownerClass) {
+        this.ownerClass = ownerClass;
     }
 // ====================================================================================================================
     @Override
