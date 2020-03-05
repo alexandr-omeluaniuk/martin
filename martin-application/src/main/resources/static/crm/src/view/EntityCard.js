@@ -39,6 +39,7 @@ import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
 import DataTypeService from '../service/DataTypeService';
 import InlineTabHeader from '../component/util/InlineTabHeader';
+import AppURLs from '../constants/AppURLs';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
@@ -132,8 +133,8 @@ function EntityCard(props) {
     if (!entityData) {
         return null;
     }
-    let avaField = entityData.layout.fields.filter(f => { return f.fieldType === TYPE_AVATAR; });
-    let ava = avaField.length > 0 && entityData.data[avaField[0].name] ? (<Avatar src={entityData.data[avaField[0].name]} />)
+    let ava = entityData.data.hasAvatar ? (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.data.id
+            + '?timestamp=' + new Date().getTime()} />)
             : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
     let title = entityData.layout.cardTitle && entityData.data[entityData.layout.cardTitle]
             ? entityData.data[entityData.layout.cardTitle] : '';

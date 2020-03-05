@@ -24,11 +24,15 @@
 package ss.martin.module.crm.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -44,6 +48,8 @@ import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.EntityAudit;
+import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.HasAvatar;
 
 /**
  * Contact.
@@ -52,16 +58,23 @@ import ss.martin.platform.entity.EntityAudit;
 @Entity
 @Table(name = "contact")
 @MaterialIcon(icon = "perm_identity")
-public class Contact extends EntityAudit {
+public class Contact extends EntityAudit implements HasAvatar {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================== FIELDS ==================================================================
-    /** Contact avatar. Image as base64 string. */
+    /** Contact avatar. */
+    /** Avatar. */
     @Avatar
     @ListViewColumn
     @FormField(xs = "12")
-    @Column(name = "avatar", length = AppConstants.LONG_TEXT_SIZE)
-    private String avatar;
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "avatar")
+    private EntityFile avatar;
+    /** Has avatar. */
+    @HiddenField
+    @Column(name = "has_avatar")
+    private boolean hasAvatar;
     /** First name. */
     @ListViewColumn
     @FormField(lg = "6", md = "6", sm = "12")
@@ -145,18 +158,6 @@ public class Contact extends EntityAudit {
         this.phoneMobile = phoneMobile;
     }
     /**
-     * @return the avatar
-     */
-    public String getAvatar() {
-        return avatar;
-    }
-    /**
-     * @param avatar the avatar to set
-     */
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-    /**
      * @return the visits
      */
     public List<ContactVisit> getVisits() {
@@ -167,6 +168,33 @@ public class Contact extends EntityAudit {
      */
     public void setVisits(List<ContactVisit> visits) {
         this.visits = visits;
+    }
+    /**
+     * @return the avatar
+     */
+    @Override
+    public EntityFile getAvatar() {
+        return avatar;
+    }
+    /**
+     * @param avatar the avatar to set
+     */
+    public void setAvatar(EntityFile avatar) {
+        this.avatar = avatar;
+    }
+    /**
+     * @return the hasAvatar
+     */
+    @Override
+    public boolean isHasAvatar() {
+        return hasAvatar;
+    }
+    /**
+     * @param hasAvatar the hasAvatar to set
+     */
+    @Override
+    public void setHasAvatar(boolean hasAvatar) {
+        this.hasAvatar = hasAvatar;
     }
 // ====================================================================================================================
     @Override
