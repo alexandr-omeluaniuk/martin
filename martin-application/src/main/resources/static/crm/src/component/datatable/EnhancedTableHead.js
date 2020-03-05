@@ -29,15 +29,17 @@ function EnhancedTableHead(props) {
                     {headCells.map((headCell, i) => (
                         <TableCell key={headCell.id} align={headCell.align}
                             padding={i === 0 ? 'none' : 'default'} sortDirection={orderBy === headCell.id ? order : false}>
-                            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'}
-                                onClick={createSortHandler(headCell.id)}>
-                                {headCell.label}
-                                {orderBy === headCell.id ? (
-                                    <span className={classes.visuallyHidden}>
-                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                    </span>
-                                ) : null}
-                            </TableSortLabel>
+                            {headCell.sortable ? (
+                                <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'}
+                                    onClick={createSortHandler(headCell.id)}>
+                                    {headCell.label}
+                                    {orderBy === headCell.id ? (
+                                        <span className={classes.visuallyHidden}>
+                                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                        </span>
+                                    ) : null}
+                                </TableSortLabel>
+                            ) : null}
                         </TableCell>
                     ))}
                     <TableCell padding="checkbox">

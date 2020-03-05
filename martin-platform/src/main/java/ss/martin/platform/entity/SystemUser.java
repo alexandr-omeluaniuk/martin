@@ -66,7 +66,7 @@ public class SystemUser extends TenantEntity implements HasAvatar {
 // ==================================== FIELDS ====================================================
     /** Avatar. */
     @Avatar
-    @ListViewColumn
+    @ListViewColumn(sortable = false)
     @FormField(xs = "12")
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -108,14 +108,14 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     /** Status. */
     @NotNull
     @HiddenField
-    @ListViewColumn
+    @ListViewColumn(sortable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private SystemUserStatus status;
     /** Standard role. */
     @NotNull
     @HiddenField
-    @ListViewColumn
+    @ListViewColumn(sortable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "standard_role", nullable = false)
     private StandardRole standardRole;

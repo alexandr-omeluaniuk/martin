@@ -61,19 +61,18 @@ function AvatarInput(props) {
             reader.readAsDataURL(files[0]);
         }
     };
-    // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
-    useEffect(() => {
+    const imageOnLoad = () => {
         if (value.indexOf('/') === 0) {
             let canvas = canvasRef.current;
             var ctx = canvas.getContext("2d");
-            var image = document.getElementsByTagName('img', avatarRef.current)[0];
+            var image = avatarRef.current.getElementsByTagName('img')[0];
             canvas.width = image.naturalWidth;
             canvas.height = image.naturalHeight;
-            ctx.drawImage(document.getElementsByTagName('img', image)[0], 0, 0, image.naturalWidth, image.naturalHeight);
+            ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
             onChange(canvas.toDataURL());
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
+    };
     // ------------------------------------------ RENDERING -------------------------------------------------------------------------------
     return (
             <Paper elevation={0}>
@@ -81,7 +80,9 @@ function AvatarInput(props) {
                 {value ? (
                     <Badge title={t('common.clear')} badgeContent={'x'} color="secondary" className={classes.badge}
                             onClick={() => { onChange(null); }}>
-                        <Avatar src={value} ref={avatarRef}/>
+                        <Avatar src={value} ref={avatarRef} imgProps={{
+                            onLoad: imageOnLoad
+                        }}/>
                     </Badge>
                 ) : (
                     <Tooltip title={t('common.upload') + ' ' + label}>

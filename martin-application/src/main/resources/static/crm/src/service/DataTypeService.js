@@ -83,8 +83,7 @@ export default class DataTypeService {
             renderValue = sb;
         } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
             renderValue = entityData.hasAvatar ?
-                (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.id + '?timestamp='
-                    + new Date().getTime()}>
+                (<Avatar src={this.getAvatarUrl(entity, entityData.id)}>
                     <Icon>perm_identity</Icon>
                 </Avatar>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
         }
@@ -123,8 +122,7 @@ export default class DataTypeService {
         } else if (field.fieldType === TYPE_STRING) {
             value = value === null || value === undefined ? '' : value;
         } else if (field.fieldType === TYPE_AVATAR) {
-            value = data.hasAvatar ? AppURLs.links.rest + '/entity/avatar/' + entity + '/' + data.id + '?timestamp='
-                    + new Date().getTime() : null;
+            value = data.hasAvatar ? this.getAvatarUrl(entity, data.id) : null;
         }
         return value;
     }
@@ -153,5 +151,9 @@ export default class DataTypeService {
             }
         });
         return invalidFields;
+    }
+    
+    static getAvatarUrl = (entity, id, withTimestamp) => {
+        return AppURLs.links.rest + '/entity/avatar/' + entity + '/' + id + (withTimestamp ? ('?timestamp=' + new Date().getTime()) : '');
     }
 }

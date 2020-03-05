@@ -46,4 +46,9 @@ public @interface ListViewColumn {
      * @return true if is link.
      */
     public boolean link() default false;
+    /**
+     * Is column sortable.
+     * @return true if sortable.
+     */
+    public boolean sortable() default true;
 }

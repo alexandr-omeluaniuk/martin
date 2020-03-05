@@ -62,7 +62,7 @@ function EnhancedTable(props) {
     const [total, setTotal] = React.useState(0);
     const [load, setLoad] = React.useState(true);
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState(headCells[0].id);
+    const [orderBy, setOrderBy] = React.useState('lastModifiedDate');
     const [selected, setSelected] = React.useState(new Set());
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);

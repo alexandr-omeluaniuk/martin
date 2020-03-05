@@ -98,6 +98,8 @@ public class ListView extends RepresentationComponent {
         private Layout.Field layoutField;
         /** Is link. */
         private boolean link;
+        /** Is sortable. */
+        private boolean sortable;
         /**
          * @return the id
          */
@@ -181,6 +183,18 @@ public class ListView extends RepresentationComponent {
          */
         public void setLink(boolean link) {
             this.link = link;
+        }
+        /**
+         * @return the sortable
+         */
+        public boolean isSortable() {
+            return sortable;
+        }
+        /**
+         * @param sortable the sortable to set
+         */
+        public void setSortable(boolean sortable) {
+            this.sortable = sortable;
         }
     }
 }

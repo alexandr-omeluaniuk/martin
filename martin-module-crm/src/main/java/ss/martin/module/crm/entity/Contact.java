@@ -65,7 +65,7 @@ public class Contact extends EntityAudit implements HasAvatar {
     /** Contact avatar. */
     /** Avatar. */
     @Avatar
-    @ListViewColumn
+    @ListViewColumn(sortable = false)
     @FormField(xs = "12")
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

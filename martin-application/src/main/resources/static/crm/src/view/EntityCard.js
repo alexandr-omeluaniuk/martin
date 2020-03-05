@@ -133,8 +133,7 @@ function EntityCard(props) {
     if (!entityData) {
         return null;
     }
-    let ava = entityData.data.hasAvatar ? (<Avatar src={AppURLs.links.rest + '/entity/avatar/' + entity + '/' + entityData.data.id
-            + '?timestamp=' + new Date().getTime()} />)
+    let ava = entityData.data.hasAvatar ? (<Avatar src={DataTypeService.getAvatarUrl(entity, entityData.data.id)} />)
             : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
     let title = entityData.layout.cardTitle && entityData.data[entityData.layout.cardTitle]
             ? entityData.data[entityData.layout.cardTitle] : '';
