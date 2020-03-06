@@ -44,7 +44,8 @@ export const DataTypes = {
     AVATAR: 'AVATAR',
     LOOKUP: 'LOOKUP',
     MOBILE_PHONE_NUMBER: 'MOBILE_PHONE_NUMBER',
-    TEXTAREA: 'TEXTAREA'
+    TEXTAREA: 'TEXTAREA',
+    ENTITY_COLLECTION: 'ENTITY_COLLECTION'
 };
 // ----------------------------------------------- VALIDATORS -----------------------------------------------------------------------------
 export const V_REGEX_EMAIL = /\S+@\S+\.\S+/;
@@ -69,7 +70,7 @@ export default class DataTypeService {
         let renderValue = value;
         let dataType = field.layoutField.dataType;
         if (dataType === DataTypes.ENUM) {
-            renderValue = t('enum.' + field.enumField + '.' + value);
+            renderValue = t('enum.' + field.layoutField.fieldType + '.' + value);
         } else if (dataType === DataTypes.ENUM_COLLECTION) {
             let sb = '';
             value.forEach(v => {
@@ -158,7 +159,7 @@ export default class DataTypeService {
     static renderLookupField = (field, value) => {
         let label = '';
         if (value) {
-            let template = field.attributes.lookupFieldTemplate ? field.attributes.lookupFieldTemplate : 'No lookup template!!!';
+            let template = field.attributes.LOOKUP_TEMPLATE ? field.attributes.LOOKUP_TEMPLATE : 'No lookup template!!!';
             for (let k in value) {
                 template = template.replace('{' + k + '}', value[k]);
             }

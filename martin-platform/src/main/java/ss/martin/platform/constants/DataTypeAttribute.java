@@ -30,8 +30,6 @@ package ss.martin.platform.constants;
 public enum DataTypeAttribute {
     /** Textarea rows. */
     TEXTAREA_ROWS,
-    /** Icon. */
-    ICON,
     /** Lookup field template. */
     LOOKUP_TEMPLATE,
     /** Lookup: order by field. */

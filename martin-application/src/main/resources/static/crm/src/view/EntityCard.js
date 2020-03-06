@@ -138,9 +138,9 @@ function EntityCard(props) {
             );
         } else if (cardTabs) {
             let cardTab = cardTabs[activeTab - 1];
-            if (cardTab.attributes.cardTab === 'LIST_VIEW') {
+            if (cardTab.attributes.REPRESENTATION_TYPE === 'LIST_VIEW') {
                 return (
-                        <ListView metadata={cardTab.attributes.cardTabMetadata} />
+                        <ListView metadata={cardTab.attributes.COLLECTION_TYPE_METADATA} />
                 );
             } else {
                 return null;
@@ -166,7 +166,7 @@ function EntityCard(props) {
         return null;
     }
     let cardTabs = entityData.layout.fields.filter(f => {
-        return f.attributes && f.attributes.cardTab;
+        return f.dataType === DataTypes.ENTITY_COLLECTION;
     });
     let ava = entityData.data.hasAvatar ? (<Avatar src={DataTypeService.getAvatarUrl(entity, entityData.data.id)} />)
             : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
@@ -191,8 +191,8 @@ function EntityCard(props) {
                         {cardTabs.map((tab, idx) => {
                             return (
                                     <Tab key={idx} label={(
-                                        <InlineTabHeader icon={tab.attributes.cardTabMetadata.icon}
-                                            title={t('model.' + tab.attributes.cardTabMetadata.className + '.label.many')}/>
+                                        <InlineTabHeader icon={tab.attributes.COLLECTION_TYPE_METADATA.icon}
+                                            title={t('model.' + tab.attributes.COLLECTION_TYPE_METADATA.className + '.label.many')}/>
                                     )}></Tab>
                             );
                         })}

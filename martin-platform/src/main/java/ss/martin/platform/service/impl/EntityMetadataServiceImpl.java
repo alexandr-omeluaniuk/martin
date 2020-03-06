@@ -244,7 +244,15 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         } else if (field.getGenericType() != null && field.getGenericType() instanceof ParameterizedType) {
             ParameterizedType parType = (ParameterizedType) field.getGenericType();
             Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-            if (genericClass.isEnum()) {
+            if (field.getAnnotation(EntityCollection.class) != null) {
+                type = ENTITY_COLLECTION;
+                EntityCollection anno = field.getAnnotation(EntityCollection.class);
+                layoutField.getAttributes().put(DataTypeAttribute.REPRESENTATION_TYPE, anno.type().name());
+                if (anno.type() == RepresentationComponentType.LIST_VIEW) {
+                    layoutField.getAttributes().put(DataTypeAttribute.COLLECTION_TYPE_METADATA,
+                            getEntityListView((Class<? extends DataModel>) genericClass));
+                }
+            } else if (genericClass.isEnum()) {
                 type = DataType.ENUM_COLLECTION;
             }
             layoutField.getAttributes().put(DataTypeAttribute.GENERIC_TYPE, genericClass.getName());
@@ -288,19 +296,6 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             layoutField.getAttributes().put(DataTypeAttribute.TEXTAREA_ROWS, anno.rows());
         } else if (field.getAnnotation(MobilePhoneNumber.class) != null) {
             type = DataType.MOBILE_PHONE_NUMBER;
-        } else if (field.getAnnotation(EntityCollection.class) != null) {
-            type = ENTITY_COLLECTION;
-            ParameterizedType parType = (ParameterizedType) field.getGenericType();
-            Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-            EntityCollection anno = field.getAnnotation(EntityCollection.class);
-            layoutField.getAttributes().put(DataTypeAttribute.REPRESENTATION_TYPE, anno.type().name());
-            if (anno.type() == RepresentationComponentType.LIST_VIEW) {
-                layoutField.getAttributes().put(DataTypeAttribute.COLLECTION_TYPE_METADATA,
-                        getEntityListView((Class<? extends DataModel>) genericClass));
-            }
-            Optional.ofNullable(field.getType().getAnnotation(MaterialIcon.class)).ifPresent((anno2) -> {
-                layoutField.getAttributes().put(DataTypeAttribute.ICON, anno2.icon());
-            });
         }
         layoutField.setDataType(type);
     }

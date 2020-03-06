@@ -158,6 +158,11 @@
             "martin": {
                 "platform": {
                     "constants": {
+                        "ApplicationModule": {
+                            "CRM": "Система управления клиентами"
+                        }
+                    },
+                    "security": {
                         "SystemUserStatus": {
                             "ACTIVE": "Активный",
                             "INACTIVE": "Деактивирован",
@@ -167,9 +172,6 @@
                             "ROLE_SUPER_ADMIN": "Супер админстратор",
                             "ROLE_SUBSCRIPTION_ADMINISTRATOR": "Администратор",
                             "ROLE_SUBSCRIPTION_USER": "Пользователь"
-                        },
-                        "ApplicationModule": {
-                            "CRM": "Система управления клиентами"
                         }
                     }
                 }
