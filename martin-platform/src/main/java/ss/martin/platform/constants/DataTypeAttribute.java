@@ -21,24 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import ss.martin.platform.constants.RepresentationComponentType;
+package ss.martin.platform.constants;
 
 /**
- * Entity card tab.
+ * Data type attribute.
  * @author ss
  */
-@Target(value = {ElementType.FIELD})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface CardTab {
-    /**
-     * UI component type.
-     * @return type.
-     */
-    public RepresentationComponentType type();
+public enum DataTypeAttribute {
+    /** Textarea rows. */
+    TEXTAREA_ROWS,
+    /** Icon. */
+    ICON,
+    /** Lookup field template. */
+    LOOKUP_TEMPLATE,
+    /** Lookup: order by field. */
+    LOOKUP_ORDER_BY,
+    /** Lookup: order. */
+    LOOKUP_ORDER,
+    /** Lookup: filter. */
+    LOOKUP_FILTER,
+    /** Representation type. */
+    REPRESENTATION_TYPE,
+    /** Collection type metadata. */
+    COLLECTION_TYPE_METADATA,
+    /** Generic type. */
+    GENERIC_TYPE;
 }

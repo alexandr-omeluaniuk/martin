@@ -23,10 +23,8 @@
  */
 package ss.martin.platform.service.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -37,8 +35,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -49,27 +47,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
-import ss.martin.platform.anno.ui.CardTab;
 import ss.martin.platform.anno.ui.CardTitle;
-import ss.martin.platform.anno.ui.FilterCondition;
-import ss.martin.platform.anno.ui.FilterPredicate;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.ListViewColumn;
-import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.MaterialIcon;
-import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
+import ss.martin.platform.constants.DataType;
 import ss.martin.platform.constants.RepresentationComponentSource;
 import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.CalendarEvent;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityAudit;
-import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.service.EntityMetadataService;
 import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.ui.CalendarView;
 import ss.martin.platform.ui.Layout;
 import ss.martin.platform.ui.ListView;
+import ss.martin.platform.anno.ui.EntityCollection;
+import ss.martin.platform.anno.ui.FilterCondition;
+import ss.martin.platform.anno.ui.FilterPredicate;
+import ss.martin.platform.anno.ui.LookupField;
+import ss.martin.platform.anno.ui.TextArea;
+import static ss.martin.platform.constants.DataType.ENTITY_COLLECTION;
+import ss.martin.platform.constants.DataTypeAttribute;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 
 /**
@@ -132,19 +132,9 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                 ListView.ListViewColumn listViewColumn = new ListView.ListViewColumn();
                 listViewColumn.setId(field.getName());
                 listViewColumn.setAlign(listViewColumnAnno.align());
-                listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
                 listViewColumn.setLayoutField(createEntityLayoutField(field));
                 listViewColumn.setLink(listViewColumnAnno.link());
                 listViewColumn.setSortable(listViewColumnAnno.sortable());
-                Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
-                genericTypes.ifPresent((gt) -> {
-                    if (gt instanceof ParameterizedType) {
-                        ParameterizedType parType = (ParameterizedType) gt;
-                        Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-                        listViewColumn.setGenericClass(genericClass.getSimpleName());
-                        listViewColumn.setGenericClassEnum(genericClass.isEnum());
-                    }
-                });
                 component.getListViewColumns().add(listViewColumn);
             }
         }
@@ -169,34 +159,10 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
      * @throws Exception error.
      */
     private Layout.Field createEntityLayoutField(Field field) throws Exception {
-        Annotation[] annotations = field.getAnnotations();
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("field [" + field.getName() + "], annotations [" + annotations.length + "]");
-        }
         Layout.Field layoutField = new Layout.Field();
-        layoutField.setAttributes(new HashMap<>());
+        defineDataType(field, layoutField);
         layoutField.setName(field.getName());
-        Avatar avatar = field.getAnnotation(Avatar.class);
-        TextArea textArea = field.getAnnotation(TextArea.class);
-        MobilePhoneNumber mobilePhoneNumber = field.getAnnotation(MobilePhoneNumber.class);
-        if (Date.class.equals(field.getType())) {
-            Temporal temporal = field.getAnnotation(Temporal.class);
-            if (temporal == null || temporal.value() == null) {
-                throw new PlatformException("wrong date field configuration! Field [" + field.getName()
-                        + "] must have @Temporal annotation!");
-            } else {
-                layoutField.setFieldType(temporal.value().name());
-            }
-        } else if (avatar != null) {
-            layoutField.setFieldType(Avatar.class.getSimpleName());
-        } else if (mobilePhoneNumber != null) {
-            layoutField.setFieldType(MobilePhoneNumber.class.getSimpleName());
-        } else if (textArea != null) {
-            layoutField.setFieldType(TextArea.class.getSimpleName());
-            layoutField.getAttributes().put("rows", textArea.rows());
-        } else {
-            layoutField.setFieldType(field.getType().getSimpleName());
-        }
+        layoutField.setFieldType(field.getType().getName());
         Optional.ofNullable(field.getAnnotation(FormField.class)).ifPresent((grid) -> {
             Layout.Grid fieldGridSystem = new Layout.Grid();
             fieldGridSystem.setLg(grid.lg());
@@ -206,53 +172,6 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             layoutField.setGrid(fieldGridSystem);
         });
         layoutField.setValidators(setValidators(field));
-        Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
-        genericTypes.ifPresent((gt) -> {
-            if (gt instanceof ParameterizedType) {
-                ParameterizedType parType = (ParameterizedType) gt;
-                Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-                layoutField.getAttributes().put("genericClass", genericClass.getName());
-                layoutField.getAttributes().put("genericClassEnum", genericClass.isEnum());
-            }
-        });
-        Optional.ofNullable(field.getAnnotation(ManyToOne.class)).ifPresent((anno) -> {
-            layoutField.setFieldType(ManyToOne.class.getSimpleName());
-            layoutField.getAttributes().put("relationshipType", field.getType().getName());
-            Optional.ofNullable(field.getType().getAnnotation(MaterialIcon.class)).ifPresent((anno2) -> {
-                layoutField.getAttributes().put("icon", anno2.icon());
-            });
-        });
-        Optional.ofNullable(field.getAnnotation(LookupField.class)).ifPresent((anno) -> {
-            layoutField.getAttributes().put("lookupFieldTemplate", anno.template());
-            layoutField.getAttributes().put("lookupFieldOrderBy", anno.orderBy());
-            layoutField.getAttributes().put("lookupFieldOrder", anno.order());
-            List<EntitySearchRequest.FilterCondition> filterConditions = new ArrayList<>();
-            Optional.ofNullable(anno.filter()).ifPresent((filter) -> {
-                for (FilterCondition fc : filter) {
-                    EntitySearchRequest.FilterCondition cond = new EntitySearchRequest.FilterCondition();
-                    cond.setOperator(fc.operator());
-                    cond.setPredicates(new ArrayList<>());
-                    for (FilterPredicate fp : fc.predicates()) {
-                        EntitySearchRequest.FilterPredicate predicate = new EntitySearchRequest.FilterPredicate();
-                        predicate.setField(fp.field());
-                        predicate.setOperator(fp.operator());
-                        predicate.setValue(fp.valueTemplate());
-                        cond.getPredicates().add(predicate);
-                    }
-                    filterConditions.add(cond);
-                }
-            });
-            layoutField.getAttributes().put("lookupFieldFilter", filterConditions);
-        });
-        CardTab cardTab = field.getAnnotation(CardTab.class);
-        if (cardTab != null) {
-            layoutField.getAttributes().put("cardTab", cardTab.type().name());
-            if (cardTab.type() == RepresentationComponentType.LIST_VIEW) {
-                Class<? extends DataModel> listType = (Class<? extends DataModel>) Class
-                        .forName(String.valueOf(layoutField.getAttributes().get("genericClass")));
-                layoutField.getAttributes().put("cardTabMetadata", getEntityListView(listType));
-            }
-        }
         return layoutField;
     }
     /**
@@ -309,5 +228,80 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             result.addAll(getClassFields(clazz.getSuperclass()));
         }
         return result;
+    }
+    /**
+     * Define data type by field.
+     * @param field entity field.
+     * @param layoutField layout field.
+     * @return data type.
+     * @throws Exception error.
+     */
+    public void defineDataType(Field field, Layout.Field layoutField) throws Exception {
+        layoutField.setAttributes(new HashMap<>());
+        DataType type = DataType.STRING;
+        if (field.getType().isEnum()) {
+            type = DataType.ENUM;
+        } else if (field.getGenericType() != null && field.getGenericType() instanceof ParameterizedType) {
+            ParameterizedType parType = (ParameterizedType) field.getGenericType();
+            Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
+            if (genericClass.isEnum()) {
+                type = DataType.ENUM_COLLECTION;
+            }
+            layoutField.getAttributes().put(DataTypeAttribute.GENERIC_TYPE, genericClass.getName());
+        } else if (Date.class.equals(field.getType()) && field.getAnnotation(Temporal.class) != null) {
+            Temporal temporal = field.getAnnotation(Temporal.class);
+            if (temporal.value() == TemporalType.DATE) {
+                type = DataType.DATE;
+            } else if (temporal.value() == TemporalType.TIME) {
+                type = DataType.TIME;
+            } else if (temporal.value() == TemporalType.TIMESTAMP) {
+                type = DataType.DATETIME;
+            }
+        } else if (field.getAnnotation(Avatar.class) != null) {
+            type = DataType.AVATAR;
+        } else if (field.getAnnotation(LookupField.class) != null) {
+            type = DataType.LOOKUP;
+            LookupField anno = field.getAnnotation(LookupField.class);
+            layoutField.getAttributes().put(DataTypeAttribute.LOOKUP_TEMPLATE, anno.template());
+            layoutField.getAttributes().put(DataTypeAttribute.LOOKUP_ORDER_BY, anno.orderBy());
+            layoutField.getAttributes().put(DataTypeAttribute.LOOKUP_ORDER, anno.order());
+            List<EntitySearchRequest.FilterCondition> filterConditions = new ArrayList<>();
+            Optional.ofNullable(anno.filter()).ifPresent((filter) -> {
+                for (FilterCondition fc : filter) {
+                    EntitySearchRequest.FilterCondition cond = new EntitySearchRequest.FilterCondition();
+                    cond.setOperator(fc.operator());
+                    cond.setPredicates(new ArrayList<>());
+                    for (FilterPredicate fp : fc.predicates()) {
+                        EntitySearchRequest.FilterPredicate predicate = new EntitySearchRequest.FilterPredicate();
+                        predicate.setField(fp.field());
+                        predicate.setOperator(fp.operator());
+                        predicate.setValue(fp.valueTemplate());
+                        cond.getPredicates().add(predicate);
+                    }
+                    filterConditions.add(cond);
+                }
+            });
+            layoutField.getAttributes().put(DataTypeAttribute.LOOKUP_FILTER, filterConditions);
+        } else if (field.getAnnotation(TextArea.class) != null) {
+            TextArea anno = field.getAnnotation(TextArea.class);
+            type = DataType.TEXTAREA;
+            layoutField.getAttributes().put(DataTypeAttribute.TEXTAREA_ROWS, anno.rows());
+        } else if (field.getAnnotation(MobilePhoneNumber.class) != null) {
+            type = DataType.MOBILE_PHONE_NUMBER;
+        } else if (field.getAnnotation(EntityCollection.class) != null) {
+            type = ENTITY_COLLECTION;
+            ParameterizedType parType = (ParameterizedType) field.getGenericType();
+            Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
+            EntityCollection anno = field.getAnnotation(EntityCollection.class);
+            layoutField.getAttributes().put(DataTypeAttribute.REPRESENTATION_TYPE, anno.type().name());
+            if (anno.type() == RepresentationComponentType.LIST_VIEW) {
+                layoutField.getAttributes().put(DataTypeAttribute.COLLECTION_TYPE_METADATA,
+                        getEntityListView((Class<? extends DataModel>) genericClass));
+            }
+            Optional.ofNullable(field.getType().getAnnotation(MaterialIcon.class)).ifPresent((anno2) -> {
+                layoutField.getAttributes().put(DataTypeAttribute.ICON, anno2.icon());
+            });
+        }
+        layoutField.setDataType(type);
     }
 }

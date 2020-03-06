@@ -25,6 +25,8 @@ package ss.martin.platform.ui;
 
 import java.util.List;
 import java.util.Map;
+import ss.martin.platform.constants.DataType;
+import ss.martin.platform.constants.DataTypeAttribute;
 
 /**
  * Entity layout.
@@ -203,14 +205,16 @@ public class Layout {
     public static class Field {
         /** Field name. */
         private String name;
-        /** Field type. */
+        /** Field type (field class). */
         private String fieldType;
+        /** Data type. */
+        private DataType dataType;
         /** Grid system. */
         private Grid grid;
         /** Validators. */
         private List<Validator> validators;
         /** Attributes. */
-        private Map<String, Object> attributes;
+        private Map<DataTypeAttribute, Object> attributes;
         /**
          * @return the name
          */
@@ -262,14 +266,26 @@ public class Layout {
         /**
          * @return the attributes
          */
-        public Map<String, Object> getAttributes() {
+        public Map<DataTypeAttribute, Object> getAttributes() {
             return attributes;
         }
         /**
          * @param attributes the attributes to set
          */
-        public void setAttributes(Map<String, Object> attributes) {
+        public void setAttributes(Map<DataTypeAttribute, Object> attributes) {
             this.attributes = attributes;
+        }
+        /**
+         * @return the dataType
+         */
+        public DataType getDataType() {
+            return dataType;
+        }
+        /**
+         * @param dataType the dataType to set
+         */
+        public void setDataType(DataType dataType) {
+            this.dataType = dataType;
         }
     }
 }

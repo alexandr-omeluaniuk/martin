@@ -102,12 +102,6 @@ public class ListView extends RepresentationComponent {
         private String id;
         /** Field align. */
         private ListViewColumnAlign align;
-        /** Is enum constant. */
-        private String enumField;
-        /** Generic class. */
-        private String genericClass;
-        /** Is generic class enum?. */
-        private boolean genericClassEnum;
         /** Layout field metadata. */
         private Layout.Field layoutField;
         /** Is link. */
@@ -137,42 +131,6 @@ public class ListView extends RepresentationComponent {
          */
         public void setAlign(ListViewColumnAlign align) {
             this.align = align;
-        }
-        /**
-         * @return the enumField
-         */
-        public String getEnumField() {
-            return enumField;
-        }
-        /**
-         * @param enumField the enumField to set
-         */
-        public void setEnumField(String enumField) {
-            this.enumField = enumField;
-        }
-        /**
-         * @return the genericClass
-         */
-        public String getGenericClass() {
-            return genericClass;
-        }
-        /**
-         * @param genericClass the genericClass to set
-         */
-        public void setGenericClass(String genericClass) {
-            this.genericClass = genericClass;
-        }
-        /**
-         * @return the genericClassEnum
-         */
-        public boolean isGenericClassEnum() {
-            return genericClassEnum;
-        }
-        /**
-         * @param genericClassEnum the genericClassEnum to set
-         */
-        public void setGenericClassEnum(boolean genericClassEnum) {
-            this.genericClassEnum = genericClassEnum;
         }
         /**
          * @return the layoutField
