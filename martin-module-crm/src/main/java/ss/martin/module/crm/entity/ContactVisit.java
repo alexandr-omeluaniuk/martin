@@ -34,6 +34,7 @@ import javax.validation.constraints.Size;
 import ss.martin.platform.anno.ui.FilterCondition;
 import ss.martin.platform.anno.ui.FilterPredicate;
 import ss.martin.platform.anno.ui.FormField;
+import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.TextArea;
@@ -52,11 +53,13 @@ import ss.martin.platform.entity.CalendarEvent;
 public class ContactVisit extends CalendarEvent {
 // ================================================= FIELDS ===========================================================
     /** Subject. */
+    @ListViewColumn
     @FormField(lg = "6", md = "6", sm = "12")
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "subject", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String subject;
     /** Contact. */
+    @ListViewColumn
     @NotNull
     @LookupField(template = "{firstname} {lastname}", orderBy = "lastname", filter = @FilterCondition(
             operator = JPABoolConditionOperator.OR,

@@ -68,24 +68,30 @@ export const V_MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
 
 export default class DataTypeService {
         
-    static renderTableCell = (entity, fieldMeta, value, t, entityData) => {
+    static renderTableCell = (entity, field, t, entityData) => {
+        console.log(field);
+        let value = entityData[field.id];
+        console.log(value);
         let renderValue = value;
-        if (fieldMeta.enumField) {
-            renderValue = t('enum.' + fieldMeta.enumField + '.' + value);
-        } else if (fieldMeta.attributes && fieldMeta.attributes.genericClassEnum) {
+        if (field.enumField) {
+            renderValue = t('enum.' + field.enumField + '.' + value);
+        } else if (field.attributes && field.attributes.genericClassEnum) {
             let sb = '';
             value.forEach(v => {
-                sb += t('enum.' + fieldMeta.genericClass + '.' + v) + ' | ';
+                sb += t('enum.' + field.genericClass + '.' + v) + ' | ';
             });
             if (sb.length > 3) {
                 sb = sb.substring(0, sb.length - 3);
             }
             renderValue = sb;
-        } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
+        } else if (field.layoutField.fieldType === TYPE_AVATAR) {
             renderValue = entityData.hasAvatar ?
                 (<Avatar src={this.getAvatarUrl(entity, entityData.id)}>
                     <Icon>perm_identity</Icon>
                 </Avatar>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
+        } else if (field.layoutField.attributes && field.layoutField.attributes.lookupFieldTemplate) {
+            renderValue = this.renderLookupField(field.layoutField, value);
+            console.log(renderValue);
         }
         return renderValue;
     }
@@ -152,6 +158,18 @@ export default class DataTypeService {
         });
         return invalidFields;
     }
+    
+    static renderLookupField = (field, value) => {
+        let label = '';
+        if (value) {
+            let template = field.attributes.lookupFieldTemplate ? field.attributes.lookupFieldTemplate : 'No lookup template!!!';
+            for (let k in value) {
+                template = template.replace('{' + k + '}', value[k]);
+            }
+            label = template;
+        }
+        return label;
+    };
     
     static getAvatarUrl = (entity, id, withTimestamp) => {
         return AppURLs.links.rest + '/entity/avatar/' + entity + '/' + id + (withTimestamp ? ('?timestamp=' + new Date().getTime()) : '');

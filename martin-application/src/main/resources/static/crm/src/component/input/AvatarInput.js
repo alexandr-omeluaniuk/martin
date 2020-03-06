@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';

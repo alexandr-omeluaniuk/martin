@@ -49,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
+import ss.martin.platform.anno.ui.CardTab;
 import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FilterCondition;
 import ss.martin.platform.anno.ui.FilterPredicate;
@@ -60,6 +61,7 @@ import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.TextArea;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.RepresentationComponentSource;
+import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.CalendarEvent;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityAudit;
@@ -212,7 +214,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             if (gt instanceof ParameterizedType) {
                 ParameterizedType parType = (ParameterizedType) gt;
                 Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-                layoutField.getAttributes().put("genericClass", genericClass.getSimpleName());
+                layoutField.getAttributes().put("genericClass", genericClass.getName());
                 layoutField.getAttributes().put("genericClassEnum", genericClass.isEnum());
             }
         });
@@ -245,6 +247,15 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             });
             layoutField.getAttributes().put("lookupFieldFilter", filterConditions);
         });
+        CardTab cardTab = field.getAnnotation(CardTab.class);
+        if (cardTab != null) {
+            layoutField.getAttributes().put("cardTab", cardTab.type().name());
+            if (cardTab.type() == RepresentationComponentType.LIST_VIEW) {
+                Class<? extends DataModel> listType = (Class<? extends DataModel>) Class
+                        .forName(String.valueOf(layoutField.getAttributes().get("genericClass")));
+                layoutField.getAttributes().put("cardTabMetadata", getEntityListView(listType));
+            }
+        }
         return layoutField;
     }
     /**

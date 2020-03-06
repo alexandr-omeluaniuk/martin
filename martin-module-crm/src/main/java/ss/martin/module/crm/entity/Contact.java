@@ -44,9 +44,11 @@ import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
+import ss.martin.platform.anno.ui.CardTab;
 import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.constants.AppConstants;
+import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.EntityAudit;
 import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.HasAvatar;
@@ -104,6 +106,7 @@ public class Contact extends EntityAudit implements HasAvatar {
     @Column(name = "phone_mobile", length = 17)
     private String phoneMobile;
     /** Contact visits. */
+    @CardTab(type = RepresentationComponentType.LIST_VIEW)
     @HiddenField
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")

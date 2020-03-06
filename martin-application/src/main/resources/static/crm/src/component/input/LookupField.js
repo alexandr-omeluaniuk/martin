@@ -35,6 +35,7 @@ import Grow from '@material-ui/core/Grow';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import DataService from '../../service/DataService';
+import DataTypeService from '../../service/DataTypeService';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 
@@ -90,21 +91,9 @@ function LookupField(props) {
         setOpen(false);
         onChange(field.name, item);
     };
-    
-    const renderLabel = (item) => {
-        let label = '';
-        if (item) {
-            let template = field.attributes.lookupFieldTemplate ? field.attributes.lookupFieldTemplate : 'No lookup template!!!';
-            for (let k in item) {
-                template = template.replace('{' + k + '}', item[k]);
-            }
-            label = template;
-        }
-        return label;
-    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
-        setDisplayedValue(renderLabel(value));
+        setDisplayedValue(DataTypeService.renderLookupField(field, value));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     // -------------------------------------------------------- RENDERING -----------------------------------------------------------------
@@ -151,7 +140,7 @@ function LookupField(props) {
             const items = [];
             searchResult.forEach(item => {
                 items.push((
-                    <MenuItem key={item.id} onClick={() => onItemSelect(item)}>{renderLabel(item)}</MenuItem>
+                    <MenuItem key={item.id} onClick={() => onItemSelect(item)}>{DataTypeService.renderLookupField(field, item)}</MenuItem>
                 ));
             });
             return items;

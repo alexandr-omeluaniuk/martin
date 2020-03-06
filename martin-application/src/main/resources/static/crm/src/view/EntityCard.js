@@ -39,7 +39,9 @@ import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
 import DataTypeService from '../service/DataTypeService';
 import InlineTabHeader from '../component/util/InlineTabHeader';
+import { history } from '../index';
 import AppURLs from '../constants/AppURLs';
+import ListView from './ListView';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
@@ -59,7 +61,7 @@ function EntityCard(props) {
     const [update, setUpdate] = React.useState(false);
     const [entityData, setEntityData] = React.useState(null);
     const [dataSnapshot, setDataSnapshot] = React.useState(null);
-    const [activeTab, setActiveTab] = React.useState(0);
+    const [activeTab, setActiveTab] = React.useState(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
     const onChangeFieldValue = (name, value) => {
@@ -115,6 +117,37 @@ function EntityCard(props) {
                 </Grid>
         );
     };
+    
+    const tabContent = (cardTabs) => {
+        if (activeTab === 0) {
+            return (
+                <React.Fragment>
+                    <Grid container spacing={2}>
+                        {entityData.layout.fields.filter(f => { return f.fieldType !== TYPE_AVATAR; }).map((field, idx) => {
+                            if (field.hidden || !field.grid) {
+                                return null;
+                            }
+                            return (
+                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue} onFieldEdit={onFieldEdit}
+                                        invalidFields={invalidFields} entity={entity} 
+                                        fieldValue={DataTypeService.convertServerValueToUIFormat(field, entityData.data, entity)}/>
+                            );
+                        })}
+                    </Grid>
+                    {entityData.layout.audit ? auditInfo() : null}
+                </React.Fragment>
+            );
+        } else if (cardTabs) {
+            let cardTab = cardTabs[activeTab - 1];
+            if (cardTab.attributes.cardTab === 'LIST_VIEW') {
+                return (
+                        <ListView metadata={cardTab.attributes.cardTabMetadata} />
+                );
+            } else {
+                return null;
+            }
+        }
+    };
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
     useEffect(() => {
         DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
@@ -133,6 +166,9 @@ function EntityCard(props) {
     if (!entityData) {
         return null;
     }
+    let cardTabs = entityData.layout.fields.filter(f => {
+        return f.attributes && f.attributes.cardTab;
+    });
     let ava = entityData.data.hasAvatar ? (<Avatar src={DataTypeService.getAvatarUrl(entity, entityData.data.id)} />)
             : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
     let title = entityData.layout.cardTitle && entityData.data[entityData.layout.cardTitle]
@@ -148,24 +184,21 @@ function EntityCard(props) {
                 <CardContent>
                     <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
                         setActiveTab(index);
+                        history.push(AppURLs.links.entity + '/' + entity + '/' + id + '#' + index);
                     }} className={classes.tabs} >
                         <Tab label={(
                                 <InlineTabHeader icon={generalTabIcon} title={t('model.' + entity + '.label.single')}/>
                         )}></Tab>
-                    </Tabs>
-                    <Grid container spacing={2}>
-                        {entityData.layout.fields.filter(f => { return f.fieldType !== TYPE_AVATAR; }).map((field, idx) => {
-                            if (field.hidden || !field.grid) {
-                                return null;
-                            }
+                        {cardTabs.map((tab, idx) => {
                             return (
-                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue} onFieldEdit={onFieldEdit}
-                                        invalidFields={invalidFields} entity={entity} 
-                                        fieldValue={DataTypeService.convertServerValueToUIFormat(field, entityData.data, entity)}/>
+                                    <Tab key={idx} label={(
+                                        <InlineTabHeader icon={tab.attributes.cardTabMetadata.icon}
+                                            title={t('model.' + tab.attributes.cardTabMetadata.className + '.label.many')}/>
+                                    )}></Tab>
                             );
                         })}
-                    </Grid>
-                    {entityData.layout.audit ? auditInfo() : null}
+                    </Tabs>
+                    {tabContent(cardTabs)}
                 </CardContent>
             </Card>
     );
