@@ -57,7 +57,9 @@ function App() {
                 setTitle(currentRoute.length > 0 ? currentRoute[0].label : '');
                 setIcon(currentRoute.length > 0 ? currentRoute[0].icon : null);
                 SecurityService.getPermissions().then(perm => {
+                    console.log(perm);
                     setPermissions(perm);
+                    document.title = 'CRM | ' + perm.subscription.organizationName;
                 });
             });
         }

@@ -69,11 +69,9 @@ export const V_MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
 export default class DataTypeService {
         
     static renderTableCell = (entity, field, t, entityData) => {
-        console.log(field);
         let value = entityData[field.id];
-        console.log(value);
         let renderValue = value;
-        if (field.enumField) {
+        if (field.enumField) {  // TODO enter ListViewColumn type
             renderValue = t('enum.' + field.enumField + '.' + value);
         } else if (field.attributes && field.attributes.genericClassEnum) {
             let sb = '';
@@ -91,7 +89,6 @@ export default class DataTypeService {
                 </Avatar>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
         } else if (field.layoutField.attributes && field.layoutField.attributes.lookupFieldTemplate) {
             renderValue = this.renderLookupField(field.layoutField, value);
-            console.log(renderValue);
         }
         return renderValue;
     }
