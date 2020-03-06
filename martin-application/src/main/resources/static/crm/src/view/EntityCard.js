@@ -34,10 +34,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import DataService from '../service/DataService';
-import { TYPE_AVATAR } from '../service/DataTypeService';
 import FormField from '../component/form/FormField';
 import Grid from '@material-ui/core/Grid';
-import DataTypeService from '../service/DataTypeService';
+import DataTypeService, { DataTypes } from '../service/DataTypeService';
 import InlineTabHeader from '../component/util/InlineTabHeader';
 import { history } from '../index';
 import AppURLs from '../constants/AppURLs';
@@ -123,7 +122,7 @@ function EntityCard(props) {
             return (
                 <React.Fragment>
                     <Grid container spacing={2}>
-                        {entityData.layout.fields.filter(f => { return f.fieldType !== TYPE_AVATAR; }).map((field, idx) => {
+                        {entityData.layout.fields.filter(f => { return f.dataType !== DataTypes.AVATAR; }).map((field, idx) => {
                             if (!field.grid) {
                                 return null;
                             }

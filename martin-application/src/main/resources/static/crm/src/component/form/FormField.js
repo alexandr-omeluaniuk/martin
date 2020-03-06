@@ -31,8 +31,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
-import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR, V_NOT_NULL, V_NOT_EMPTY,
-    TYPE_TEXTAREA, TYPE_MOBILE_PHONE_NUMBER, TYPE_TIMESTAMP, TYPE_MANY_TO_ONE } from '../../service/DataTypeService';
+import { DataTypes, V_NOT_NULL, V_NOT_EMPTY } from '../../service/DataTypeService';
 import { useTranslation } from 'react-i18next';
 import EnumMultiChoiceInput from '../input/EnumMultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
@@ -104,19 +103,20 @@ function FormField(props) {
     
     const renderFormField = (field) => {
         let label = t('model.' + entity + '.field.' + field.name);
+        let dataType = field.dataType;
         var isRequired = field.validators.filter(v => {
             return v.type === V_NOT_NULL || v.type === V_NOT_EMPTY;
         }).length > 0;
         label += isRequired ? ' *' : '';
         let name = field.name;
-        if (field.fieldType === TYPE_STRING) {
+        if (dataType === DataTypes.STRING) {
             return (
                     <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                             value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
                             helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
                             onBlur={onBlurInput} onKeyUp={onEnterInput}/>
             );
-        } else if (field.fieldType === TYPE_DATE) {
+        } else if (dataType === DataTypes.DATE) {
             moment.locale(i18n.language);
             let value = fieldValue ? fieldValue : null;
             return (
@@ -126,34 +126,32 @@ function FormField(props) {
                             className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
                     </MuiPickersUtilsProvider>
             );
-        } else if (field.fieldType === TYPE_SET) {
+        } else if (dataType === DataTypes.ENUM_COLLECTION) {
             let value = fieldValue ? new Set(fieldValue) : new Set();
-            if (field.attributes && field.attributes.genericClass && field.attributes.genericClassEnum) {
-                return (
-                        <EnumMultiChoiceInput entity={entity} fieldName={name} label={label} genericClass={field.attributes.genericClass}
-                            selected={value} onChange={onChangeFieldValue}/>
-                );
-            }
-        } else if (field.fieldType === TYPE_AVATAR) {
+            return (
+                    <EnumMultiChoiceInput entity={entity} fieldName={name} label={label} genericClass={field.attributes.GENERIC_TYPE}
+                        selected={value} onChange={onChangeFieldValue}/>
+            );
+        } else if (dataType === DataTypes.AVATAR) {
             return (
                     <AvatarInput label={label} value={fieldValue ? fieldValue : ''}
                         onChange={(data) => onChangeFieldValue(name, data)}/>
             );
-        } else if (field.fieldType === TYPE_TEXTAREA) {
+        } else if (dataType === DataTypes.TEXTAREA) {
             return (
                     <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                                 value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
                                 helperText={invalidFields.get(name)} InputProps={{endAdornment: editButton(), readOnly: readOnly}}
-                                onBlur={onBlurInput} onKeyUp={onEnterInput} multiline rows={field.attributes.rows}/>
+                                onBlur={onBlurInput} onKeyUp={onEnterInput} multiline rows={field.attributes.TEXTAREA_ROWS}/>
             );
-        } else if (field.fieldType === TYPE_MOBILE_PHONE_NUMBER) {
+        } else if (dataType === DataTypes.MOBILE_PHONE_NUMBER) {
             return (
                     <MobilePhoneNumberInput label={label} value={fieldValue ? fieldValue : ''} inputRef={inputRef}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
                             helperText={invalidFields.get(name)} endAdornment={editButton()} readOnly={readOnly}
                             onBlur={onBlurInput} onKeyUp={onEnterInput}/>
             );
-        } else if (field.fieldType === TYPE_TIMESTAMP) {
+        } else if (dataType === DataTypes.DATETIME) {
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
@@ -162,7 +160,7 @@ function FormField(props) {
                             cancelLabel={t('common.cancel')} todayLabel={t('common.today')}/>
                     </MuiPickersUtilsProvider>
             );
-        } else if (field.fieldType === TYPE_MANY_TO_ONE) {
+        } else if (dataType === DataTypes.LOOKUP) {
             return (
                     <LookupField field={field} value={fieldValue} label={label} onChange={onChangeFieldValue} 
                         helperText={invalidFields.get(name)} name={name} error={invalidFields.has(name)} readOnly={readOnly}/>

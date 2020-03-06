@@ -86,7 +86,7 @@ export default function SideNavBar(props) {
                         if (item.metadata) {
                             let meta = item.metadata;
                             if (meta.source === 'APPLICATION_MODULE') {
-                                label = t('enum.ApplicationModule.' + meta.className);
+                                label = t('enum.ss.martin.platform.constants.ApplicationModule.' + meta.className);
                             } else if (meta.source === 'ENTITY') {
                                 label = t('model.' + meta.className + '.label.many');
                             }

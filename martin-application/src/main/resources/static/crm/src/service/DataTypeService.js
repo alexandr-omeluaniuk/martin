@@ -34,22 +34,18 @@ export const SERVER_DATE_FORMAT = 'DD.MM.YYYY';
 
 export const SERVER_DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
 
-// ----------------------------------------------- FIELD TYPES ----------------------------------------------------------------------------
-export const TYPE_STRING = 'String';
-
-export const TYPE_DATE = "DATE";
-
-export const TYPE_SET = "Set";
-
-export const TYPE_AVATAR = "Avatar";
-
-export const TYPE_TEXTAREA = "TextArea";
-
-export const TYPE_MOBILE_PHONE_NUMBER = "MobilePhoneNumber";
-
-export const TYPE_TIMESTAMP = "TIMESTAMP";
-
-export const TYPE_MANY_TO_ONE = "ManyToOne";
+// ----------------------------------------------- DATA TYPES -----------------------------------------------------------------------------
+export const DataTypes = {
+    ENUM: 'ENUM',
+    ENUM_COLLECTION: 'ENUM_COLLECTION',
+    STRING: 'STRING',
+    DATE: 'DATE',
+    DATETIME: 'DATETIME',
+    AVATAR: 'AVATAR',
+    LOOKUP: 'LOOKUP',
+    MOBILE_PHONE_NUMBER: 'MOBILE_PHONE_NUMBER',
+    TEXTAREA: 'TEXTAREA'
+};
 // ----------------------------------------------- VALIDATORS -----------------------------------------------------------------------------
 export const V_REGEX_EMAIL = /\S+@\S+\.\S+/;
 
@@ -71,25 +67,24 @@ export default class DataTypeService {
     static renderTableCell = (entity, field, t, entityData) => {
         let value = entityData[field.id];
         let renderValue = value;
-        console.log(value);
-        console.log(field);
-        if (field.enumField) {  // TODO enter ListViewColumn type
+        let dataType = field.layoutField.dataType;
+        if (dataType === DataTypes.ENUM) {
             renderValue = t('enum.' + field.enumField + '.' + value);
-        } else if (field.attributes && field.attributes.genericClassEnum) {
+        } else if (dataType === DataTypes.ENUM_COLLECTION) {
             let sb = '';
             value.forEach(v => {
-                sb += t('enum.' + field.genericClass + '.' + v) + ' | ';
+                sb += t('enum.' + field.layoutField.attributes.GENERIC_TYPE + '.' + v) + ' | ';
             });
             if (sb.length > 3) {
                 sb = sb.substring(0, sb.length - 3);
             }
             renderValue = sb;
-        } else if (field.layoutField.fieldType === TYPE_AVATAR) {
+        } else if (dataType === DataTypes.AVATAR) {
             renderValue = entityData.hasAvatar ?
                 (<Avatar src={this.getAvatarUrl(entity, entityData.id)}>
                     <Icon>perm_identity</Icon>
                 </Avatar>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
-        } else if (field.layoutField.attributes && field.layoutField.attributes.lookupFieldTemplate) {
+        } else if (dataType === DataTypes.LOOKUP) {
             renderValue = this.renderLookupField(field.layoutField, value);
         }
         return renderValue;
@@ -104,11 +99,12 @@ export default class DataTypeService {
     
     static convertUIValueToServerFormat = (field, value) => {
         let result = value;
-        if (field.fieldType === TYPE_DATE) {
+        let dataType = field.dataType;
+        if (dataType === DataTypes.DATE) {
             result = value.format(SERVER_DATE_FORMAT);
-        } else if (field.fieldType === TYPE_TIMESTAMP) {
+        } else if (dataType === DataTypes.DATETIME) {
             result = moment(value).format(SERVER_DATETIME_FORMAT);
-        } else if (field.fieldType === TYPE_AVATAR) {
+        } else if (dataType === DataTypes.AVATAR) {
             result = value ? {
                 id: null,
                 binaryData: value.indexOf(',') !== -1 ? value.split(',')[1] : value,
@@ -120,13 +116,14 @@ export default class DataTypeService {
     
     static convertServerValueToUIFormat = (field, data, entity) => {
         let value = data[field.name];
-        if (field.fieldType === TYPE_DATE) {
+        let dataType = field.dataType;
+        if (dataType === DataTypes.DATE) {
             value = moment(value, SERVER_DATE_FORMAT);
-        } else if (field.fieldType === TYPE_TIMESTAMP) {
+        } else if (dataType === DataTypes.DATETIME) {
             value = moment(value, SERVER_DATETIME_FORMAT);
-        } else if (field.fieldType === TYPE_STRING) {
+        } else if (dataType === DataTypes.STRING) {
             value = value === null || value === undefined ? '' : value;
-        } else if (field.fieldType === TYPE_AVATAR) {
+        } else if (dataType === DataTypes.AVATAR) {
             value = data.hasAvatar ? this.getAvatarUrl(entity, data.id) : null;
         }
         return value;
