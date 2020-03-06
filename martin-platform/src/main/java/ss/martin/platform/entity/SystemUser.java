@@ -42,7 +42,6 @@ import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FormField;
-import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.SideBarNavigationItem;
@@ -73,7 +72,6 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     @JoinColumn(name = "avatar")
     private EntityFile avatar;
     /** Has avatar. */
-    @HiddenField
     @Column(name = "has_avatar")
     private boolean hasAvatar;
     /** Email. */
@@ -86,7 +84,6 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     private String email;
     /** Password. */
     @JsonIgnore
-    @HiddenField
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "password", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String password;
@@ -107,20 +104,17 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     private String lastname;
     /** Status. */
     @NotNull
-    @HiddenField
     @ListViewColumn(sortable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private SystemUserStatus status;
     /** Standard role. */
     @NotNull
-    @HiddenField
     @ListViewColumn(sortable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "standard_role", nullable = false)
     private StandardRole standardRole;
     /** Validation string for registration. */
-    @HiddenField
     @Column(name = "validation_string")
     private String validationString;
 // ==================================== SET & GET =================================================

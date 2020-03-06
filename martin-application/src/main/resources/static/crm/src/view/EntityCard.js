@@ -124,7 +124,7 @@ function EntityCard(props) {
                 <React.Fragment>
                     <Grid container spacing={2}>
                         {entityData.layout.fields.filter(f => { return f.fieldType !== TYPE_AVATAR; }).map((field, idx) => {
-                            if (field.hidden || !field.grid) {
+                            if (!field.grid) {
                                 return null;
                             }
                             return (

@@ -54,7 +54,6 @@ import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FilterCondition;
 import ss.martin.platform.anno.ui.FilterPredicate;
 import ss.martin.platform.anno.ui.FormField;
-import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.MaterialIcon;
@@ -206,8 +205,6 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             fieldGridSystem.setXs(grid.xs());
             layoutField.setGrid(fieldGridSystem);
         });
-        HiddenField hidden = field.getAnnotation(HiddenField.class);
-        layoutField.setHidden(hidden != null);
         layoutField.setValidators(setValidators(field));
         Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
         genericTypes.ifPresent((gt) -> {

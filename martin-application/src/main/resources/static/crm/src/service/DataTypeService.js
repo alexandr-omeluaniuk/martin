@@ -71,6 +71,8 @@ export default class DataTypeService {
     static renderTableCell = (entity, field, t, entityData) => {
         let value = entityData[field.id];
         let renderValue = value;
+        console.log(value);
+        console.log(field);
         if (field.enumField) {  // TODO enter ListViewColumn type
             renderValue = t('enum.' + field.enumField + '.' + value);
         } else if (field.attributes && field.attributes.genericClassEnum) {

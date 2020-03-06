@@ -144,7 +144,7 @@ function StandardForm(props) {
                 <DialogContent dividers={true}>
                     <Grid container spacing={2}>
                         {layout.fields.map((field, idx) => {
-                            if (field.hidden || !field.grid) {
+                            if (!field.grid) {
                                 return null;
                             }
                             return (

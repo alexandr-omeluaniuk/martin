@@ -29,7 +29,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import ss.martin.platform.anno.ui.HiddenField;
 
 /**
  * Tenant entity.
@@ -39,7 +38,6 @@ import ss.martin.platform.anno.ui.HiddenField;
 public abstract class TenantEntity extends DataModel {
     /** Subscription. */
     @JsonIgnore
-    @HiddenField
     @OneToOne(fetch = FetchType.LAZY)
     @NotNull
     @JoinColumn(name = "subscription_id", nullable = false)

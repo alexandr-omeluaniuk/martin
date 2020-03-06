@@ -205,8 +205,6 @@ public class Layout {
         private String name;
         /** Field type. */
         private String fieldType;
-        /** Hidden. */
-        private boolean hidden;
         /** Grid system. */
         private Grid grid;
         /** Validators. */
@@ -236,18 +234,6 @@ public class Layout {
          */
         public void setFieldType(String fieldType) {
             this.fieldType = fieldType;
-        }
-        /**
-         * @return the hidden
-         */
-        public boolean isHidden() {
-            return hidden;
-        }
-        /**
-         * @param hidden the hidden to set
-         */
-        public void setHidden(boolean hidden) {
-            this.hidden = hidden;
         }
         /**
          * @return the grid

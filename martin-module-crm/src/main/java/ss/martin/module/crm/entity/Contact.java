@@ -46,7 +46,6 @@ import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTab;
 import ss.martin.platform.anno.ui.CardTitle;
-import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.EntityAudit;
@@ -74,7 +73,6 @@ public class Contact extends EntityAudit implements HasAvatar {
     @JoinColumn(name = "avatar")
     private EntityFile avatar;
     /** Has avatar. */
-    @HiddenField
     @Column(name = "has_avatar")
     private boolean hasAvatar;
     /** First name. */
@@ -107,7 +105,6 @@ public class Contact extends EntityAudit implements HasAvatar {
     private String phoneMobile;
     /** Contact visits. */
     @CardTab(type = RepresentationComponentType.LIST_VIEW)
-    @HiddenField
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
     private List<ContactVisit> visits;

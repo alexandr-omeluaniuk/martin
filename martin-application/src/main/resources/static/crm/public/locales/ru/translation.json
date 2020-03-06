@@ -154,18 +154,26 @@
         "back": "Назад"
     },
     "enum": {
-        "SystemUserStatus": {
-            "ACTIVE": "Активный",
-            "INACTIVE": "Деактивирован",
-            "REGISTRATION": "В процессе регистрации"
-        },
-        "StandardRole": {
-            "ROLE_SUPER_ADMIN": "Супер админстратор",
-            "ROLE_SUBSCRIPTION_ADMINISTRATOR": "Администратор",
-            "ROLE_SUBSCRIPTION_USER": "Пользователь"
-        },
-        "ApplicationModule": {
-            "CRM": "Система управления клиентами"
-        }
+        "ss": {
+            "martin": {
+                "platform": {
+                    "constants": {
+                        "SystemUserStatus": {
+                            "ACTIVE": "Активный",
+                            "INACTIVE": "Деактивирован",
+                            "REGISTRATION": "В процессе регистрации"
+                        },
+                        "StandardRole": {
+                            "ROLE_SUPER_ADMIN": "Супер админстратор",
+                            "ROLE_SUBSCRIPTION_ADMINISTRATOR": "Администратор",
+                            "ROLE_SUBSCRIPTION_USER": "Пользователь"
+                        },
+                        "ApplicationModule": {
+                            "CRM": "Система управления клиентами"
+                        }
+                    }
+                }
+            }
+        }    
     }
 }

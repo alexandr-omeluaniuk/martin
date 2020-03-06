@@ -28,7 +28,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import ss.martin.platform.anno.ui.HiddenField;
 
 /**
  * DataModel.
@@ -39,7 +38,6 @@ public abstract class DataModel implements Serializable {
     /** Primary key. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @HiddenField
     private Long id;
     /**
      * @return the id

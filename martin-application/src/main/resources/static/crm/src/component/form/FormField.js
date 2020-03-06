@@ -123,8 +123,7 @@ function FormField(props) {
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <KeyboardDatePicker disableToolbar variant="inline" format={t('constants.momentJsDateFormat')} margin="normal"
                             label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
-                            className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}
-                            clearLabel={t('common.clear')} cancelLabel={t('common.cancel')} todayLabel={t('common.today')}/>
+                            className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
                     </MuiPickersUtilsProvider>
             );
         } else if (field.fieldType === TYPE_SET) {
