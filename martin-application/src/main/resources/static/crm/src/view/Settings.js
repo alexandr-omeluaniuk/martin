@@ -27,7 +27,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
 import InlineTabHeader from '../component/util/InlineTabHeader';
 
