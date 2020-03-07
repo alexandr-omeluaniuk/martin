@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTable(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const {headCells, title, entity, metadata, permanentFilter } = props;
+    const {headCells, title, entity, metadata, permanentFilter, onLoadCallback } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [rows, setRows] = React.useState([]);
     const [total, setTotal] = React.useState(0);
@@ -140,6 +140,9 @@ function EnhancedTable(props) {
             if (resp) {
                 setRows(resp.data);
                 setTotal(resp.total);
+                if (onLoadCallback) {
+                    onLoadCallback(resp);
+                }
             }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -58,6 +58,7 @@ function EntityCard(props) {
     const classes = useStyles();
     // --------------------------------------------------- STATE --------------------------------------------------------------------------
     const [update, setUpdate] = React.useState(false);
+    const [countMap, setCountMap] = React.useState(new Map());
     const [entityData, setEntityData] = React.useState(null);
     const [dataSnapshot, setDataSnapshot] = React.useState(null);
     const [activeTab, setActiveTab] = React.useState(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
@@ -66,6 +67,11 @@ function EntityCard(props) {
     const onChangeFieldValue = (name, value) => {
         entityData.data[name] = value;
         setEntityData(JSON.parse(JSON.stringify(entityData)));
+    };
+    const onTabCountUpdate = (data, collection) => {
+        let newCountMap = new Map(countMap);
+        newCountMap.set(collection.name, data.total);
+        setCountMap(newCountMap);
     };
     const onFieldEdit = (field, value) => {
         let validation = DataTypeService.validateField(field, value, t);
@@ -147,7 +153,7 @@ function EntityCard(props) {
                                     operator: 'EQUALS'
                             }],
                             operator: 'AND'
-                        }}/>
+                        }} onLoadCallback={(data) => onTabCountUpdate(data, collection)}/>
                 );
             } else {
                 return null;
@@ -199,7 +205,8 @@ function EntityCard(props) {
                             return (
                                     <Tab key={idx} label={(
                                         <InlineTabHeader icon={tab.attributes.COLLECTION_TYPE_METADATA.icon}
-                                            title={t('model.' + tab.attributes.COLLECTION_TYPE_METADATA.className + '.label.many')}/>
+                                            title={t('model.' + tab.attributes.COLLECTION_TYPE_METADATA.className + '.label.many')
+                                                + ' (' + (countMap.has(tab.name) ? countMap.get(tab.name) : 0) + ')'}/>
                                     )}></Tab>
                             );
                         })}
