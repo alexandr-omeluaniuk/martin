@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTable(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const {headCells, title, entity, metadata } = props;
+    const {headCells, title, entity, metadata, permanentFilter } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [rows, setRows] = React.useState([]);
     const [total, setTotal] = React.useState(0);
@@ -126,11 +126,16 @@ function EnhancedTable(props) {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
+        let filter = [];
+        if (permanentFilter) {
+            filter.push(permanentFilter);
+        }
         DataService.requestPost('/entity/search/' + entity, {
             page: page + 1,
             pageSize: rowsPerPage,
             order: order,
-            orderBy: orderBy
+            orderBy: orderBy,
+            filter: filter
         }).then(resp => {
             if (resp) {
                 setRows(resp.data);

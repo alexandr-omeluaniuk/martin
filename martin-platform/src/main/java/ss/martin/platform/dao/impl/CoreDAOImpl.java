@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.From;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -166,16 +169,26 @@ class CoreDAOImpl implements CoreDAO {
     private Predicate fromFilter(EntitySearchRequest.FilterCondition filter, CriteriaBuilder cb, Root c) {
         List<Predicate> innerPredicates = new ArrayList<>();
         filter.getPredicates().forEach((filterPredicate) -> {
+            Path path;
+            if (filterPredicate.getField().contains(".")) {
+                From from = c;
+                String[] pathParts = filterPredicate.getField().split("\\.");
+                for (int i = 0; i < pathParts.length - 1; i++) {
+                    from = c.join(pathParts[i], JoinType.LEFT);
+                }
+                path = from.get(pathParts[pathParts.length - 1]);
+            } else {
+                path = c.get(filterPredicate.getField());
+            }
             if (JPAComparisonOperator.EQUALS.equals(filterPredicate.getOperator())) {
-                innerPredicates.add(cb.equal(c.get(filterPredicate.getField()), filterPredicate.getValue()));
+                innerPredicates.add(cb.equal(path, filterPredicate.getValue()));
             } else if (JPAComparisonOperator.LIKE.equals(filterPredicate.getOperator())) {
-                innerPredicates.add(cb.like(c.get(filterPredicate.getField()),
-                        String.valueOf(filterPredicate.getValue())));
+                innerPredicates.add(cb.like(path, String.valueOf(filterPredicate.getValue())));
             } else if (JPAComparisonOperator.GREATER_THAN_OR_EQUAL_TO.equals(filterPredicate.getOperator())) {
-                innerPredicates.add(cb.greaterThanOrEqualTo(c.get(filterPredicate.getField()),
+                innerPredicates.add(cb.greaterThanOrEqualTo(path,
                         (Comparable) filterPredicate.getValue()));
             } else if (JPAComparisonOperator.LESS_THAN_OR_EQUAL_TO.equals(filterPredicate.getOperator())) {
-                innerPredicates.add(cb.lessThanOrEqualTo(c.get(filterPredicate.getField()),
+                innerPredicates.add(cb.lessThanOrEqualTo(path,
                         (Comparable) filterPredicate.getValue()));
             }
         });

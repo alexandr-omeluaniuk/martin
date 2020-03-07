@@ -117,7 +117,7 @@ function EntityCard(props) {
         );
     };
     
-    const tabContent = (cardTabs) => {
+    const tabContent = (entityCollections) => {
         if (activeTab === 0) {
             return (
                 <React.Fragment>
@@ -136,11 +136,18 @@ function EntityCard(props) {
                     {entityData.layout.audit ? auditInfo() : null}
                 </React.Fragment>
             );
-        } else if (cardTabs) {
-            let cardTab = cardTabs[activeTab - 1];
-            if (cardTab.attributes.REPRESENTATION_TYPE === 'LIST_VIEW') {
+        } else if (entityCollections) {
+            let collection = entityCollections[activeTab - 1];
+            if (collection.attributes.REPRESENTATION_TYPE === 'LIST_VIEW') {
                 return (
-                        <ListView metadata={cardTab.attributes.COLLECTION_TYPE_METADATA} />
+                        <ListView metadata={collection.attributes.COLLECTION_TYPE_METADATA} filter={{
+                            predicates: [{
+                                    field: collection.attributes.MAPPED_BY + '.id',
+                                    value: id,
+                                    operator: 'EQUALS'
+                            }],
+                            operator: 'AND'
+                        }}/>
                 );
             } else {
                 return null;
@@ -165,7 +172,7 @@ function EntityCard(props) {
     if (!entityData) {
         return null;
     }
-    let cardTabs = entityData.layout.fields.filter(f => {
+    let entityCollections = entityData.layout.fields.filter(f => {
         return f.dataType === DataTypes.ENTITY_COLLECTION;
     });
     let ava = entityData.data.hasAvatar ? (<Avatar src={DataTypeService.getAvatarUrl(entity, entityData.data.id)} />)
@@ -188,7 +195,7 @@ function EntityCard(props) {
                         <Tab label={(
                                 <InlineTabHeader icon={generalTabIcon} title={t('model.' + entity + '.label.single')}/>
                         )}></Tab>
-                        {cardTabs.map((tab, idx) => {
+                        {entityCollections.map((tab, idx) => {
                             return (
                                     <Tab key={idx} label={(
                                         <InlineTabHeader icon={tab.attributes.COLLECTION_TYPE_METADATA.icon}
@@ -197,7 +204,7 @@ function EntityCard(props) {
                             );
                         })}
                     </Tabs>
-                    {tabContent(cardTabs)}
+                    {tabContent(entityCollections)}
                 </CardContent>
             </Card>
     );

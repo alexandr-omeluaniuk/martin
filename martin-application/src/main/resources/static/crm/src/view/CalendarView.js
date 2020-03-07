@@ -121,6 +121,7 @@ function CalendarView(props) {
     useEffect(() => {
         return () => {
             setShowSpinner(false);
+            calendarComponent = null;
             DataService.abort();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

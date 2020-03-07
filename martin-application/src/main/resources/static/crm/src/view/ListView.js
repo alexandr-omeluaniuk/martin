@@ -27,11 +27,11 @@ import EnhancedTable from './../component/datatable/EnhancedTable';
 import { useTranslation } from 'react-i18next';
 
 function ListView(props) {
-    const { metadata } = props;
+    const { metadata, filter } = props;
     const { t } = useTranslation();
     return (
             <EnhancedTable headCells={metadata.listViewColumns} title={t('model.' + metadata.className + '.label.many')}
-                entity={metadata.className} metadata={metadata}/>
+                entity={metadata.className} metadata={metadata} permanentFilter={filter}/>
     );
 }
 

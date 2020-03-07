@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
@@ -252,6 +253,9 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                     layoutField.getAttributes().put(DataTypeAttribute.COLLECTION_TYPE_METADATA,
                             getEntityListView((Class<? extends DataModel>) genericClass));
                 }
+                Optional.ofNullable(field.getAnnotation(OneToMany.class)).ifPresent((oneToMany) -> {
+                    layoutField.getAttributes().put(DataTypeAttribute.MAPPED_BY, oneToMany.mappedBy());
+                });
             } else if (genericClass.isEnum()) {
                 type = DataType.ENUM_COLLECTION;
             }

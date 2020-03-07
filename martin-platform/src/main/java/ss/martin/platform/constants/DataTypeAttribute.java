@@ -45,5 +45,7 @@ public enum DataTypeAttribute {
     /** Collection type metadata. */
     COLLECTION_TYPE_METADATA,
     /** Generic type. */
-    GENERIC_TYPE;
+    GENERIC_TYPE,
+    /** Mapped by. */
+    MAPPED_BY;
 }
