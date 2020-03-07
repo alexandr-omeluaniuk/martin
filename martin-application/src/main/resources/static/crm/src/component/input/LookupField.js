@@ -71,7 +71,7 @@ function LookupField(props) {
                     predicate.value = predicate.value.replace('{val}', searchToken);
                 });
             });
-            DataService.requestPost('/entity/search/' + field.attributes.relationshipType, {
+            DataService.requestPost('/entity/search/' + field.fieldType, {
                 page: 1,
                 pageSize: 5,
                 order: field.attributes.LOOKUP_ORDER,
@@ -100,7 +100,7 @@ function LookupField(props) {
     const start = () => {
         return (
             <InputAdornment position="start">
-                <Icon>{field.attributes.ICON ? field.attributes.ICON : 'extension'}</Icon>
+                <Icon>{field.attributes.LOOKUP_ICON ? field.attributes.LOOKUP_ICON : 'extension'}</Icon>
             </InputAdornment>
         );
     };

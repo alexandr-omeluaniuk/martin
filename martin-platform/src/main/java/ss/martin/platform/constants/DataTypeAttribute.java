@@ -38,6 +38,8 @@ public enum DataTypeAttribute {
     LOOKUP_ORDER,
     /** Lookup: filter. */
     LOOKUP_FILTER,
+    /** Lookup icon. */
+    LOOKUP_ICON,
     /** Representation type. */
     REPRESENTATION_TYPE,
     /** Collection type metadata. */

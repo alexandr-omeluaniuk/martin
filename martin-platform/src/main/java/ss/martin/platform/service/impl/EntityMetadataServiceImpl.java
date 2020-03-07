@@ -290,6 +290,9 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                 }
             });
             layoutField.getAttributes().put(DataTypeAttribute.LOOKUP_FILTER, filterConditions);
+            Optional.ofNullable(field.getType().getAnnotation(MaterialIcon.class)).ifPresent((mIcon) -> {
+                layoutField.getAttributes().put(DataTypeAttribute.LOOKUP_ICON, mIcon.icon());
+            });
         } else if (field.getAnnotation(TextArea.class) != null) {
             TextArea anno = field.getAnnotation(TextArea.class);
             type = DataType.TEXTAREA;
