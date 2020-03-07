@@ -25,6 +25,7 @@
 import DataService from './DataService';
 import AppURLs from '../constants/AppURLs';
 import Dashboard from '../view/Dashboard';
+import Settings from '../view/Settings';
 
 class SecurityService {
     static _permissions;
@@ -63,6 +64,12 @@ class SecurityService {
                         });
                     });
                 }
+                navItems.push({
+                    sideNavBar: 'settings',
+                    icon: 'settings',
+                    path: AppURLs.links.settings,
+                    component: Settings
+                });
                 resolve(navItems);
             });
         });

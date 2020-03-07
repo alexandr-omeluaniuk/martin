@@ -33,6 +33,7 @@ const AppURLs = {
         registration: '/finish-registration/:validationString',
         rest: context + '/api',
         view: context + '/view',
+        settings: context + '/settings',
         entity: context + '/view/entity'
     }
 };

@@ -8,7 +8,8 @@
     },
     "toolbar": {
         "accountmenu": {
-            "logout": "Выход"
+            "logout": "Выход",
+            "settings": "Настройки"
         }
     },
     "constants": {
@@ -16,7 +17,8 @@
         "momentJsDateTimeFormat": "DD/MM/YYYY HH:mm"
     },
     "sideNavBar": {
-        "dashboard": "Обзор"
+        "dashboard": "Обзор",
+        "settings": "Настройки"
     },
     "loginPage": {
         "signIn": "Войти в систему",
@@ -177,5 +179,8 @@
                 }
             }
         }    
+    },
+    "settings": {
+        "userInterface": "Настройки интерфейса"
     }
 }
