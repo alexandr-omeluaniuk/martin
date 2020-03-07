@@ -12,8 +12,8 @@
         }
     },
     "constants": {
-        "momentJsDateFormat": "DD.MM.YYYY",
-        "momentJsDateTimeFormat": "DD.MM.YYYY HH:mm"
+        "momentJsDateFormat": "DD/MM/YYYY",
+        "momentJsDateTimeFormat": "DD/MM/YYYY HH:mm"
     },
     "sideNavBar": {
         "dashboard": "Обзор"

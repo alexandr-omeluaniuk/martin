@@ -87,6 +87,10 @@ export default class DataTypeService {
                 </Avatar>) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
         } else if (dataType === DataTypes.LOOKUP) {
             renderValue = this.renderLookupField(field.layoutField, value);
+        } else if (dataType === DataTypes.DATETIME) {
+            renderValue = value ? moment(value, SERVER_DATETIME_FORMAT).format(t('constants.momentJsDateTimeFormat')) : '';
+        } else if (dataType === DataTypes.DATE) {
+            renderValue = value ? moment(value, SERVER_DATE_FORMAT).format(t('constants.momentJsDateFormat')) : '';
         }
         return renderValue;
     }
@@ -133,26 +137,28 @@ export default class DataTypeService {
     static validateField = (field, value, t) => {
         let invalidFields = new Map();
         let fieldName = field.name;
-        field.validators.forEach(v => {
-            if (v.type === V_NOT_NULL && (value === null || value === undefined)) {
-                invalidFields.set(fieldName, t('validation.notnull'));
-            }
-            if (v.type === V_NOT_EMPTY && (value === null || value === undefined || value.length === 0)) {
-                invalidFields.set(fieldName, t('validation.notempty'));
-            }
-            if (v.type === V_SIZE && value && (value.length > v.attributes.max)) {
-                invalidFields.set(fieldName, t('validation.maxLength', {length: v.attributes.max}));
-            }
-            if (v.type === V_SIZE && value && (value.length < v.attributes.min)) {
-                invalidFields.set(fieldName, t('validation.minLength', {length: v.attributes.min}));
-            }
-            if (v.type === V_EMAIL && value && !V_REGEX_EMAIL.test(value)) {
-                invalidFields.set(fieldName, t('validation.email'));
-            }
-            if (v.type === V_MOBILE_PHONE_NUMBER && value && !V_REGEX_MOBILE_PHONE_NUMBER.test(value)) {
-                invalidFields.set(fieldName, t('validation.phone'));
-            }
-        });
+        if (field.grid) {
+            field.validators.forEach(v => {
+                if (v.type === V_NOT_NULL && (value === null || value === undefined)) {
+                    invalidFields.set(fieldName, t('validation.notnull'));
+                }
+                if (v.type === V_NOT_EMPTY && (value === null || value === undefined || value.length === 0)) {
+                    invalidFields.set(fieldName, t('validation.notempty'));
+                }
+                if (v.type === V_SIZE && value && (value.length > v.attributes.max)) {
+                    invalidFields.set(fieldName, t('validation.maxLength', {length: v.attributes.max}));
+                }
+                if (v.type === V_SIZE && value && (value.length < v.attributes.min)) {
+                    invalidFields.set(fieldName, t('validation.minLength', {length: v.attributes.min}));
+                }
+                if (v.type === V_EMAIL && value && !V_REGEX_EMAIL.test(value)) {
+                    invalidFields.set(fieldName, t('validation.email'));
+                }
+                if (v.type === V_MOBILE_PHONE_NUMBER && value && !V_REGEX_MOBILE_PHONE_NUMBER.test(value)) {
+                    invalidFields.set(fieldName, t('validation.phone'));
+                }
+            });
+        }
         return invalidFields;
     }
     

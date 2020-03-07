@@ -169,12 +169,13 @@ function EnhancedTable(props) {
                                     <TableRow hover role="checkbox" key={index} 
                                         aria-checked={isItemSelected} tabIndex={-1} selected={isItemSelected}>
                                         <TableCell padding="checkbox">
-                                            <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }}
-                                                    onClick={event => {
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                        handleCheckboxClick(event, row)
-                                                    }}/>
+                                            <NavLink to={AppURLs.links.entity + '/' + entity + '/' + row.id}>
+                                                <Tooltip title={t('common.open')}>
+                                                    <IconButton>
+                                                        <Icon>open_in_new</Icon>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </NavLink>
                                         </TableCell>
                                         {headCells.map((column, i) => {
                                             let cellValue = DataTypeService.renderTableCell(entity, column, t, row);
@@ -201,13 +202,12 @@ function EnhancedTable(props) {
                                             </Tooltip>
                                         </TableCell>
                                         <TableCell padding="checkbox">
-                                            <NavLink to={AppURLs.links.entity + '/' + entity + '/' + row.id}>
-                                                <Tooltip title={t('common.open')}>
-                                                    <IconButton>
-                                                        <Icon>open_in_new</Icon>
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </NavLink>
+                                            <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }}
+                                                    onClick={event => {
+                                                        event.preventDefault();
+                                                        event.stopPropagation();
+                                                        handleCheckboxClick(event, row)
+                                                    }}/>
                                         </TableCell>
                                     </TableRow>
                                 );

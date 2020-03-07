@@ -127,7 +127,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         Optional.ofNullable(clazz.getAnnotation(MaterialIcon.class)).ifPresent((anno) -> {
             component.setIcon(anno.icon());
         });
-        for (Field field : clazz.getDeclaredFields()) {
+        for (Field field : getClassFields(clazz)) {
             ListViewColumn listViewColumnAnno = field.getAnnotation(ListViewColumn.class);
             if (listViewColumnAnno != null) {
                 ListView.ListViewColumn listViewColumn = new ListView.ListViewColumn();
