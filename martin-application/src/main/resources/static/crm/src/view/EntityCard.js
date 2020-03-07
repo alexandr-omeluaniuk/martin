@@ -124,6 +124,42 @@ function EntityCard(props) {
     };
     
     const tabContent = (entityCollections) => {
+        return (
+                <React.Fragment>
+                    <Grid container spacing={2} style={{display: activeTab === 0 ? '' : 'none'}}>
+                        {entityData.layout.fields.filter(f => { return f.dataType !== DataTypes.AVATAR; }).map((field, idx) => {
+                            if (!field.grid) {
+                                return null;
+                            }
+                            return (
+                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue} onFieldEdit={onFieldEdit}
+                                        invalidFields={invalidFields} entity={entity} 
+                                        fieldValue={DataTypeService.convertServerValueToUIFormat(field, entityData.data, entity)}/>
+                            );
+                        })}
+                    </Grid>
+                    {entityData.layout.audit && activeTab === 0 ? auditInfo() : null}
+                    {entityCollections.map((collection, idx) => {
+                        let collectionTabContent = null;
+                        if (collection.attributes.REPRESENTATION_TYPE === 'LIST_VIEW') {
+                            collectionTabContent = (
+                                    <ListView metadata={collection.attributes.COLLECTION_TYPE_METADATA} filter={{
+                                        predicates: [{
+                                                field: collection.attributes.MAPPED_BY + '.id',
+                                                value: id,
+                                                operator: 'EQUALS'
+                                        }],
+                                        operator: 'AND'
+                                    }} onLoadCallback={(data) => onTabCountUpdate(data, collection)}/>
+                            );
+                        }
+                        return (<div key={idx} style={{display: activeTab - 1 === idx ? '' : 'none'}}>
+                                    {collectionTabContent}
+                                </div>);
+                    })}
+                </React.Fragment>
+                
+        );
         if (activeTab === 0) {
             return (
                 <React.Fragment>
