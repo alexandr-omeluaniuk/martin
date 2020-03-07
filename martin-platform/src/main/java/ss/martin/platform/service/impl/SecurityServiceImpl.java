@@ -72,6 +72,8 @@ class SecurityServiceImpl implements SecurityService {
     public UserPermissions getUserPermissions() throws Exception {
         SystemUser currentUser = securityContext.currentUser();
         UserPermissions permissions = new UserPermissions();
+        permissions.setHasAvatar(currentUser.isHasAvatar());
+        permissions.setUserId(currentUser.getId());
         permissions.setSubscription(securityContext.subscription());
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());

@@ -160,41 +160,6 @@ function EntityCard(props) {
                 </React.Fragment>
                 
         );
-        if (activeTab === 0) {
-            return (
-                <React.Fragment>
-                    <Grid container spacing={2}>
-                        {entityData.layout.fields.filter(f => { return f.dataType !== DataTypes.AVATAR; }).map((field, idx) => {
-                            if (!field.grid) {
-                                return null;
-                            }
-                            return (
-                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue} onFieldEdit={onFieldEdit}
-                                        invalidFields={invalidFields} entity={entity} 
-                                        fieldValue={DataTypeService.convertServerValueToUIFormat(field, entityData.data, entity)}/>
-                            );
-                        })}
-                    </Grid>
-                    {entityData.layout.audit ? auditInfo() : null}
-                </React.Fragment>
-            );
-        } else if (entityCollections) {
-            let collection = entityCollections[activeTab - 1];
-            if (collection.attributes.REPRESENTATION_TYPE === 'LIST_VIEW') {
-                return (
-                        <ListView metadata={collection.attributes.COLLECTION_TYPE_METADATA} filter={{
-                            predicates: [{
-                                    field: collection.attributes.MAPPED_BY + '.id',
-                                    value: id,
-                                    operator: 'EQUALS'
-                            }],
-                            operator: 'AND'
-                        }} onLoadCallback={(data) => onTabCountUpdate(data, collection)}/>
-                );
-            } else {
-                return null;
-            }
-        }
     };
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
     useEffect(() => {

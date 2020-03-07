@@ -29,13 +29,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.dao.EntityFileDAO;
 import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.EntityFile_;
 import ss.martin.platform.entity.HasAvatar;
+import ss.martin.platform.entity.TenantEntity_;
+import ss.martin.platform.security.SecurityContext;
 
 /**
  * Entity file DAO implementation.
@@ -46,6 +50,9 @@ class EntityFileDAOImpl implements EntityFileDAO {
     /** Entity manager. */
     @PersistenceContext
     private EntityManager em;
+    /** Security context. */
+    @Autowired
+    private SecurityContext securityContext;
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public EntityFile getAvatar(Long ownerId, Class<? extends HasAvatar> clazz) throws Exception {
@@ -54,7 +61,9 @@ class EntityFileDAOImpl implements EntityFileDAO {
         Root<EntityFile> c = criteria.from(EntityFile.class);
         criteria.select(c).where(cb.and(
                 cb.equal(c.get(EntityFile_.ownerId), ownerId),
-                cb.equal(c.get(EntityFile_.ownerClass), clazz.getName())
+                cb.equal(c.get(EntityFile_.ownerClass), clazz.getName()),
+                cb.equal(c.get(EntityFile_.type), EntityFileType.AVATAR),
+                cb.equal(c.get(TenantEntity_.subscription), securityContext.subscription())
         ));
         List<EntityFile> files = em.createQuery(criteria).getResultList();
         return files.isEmpty() ? null : files.get(0);

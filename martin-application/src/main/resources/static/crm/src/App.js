@@ -3,11 +3,11 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Router } from "react-router-dom";
 import SecurityService from './service/SecurityService';
-import DesktopToolbar from './component/toolbar/DesktopToolbar';
+import DesktopToolbar from './component/navigation/DesktopToolbar';
 import DataService from './service/DataService';
 import Notification from './component/window/Notification';
-import SideNavBar from './component/toolbar/SideNavBar';
-import MainContent from './component/toolbar/MainContent';
+import SideNavBar from './component/navigation/SideNavBar';
+import MainContent from './component/navigation/MainContent';
 import { ruRU, enUS } from '@material-ui/core/locale';
 import { useTranslation } from 'react-i18next';
 
@@ -76,7 +76,8 @@ function App() {
                 <div className={classes.root}>
                     <CssBaseline />
                     <DesktopToolbar title={title} open={open} setOpen={setOpen} fullname={permissions ? permissions.fullname : ''}
-                            icon={icon}/>
+                            icon={icon} hasAvatar={permissions ? permissions.hasAvatar : false}
+                            userId={permissions ? permissions.userId : null}/>
                     <SideNavBar open={open} setOpen={setOpen} navItems={navItems} onItemSelected={(item) => {
                         setTitle(item.label);
                         setIcon(item.icon);

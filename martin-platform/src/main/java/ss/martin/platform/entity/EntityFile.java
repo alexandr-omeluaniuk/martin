@@ -26,10 +26,13 @@ package ss.martin.platform.entity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.constants.AppConstants;
+import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.jackson.ByteArrayDeserializer;
 
 /**
@@ -60,6 +63,11 @@ public class EntityFile extends TenantEntity {
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "owner_class", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
     private String ownerClass;
+    /** Type. */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "file_type", nullable = false)
+    private EntityFileType type;
 // ============================================= SET & GET ============================================================
     /**
      * @return the binaryData
@@ -108,6 +116,18 @@ public class EntityFile extends TenantEntity {
      */
     public void setOwnerClass(String ownerClass) {
         this.ownerClass = ownerClass;
+    }
+    /**
+     * @return the type
+     */
+    public EntityFileType getType() {
+        return type;
+    }
+    /**
+     * @param type the type to set
+     */
+    public void setType(EntityFileType type) {
+        this.type = type;
     }
 // ====================================================================================================================
     @Override

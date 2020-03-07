@@ -32,6 +32,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
@@ -77,7 +78,7 @@ const menuId = 'account-menu-id';
 function DesktopToolbar(props) {
     const { t } = useTranslation();
     const classes = useStyles();
-    const { title, open, setOpen, fullname, icon } = props;
+    const { title, open, setOpen, fullname, icon, hasAvatar, userId } = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     
@@ -134,7 +135,9 @@ function DesktopToolbar(props) {
                     </IconButton>
                     <IconButton edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true"
                             onClick={handleProfileMenuOpen} color="inherit">
-                            <Icon>account_circle</Icon>
+                            {hasAvatar 
+                                ? <Avatar src={AppURLs.links.rest + '/entity/avatar/ss.martin.platform.entity.SystemUser/' + userId}/> 
+                                : <Icon>account_circle</Icon>}
                     </IconButton>
                     { renderMenu }
                 </Toolbar>

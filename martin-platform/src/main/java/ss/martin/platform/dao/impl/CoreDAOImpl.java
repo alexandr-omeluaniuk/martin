@@ -26,6 +26,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.dao.CoreDAO;
@@ -220,6 +221,7 @@ class CoreDAOImpl implements CoreDAO {
             withAvatar.setHasAvatar(withAvatar.getAvatar() != null);
             Optional.ofNullable(withAvatar.getAvatar()).ifPresent((file) -> {
                 file.setOwnerId(entity.getId());
+                file.setType(EntityFileType.AVATAR);
                 file.setOwnerClass(entity.getClass().getName());
                 file.setSubscription(securityContext.currentUser().getSubscription());
             });

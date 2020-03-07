@@ -89,7 +89,7 @@ function AvatarInput(props) {
                         <IconButton color="secondary" onClick={() => {
                             inputRef.current.click();
                         }}>
-                            <Icon>account_circle</Icon>
+                            <Avatar><Icon>account_circle</Icon></Avatar>
                         </IconButton>
                     </Tooltip>
                 )}
