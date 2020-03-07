@@ -137,6 +137,11 @@
                 "listWeek": "Список",
                 "timeGridWeek": "Неделя"
             }
+        },
+        "theming": {
+            "title": "Палитра",
+            "primary": "Основной цвет",
+            "secondary": "Вспомогательный цвет"
         }
     },
     "common": {

@@ -29,6 +29,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { useTranslation } from 'react-i18next';
 import InlineTabHeader from '../component/util/InlineTabHeader';
+import Theming from '../component/settings/Theming';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -52,6 +53,7 @@ function Settings(props) {
                     }}>
                         <Tab label={(<InlineTabHeader icon={'equalizer'} title={t('settings.userInterface')}/>)}/>
                     </Tabs>
+                    <Theming />
                 </React.Fragment>
             </Paper>
     );
