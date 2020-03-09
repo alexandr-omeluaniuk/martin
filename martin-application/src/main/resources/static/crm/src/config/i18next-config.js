@@ -8,10 +8,11 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from 'i18next-browser-languagedetector';
 import XHR from 'i18next-xhr-backend';
+import AppURLs from '../constants/AppURLs';
 
 i18n.use(LanguageDetector).use(XHR).use(initReactI18next).init({
     backend: {
-        loadPath: '/locales/{{lng}}/{{ns}}.json'
+        loadPath: AppURLs.context + '/locales/{{lng}}/{{ns}}.json'
     },
     fallbackLng: "ru",
     debug: false,
