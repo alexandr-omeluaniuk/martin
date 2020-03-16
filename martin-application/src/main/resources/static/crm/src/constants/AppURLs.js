@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-const context = '/crm';
+const context = '/';
 
 const AppURLs = {
     context: context,
@@ -31,10 +31,10 @@ const AppURLs = {
         logout: '/logout',
         login: '/login',
         registration: '/finish-registration/:validationString',
-        rest: context + '/api',
-        view: context + '/view',
-        settings: context + '/settings',
-        entity: context + '/view/entity'
+        rest: '/api',
+        view: '/view',
+        settings: '/view/settings',
+        entity: '/view/entity'
     }
 };
 

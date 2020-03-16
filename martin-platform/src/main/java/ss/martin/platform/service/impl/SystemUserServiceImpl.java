@@ -27,6 +27,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,9 @@ import ss.martin.platform.security.SystemUserStatus;
 class SystemUserServiceImpl implements SystemUserService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SystemUserService.class);
+    /** DataModel manager. */
+    @PersistenceContext
+    private EntityManager em;
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -122,7 +127,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
                 superAdminSubscription.setSubscriptionAdminEmail(config.getSuperAdminEmail());
-                superAdminSubscription = coreDAO.createIgnoreSubscription(superAdminSubscription);
+                em.persist(superAdminSubscription);
                 superAdmin = new SystemUser();
                 superAdmin.setSubscription(superAdminSubscription);
                 superAdmin.setEmail(config.getSuperAdminEmail());
@@ -131,7 +136,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 superAdmin.setPassword(bCryptPasswordEncoder.encode(config.getSuperAdminPassword()));
                 superAdmin.setStandardRole(StandardRole.ROLE_SUPER_ADMIN);
                 superAdmin.setStatus(SystemUserStatus.ACTIVE);
-                coreDAO.create(superAdmin);
+                em.persist(superAdmin);
             } catch (Exception e) {
                 LOG.warn("Unexpected error occurred during super user creation.", e);
             }

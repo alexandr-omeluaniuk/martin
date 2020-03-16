@@ -19,7 +19,7 @@ public class AppURLs {
     /** CRM finish registration. */
     public static final String APP_CRM_FINISH_REGISTRATION = "/finish-registration";
     /** CRM application. */
-    public static final String APP_CRM = "/crm";
+    public static final String APP_CRM = "";
     /** CRM application REST API. */
     public static final String APP_CRM_REST_API = APP_CRM + "/api";
     /** CRM application public API. */

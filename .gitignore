@@ -8,3 +8,5 @@
 /martin-application/src/main/resources/static/crm/nbproject/
 /martin-module-crm/nb-configuration.xml
 /martin-module-crm/target/
+/docker/docker-compose.yml
+/docker/application.yml
