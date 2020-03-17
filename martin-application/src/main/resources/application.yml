@@ -32,6 +32,7 @@ logging:
   level:
     org:
       ss: DEBUG
+      springframework: INFO
 platform:
   rememberMeKey: 80wfj23nf0g03hgjasdf98h3fljs
   superAdminEmail: starshistrelok@gmail.com

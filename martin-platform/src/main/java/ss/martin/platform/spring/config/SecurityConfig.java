@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/static/**", "/locales/**", "/*.json", "/*.js",
-                "/*.ico", "/*.html", "/", AppURLs.APP_CRM_VIEWS + "/**");
+                "/*.ico", "/*.html", "/", AppURLs.APP_CRM_VIEWS + "/**", AppURLs.APP_CRM_FINISH_REGISTRATION + "/**");
     }
     /**
      * Create custom authentication filter.

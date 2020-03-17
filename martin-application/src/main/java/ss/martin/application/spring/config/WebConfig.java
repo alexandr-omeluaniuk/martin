@@ -26,6 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(AppURLs.APP_CRM_LOGIN_PAGE)
                 .addResourceLocations("classpath:/static/crm/build/");
+        registry.addResourceHandler(AppURLs.APP_CRM_FINISH_REGISTRATION)
+                .addResourceLocations("classpath:/static/crm/build/");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/crm/build/");
     }
     /**
@@ -40,6 +42,8 @@ public class WebConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/").setViewName("forward:/index.html");
                 registry.addViewController(AppURLs.APP_CRM_LOGIN_PAGE).setViewName("forward:/index.html");
+                registry.addViewController(AppURLs.APP_CRM_FINISH_REGISTRATION + "/**")
+                        .setViewName("forward:/index.html");
                 registry.addViewController("/view/**").setViewName("forward:/index.html");
             }
         };

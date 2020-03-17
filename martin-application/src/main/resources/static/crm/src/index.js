@@ -20,11 +20,11 @@ const indexRoutes = [{
         path: AppURLs.links.welcome,
         component: Welcome
     }, {
-        path: AppURLs.context,
-        component: App
-    }, {
         path: AppURLs.links.registration,
         component: FinishRegistration
+    }, {
+        path: AppURLs.context,
+        component: App
     }];
 
 
