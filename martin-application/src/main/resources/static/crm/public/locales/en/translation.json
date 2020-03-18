@@ -4,47 +4,50 @@
         "en": "English"
     },
     "notification": {
-        "changesSaved": "Изменения сохранены"
+        "changesSaved": "Changes have been saved"
     },
     "toolbar": {
         "accountmenu": {
-            "logout": "Выход"
+            "logout": "Exit",
+            "settings": "Settings"
         }
     },
     "constants": {
-        "momentJsDateFormat": "DD.MM.YYYY"
+        "momentJsDateFormat": "DD/MM/YYYY",
+        "momentJsDateTimeFormat": "DD/MM/YYYY HH:mm"
     },
     "sideNavBar": {
-        "dashboard": "Обзор"
+        "dashboard": "Dashboard",
+        "settings": "Settings"
     },
     "loginPage": {
-        "signIn": "Sign In",
-        "forgotPassword": "Forgot password?",
+        "signIn": "Sign in",
+        "forgotPassword": "Forgot your password?",
         "emailAddress": "Email address",
         "password": "Password",
         "rememberMe": "Remember me",
         "err": {
-            "userNotFound": "Данный адрес электронной почты не зарегистрирован",
-            "badPassword": "Неверный пароль",
-            "userDeactivated": "Учетная запись деактивирована"
+            "userNotFound": "This email address is not registered",
+            "badPassword": "Wrong password",
+            "userDeactivated": "Account deactivated"
         }
     },
     "finishRegistrationPage": {
-        "title": "Завершение регистрации",
-        "finishRegistration": "Завершить регистрацию",
-        "enterPassword": "Введите пароль",
-        "enterPasswordRepeat": "Повторите пароль",
-        "passwordLength": "Не короче 8 символов",
-        "passwordNotMatch": "Пароли не совпадают",
-        "invalidLink": "Ссылка больше недействительна"
+        "title": "Finish registration",
+        "finishRegistration": "Finish registration",
+        "enterPassword": "Enter password",
+        "enterPasswordRepeat": "Repeat password",
+        "passwordLength": "At least 8 characters",
+        "passwordNotMatch": "Passwords do not match",
+        "invalidLink": "The link is no longer valid"
     },
     "validation": {
-        "email": "Неверный формат адреса электронной почты",
-        "minLength": "Не короче {{length}} символов",
-        "maxLength": "Не более {{length}} символов",
-        "notnull": "Обязательное поле",
-        "notempty": "Обязательное поле",
-        "phone": "Неверный номер телефона"
+        "email": "Invalid Email address format",
+        "minLength": "At least {{length}} characters",
+        "maxLength": "Up to {{length}} characters",
+        "notnull": "Required",
+        "notempty": "Required",
+        "phone": "Wrong phone number"
     },
     "model": {
         "ss": {
@@ -53,28 +56,28 @@
                     "entity": {
                         "Subscription": {
                             "label": {
-                                "single": "Подписка",
-                                "many": "Подписки"
+                                "single": "Subscription",
+                                "many": "Subscriptions"
                             },
                             "field": {
-                                "organizationName": "Название организации",
-                                "started": "Начало подписки",
-                                "expirationDate": "Окончание подписки",
-                                "subscriptionAdminEmail": "Адрес электронной почты администратора",
-                                "modules": "Доступные приложения"
+                                "organizationName": "Name of the organization",
+                                "started": "Subscription start",
+                                "expirationDate": "Subscription end",
+                                "subscriptionAdminEmail": "Subscription Admin Email",
+                                "modules": "Available Apps"
                             }
                         },
                         "SystemUser": {
                             "label": {
-                                "single": "Пользователь",
-                                "many": "Пользователи"
+                                "single": "User",
+                                "many": "Users"
                             },
                             "field": {
-                                "avatar": "Аватар",
-                                "firstname": "Имя",
-                                "lastname": "Фамилия",
-                                "status": "Статус",
-                                "standardRole": "Стандартная роль",
+                                "avatar": "Avatar",
+                                "firstname": "Name",
+                                "lastname": "Surname",
+                                "status": "Status",
+                                "standardRole": "Standard role",
                                 "email": "Email"
                             }
                         }
@@ -85,15 +88,28 @@
                         "entity": {
                             "Contact": {
                                 "label": {
-                                    "single": "Контакт",
-                                    "many": "Контакты"
+                                    "single": "Contact",
+                                    "many": "Contacts"
                                 },
                                 "field": {
-                                    "avatar": "Аватар",
-                                    "firstname": "Имя",
-                                    "lastname": "Фамилия",
-                                    "email": "Адрес электронной почты",
-                                    "phoneMobile": "Мобильный телефон"
+                                    "avatar": "Avatar",
+                                    "firstname": "Name",
+                                    "lastname": "Surname",
+                                    "email": "Email",
+                                    "phoneMobile": "Mobile phone"
+                                }
+                            },
+                            "ContactVisit": {
+                                "label": {
+                                    "single": "Visit",
+                                    "many": "Visits"
+                                },
+                                "field": {
+                                    "contact": "Contact",
+                                    "subject": "Subject",
+                                    "note": "For notes",
+                                    "start": "Visit start",
+                                    "end": "Visit end"
                                 }
                             }
                         }
@@ -104,39 +120,71 @@
     },
     "components": {
         "datatable": {
-            "densePadding": "Компактная таблица",
-            "selectedRecords": "Выбрано записей",
-            "clearSelection": "Очистить выделение",
+            "densePadding": "Compact table",
+            "selectedRecords": "Records selected",
+            "clearSelection": "Clear selection",
             "toolbar": {
-                "add": "Новая запись"
+                "add": "New record"
             }
         },
-        "window": {
-            "save": "Сохранить"
+        "standardForm": {
+            "save": "Save"
+        },
+        "copyright": "Copyright",
+        "calendar": {
+            "view": {
+                "dayGridMonth": "Month",
+                "listWeek": "List",
+                "timeGridWeek": "Week"
+            }
+        },
+        "theming": {
+            "title": "Palette",
+            "primary": "Primary color",
+            "secondary": "Secondary color"
         }
     },
     "common": {
-        "delete": "Удалить",
-        "edit": "Редактировать",
-        "upload": "Загрузить",
-        "clear": "Очистить",
-        "open": "Открыть",
-        "created": "Создал",
-        "modified": "Изменил"
+        "delete": "Delete",
+        "edit": "Edit",
+        "upload": "Upload",
+        "clear": "Clear",
+        "open": "Open",
+        "created": "Created by",
+        "modified": "Modified by",
+        "cancel": "Cancel",
+        "today": "Today",
+        "noResults": "No results",
+        "search": "Search",
+        "forward": "Forward",
+        "back": "Back"
     },
     "enum": {
-        "SystemUserStatus": {
-            "ACTIVE": "Активный",
-            "INACTIVE": "Деактивирован",
-            "REGISTRATION": "В процессе регистрации"
-        },
-        "StandardRole": {
-            "ROLE_SUPER_ADMIN": "Супер админстратор",
-            "ROLE_SUBSCRIPTION_ADMINISTRATOR": "Администратор",
-            "ROLE_SUBSCRIPTION_USER": "Пользователь"
-        },
-        "ApplicationModule": {
-            "CRM": "Система управления клиентами"
-        }
+        "ss": {
+            "martin": {
+                "platform": {
+                    "constants": {
+                        "ApplicationModule": {
+                            "CRM": "Customer management system"
+                        }
+                    },
+                    "security": {
+                        "SystemUserStatus": {
+                            "ACTIVE": "Active",
+                            "INACTIVE": "Deactivated",
+                            "REGISTRATION": "In registration process"
+                        },
+                        "StandardRole": {
+                            "ROLE_SUPER_ADMIN": "Super Admin",
+                            "ROLE_SUBSCRIPTION_ADMINISTRATOR": "Admin",
+                            "ROLE_SUBSCRIPTION_USER": "User"
+                        }
+                    }
+                }
+            }
+        }    
+    },
+    "settings": {
+        "userInterface": "Interface settings"
     }
 }
