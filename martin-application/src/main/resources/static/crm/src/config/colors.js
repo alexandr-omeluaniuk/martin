@@ -93,5 +93,87 @@ export function createTheme() {
     });
     theme.palette.primary.main = theme.palette.primary[primaryContrast];
     theme.palette.secondary.main = theme.palette.secondary[secondaryContrast];
+    var sheetToBeRemoved = document.getElementById('calendar-view-css');
+    if (sheetToBeRemoved) {
+        var sheetParent = sheetToBeRemoved.parentNode;
+        sheetParent.removeChild(sheetToBeRemoved);
+    }
+    var sheet = document.createElement('style');
+    sheet.setAttribute("id", "calendar-view-css");
+    sheet.innerHTML = calendarViewStyleSheet(theme);
+    document.head.appendChild(sheet);
     return theme;
+};
+
+const calendarViewStyleSheet = function (theme) {
+    let secondaryColor = theme.palette.secondary.main;
+    let secondaryColorHover = theme.palette.secondary['400'];
+    let secondaryColorActive = theme.palette.secondary['800'];
+    return `
+    .fc-button {
+        box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+        color: #fff;
+        background-color: ${secondaryColor};
+        padding: 6px 16px;
+        font-size: 0.875rem;
+        min-width: 64px;
+        box-sizing: border-box;
+        transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 500;
+        line-height: 1.75;
+        border-radius: 4px;
+        letter-spacing: 0.02857em;
+        text-transform: uppercase;
+        border: 0;
+        cursor: pointer;
+        margin: 0;
+        display: inline-flex;
+        outline: 0;
+        position: relative;
+        align-items: center;
+        user-select: none;
+        vertical-align: middle;
+        justify-content: center;
+        text-decoration: none;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .fc-button:hover {
+        background-color: ${secondaryColorHover};
+    }
+    .fc-button-primary:focus {
+        box-shadow: none;
+    }
+    .fc-button-primary:disabled {
+        color: rgba(0, 0, 0, 0.26);
+        box-shadow: none;
+        background-color: rgba(0, 0, 0, 0.12);
+        cursor: default;
+        pointer-events: none;
+    }
+    .fc-button:not(:disabled):active {
+        color: #fff;
+        background-color: ${secondaryColor};
+        border: none;
+    }
+    .fc-button-primary:not(:disabled):active:focus, .fc-button-primary:not(:disabled).fc-button-active:focus {
+        box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+    }
+    .fc-button-primary:not(:disabled).fc-button-active {
+        color: #fff;
+        background-color: ${secondaryColorActive};
+        cursor: default;
+        pointer-events: none;
+    }
+    .fc-event {
+        box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(76,175,80,.4);
+        border-radius: 0px;
+        background-color: #4caf50;
+        border: 1px solid #208400;
+    }
+    .fc-event:hover {
+        cursor: pointer;
+    }
+    `;
 };
