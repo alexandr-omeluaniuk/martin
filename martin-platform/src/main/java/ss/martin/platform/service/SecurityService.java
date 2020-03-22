@@ -16,6 +16,9 @@
  */
 package ss.martin.platform.service;
 
+import java.util.Set;
+import ss.martin.platform.constants.EntityPermission;
+import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.wrapper.UserPermissions;
 
 /**
@@ -29,4 +32,11 @@ public interface SecurityService {
      * @throws Exception error.
      */
     UserPermissions getUserPermissions() throws Exception;
+    /**
+     * Get entity permissions.
+     * @param clazz data model class.
+     * @return set of permissions.
+     * @throws Exception error.
+     */
+    Set<EntityPermission> getEntityPermissions(Class<? extends DataModel> clazz) throws Exception;
 }

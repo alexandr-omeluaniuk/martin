@@ -29,7 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.anno.ui.SideBarNavigationItem;
+import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.Subscription;
@@ -92,9 +94,8 @@ class SecurityServiceImpl implements SecurityService {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
                 Optional.ofNullable(dataModelClass.getAnnotation(SideBarNavigationItem.class))
                         .ifPresent(sideBarNavItem -> {
-                    Set<StandardRole> accessibleForRoles = new HashSet<>(Arrays.asList(sideBarNavItem.roles()));
-                    if (accessibleForRoles.contains(currentUser.getStandardRole())) {
-                        try {
+                    try {
+                        if (getEntityPermissions(dataModelClass).contains(EntityPermission.READ)) {
                             RepresentationComponent component = null;
                             if (sideBarNavItem.component() == RepresentationComponentType.LIST_VIEW) {
                                 component = entityMetadataService.getEntityListView(dataModelClass);
@@ -103,13 +104,27 @@ class SecurityServiceImpl implements SecurityService {
                                 c.setPath(sideBarNavItem.path());
                                 permissions.getSideBarNavItems().add(c);
                             });
-                        } catch (Exception e) {
-                            LOG.warn("impossible to create a side nav bar item!", e);
                         }
+                    } catch (Exception e) {
+                        LOG.warn("impossible to create a side nav bar item!", e);
                     }
                 });
             }
         }
+        return permissions;
+    }
+    @Override
+    public Set<EntityPermission> getEntityPermissions(Class<? extends DataModel> clazz) throws Exception {
+        Set<EntityPermission> permissions = new HashSet<>();
+        // first level of security
+        Optional.ofNullable(clazz.getAnnotation(EntityAccess.class)).ifPresentOrElse((anno) -> {
+            Set<StandardRole> entityRoles = new HashSet(Arrays.asList(anno.roles()));
+            if (entityRoles.contains(securityContext.currentUser().getStandardRole())) {
+                permissions.addAll(Arrays.asList(EntityPermission.values()));
+            }
+        }, () -> {
+            permissions.addAll(Arrays.asList(EntityPermission.values()));
+        });
         return permissions;
     }
 }

@@ -31,13 +31,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.FormField;
+import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.dao.EntityFileDAO;
 import ss.martin.platform.entity.DataModel;
@@ -45,7 +44,9 @@ import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
+import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.wrapper.EntitySearchRequest;
@@ -58,8 +59,6 @@ import ss.martin.platform.wrapper.EntitySearchResponse;
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 class EntityServiceImpl implements EntityService {
-    /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(EntityService.class);
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -72,13 +71,22 @@ class EntityServiceImpl implements EntityService {
     /** System user service. */
     @Autowired
     private SystemUserService systemUserService;
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
     @Override
-    public EntitySearchResponse searchEntities(final Class<? extends DataModel> clazz,
-            final EntitySearchRequest searchRequest) throws Exception {
+    public EntitySearchResponse searchEntities(Class<? extends DataModel> clazz,
+            EntitySearchRequest searchRequest) throws Exception {
+        if (!securityService.getEntityPermissions(clazz).contains(EntityPermission.READ)) {
+            throw new PlatformSecurityException(EntityPermission.READ, clazz);
+        }
         return coreDAO.searchEntities(clazz, searchRequest);
     }
     @Override
     public <T extends DataModel> T createEntity(T entity) throws Exception {
+        if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.CREATE)) {
+            throw new PlatformSecurityException(EntityPermission.CREATE, entity.getClass());
+        }
         if (entity instanceof Subscription) {
             return (T) subscriptionService.createSubscription((Subscription) entity);
         } else if (entity instanceof SystemUser) {
@@ -89,6 +97,9 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public <T extends DataModel> T updateEntity(T entity) throws Exception {
+        if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.UPDATE)) {
+            throw new PlatformSecurityException(EntityPermission.UPDATE, entity.getClass());
+        }
         Class<T> entityClass = (Class<T>) entity.getClass();
         T fromDB = coreDAO.findById(entity.getId(), entityClass);
         setUpdatableFields(entityClass, fromDB, entity);
@@ -96,14 +107,23 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
+            throw new PlatformSecurityException(EntityPermission.DELETE, cl);
+        }
         coreDAO.massDelete(ids, cl);
     }
     @Override
     public <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception {
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
+            throw new PlatformSecurityException(EntityPermission.READ, cl);
+        }
         return coreDAO.findById(id, cl);
     }
     @Override
     public <T extends DataModel> List getDataForCollectionField(Class<T> cl, String fieldName) throws Exception {
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
+            throw new PlatformSecurityException(EntityPermission.READ, cl);
+        }
         List result = new ArrayList();
         Field field = cl.getDeclaredField(fieldName);
         Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
@@ -120,6 +140,9 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception {
+        if (!securityService.getEntityPermissions((Class<? extends DataModel>) cl).contains(EntityPermission.READ)) {
+            throw new PlatformSecurityException(EntityPermission.READ, (Class<? extends DataModel>) cl);
+        }
         return entityFileDAO.getAvatar(id, cl);
     }
     // ==================================== PRIVATE ===================================================================

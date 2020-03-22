@@ -21,29 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
+package ss.martin.platform.exception;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import ss.martin.platform.constants.RepresentationComponentType;
+import ss.martin.platform.constants.EntityPermission;
+import ss.martin.platform.entity.DataModel;
 
 /**
- * Side bar navigation item.
+ * Platform security exception.
  * @author ss
  */
-@Target(value = {ElementType.TYPE})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface SideBarNavigationItem {
+public class PlatformSecurityException extends PlatformException {
+    /** Entity permission. */
+    private EntityPermission entityPermission;
     /**
-     * Representation component type.
-     * @return component type.
+     * Constructor.
+     * @param msg message.
      */
-    public RepresentationComponentType component();
+    public PlatformSecurityException(String msg) {
+        super(msg);
+    }
     /**
-     * Relative URL path to component.
-     * @return relative path.
+     * Platform security exception.
+     * @param entityPermission entity permission.
+     * @param dataModel entity class.
      */
-    public String path();
+    public PlatformSecurityException(EntityPermission entityPermission, Class<? extends DataModel> dataModel) {
+        super("Access denied to '" + dataModel.getName() + "', operation '" + entityPermission.name() + "'");
+    }
 }

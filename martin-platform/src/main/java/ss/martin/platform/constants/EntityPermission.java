@@ -21,29 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import ss.martin.platform.constants.RepresentationComponentType;
+package ss.martin.platform.constants;
 
 /**
- * Side bar navigation item.
+ * Entity permissions.
  * @author ss
  */
-@Target(value = {ElementType.TYPE})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface SideBarNavigationItem {
-    /**
-     * Representation component type.
-     * @return component type.
-     */
-    public RepresentationComponentType component();
-    /**
-     * Relative URL path to component.
-     * @return relative path.
-     */
-    public String path();
+public enum EntityPermission {
+    /** Create. */
+    CREATE,
+    /** Update. */
+    UPDATE,
+    /** Read. */
+    READ,
+    /** Delete. */
+    DELETE;
 }

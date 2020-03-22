@@ -40,6 +40,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
@@ -57,8 +58,8 @@ import ss.martin.platform.security.StandardRole;
 @Entity
 @Table(name = "subscription")
 @MaterialIcon(icon = "subscriptions")
-@SideBarNavigationItem(roles = { StandardRole.ROLE_SUPER_ADMIN },
-        component = RepresentationComponentType.LIST_VIEW, path = "subscriptions")
+@EntityAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
+@SideBarNavigationItem(component = RepresentationComponentType.LIST_VIEW, path = "subscriptions")
 public class Subscription extends DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

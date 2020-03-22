@@ -38,6 +38,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.CardSubTitle;
 import ss.martin.platform.anno.ui.CardTitle;
@@ -57,8 +58,8 @@ import ss.martin.platform.security.SystemUserStatus;
 @Entity
 @Table(name = "users")
 @MaterialIcon(icon = "supervisor_account")
-@SideBarNavigationItem(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR },
-        component = RepresentationComponentType.LIST_VIEW, path = "users")
+@EntityAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
+@SideBarNavigationItem(component = RepresentationComponentType.LIST_VIEW, path = "users")
 public class SystemUser extends TenantEntity implements HasAvatar {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

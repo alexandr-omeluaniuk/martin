@@ -21,29 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
+package ss.martin.platform.anno.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import ss.martin.platform.constants.RepresentationComponentType;
+import ss.martin.platform.security.StandardRole;
 
 /**
- * Side bar navigation item.
+ * Basic access to entity.
+ * Based on current user standard role.
  * @author ss
  */
 @Target(value = {ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface SideBarNavigationItem {
+public @interface EntityAccess {
     /**
-     * Representation component type.
-     * @return component type.
+     * One or more standard security roles.
+     * @return security roles.
      */
-    public RepresentationComponentType component();
-    /**
-     * Relative URL path to component.
-     * @return relative path.
-     */
-    public String path();
+    public StandardRole[] roles();
 }
