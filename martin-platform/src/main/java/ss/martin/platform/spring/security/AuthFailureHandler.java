@@ -28,6 +28,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import ss.martin.platform.exception.SubscriptionHasExpiredException;
 
 /**
  * Authentication failure handler.
@@ -46,6 +47,8 @@ class AuthFailureHandler implements AuthenticationFailureHandler {
             failback.setCode("2");
         } else if (ae instanceof DisabledException) {
             failback.setCode("3");
+        } else if (ae instanceof SubscriptionHasExpiredException) {
+            failback.setCode("4");
         }
         hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(failback));
     }

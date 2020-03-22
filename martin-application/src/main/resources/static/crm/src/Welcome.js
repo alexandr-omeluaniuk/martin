@@ -140,6 +140,8 @@ export default function Welcome() {
                             msg = t('loginPage.err.badPassword');
                         } else if (rsp.code === '3') {
                             msg = t('loginPage.err.userDeactivated');
+                        } else if (rsp.code === '4') {
+                            msg = t('loginPage.err.subscriptionExpired');
                         }
                         setLoginError(msg);
                     }

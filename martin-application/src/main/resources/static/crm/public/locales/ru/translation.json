@@ -29,7 +29,8 @@
         "err": {
             "userNotFound": "Данный адрес электронной почты не зарегистрирован",
             "badPassword": "Неверный пароль",
-            "userDeactivated": "Учетная запись деактивирована"
+            "userDeactivated": "Учетная запись деактивирована",
+            "subscriptionExpired": "Подписка истекла, обратитесь за помощью к администратору"
         }
     },
     "finishRegistrationPage": {

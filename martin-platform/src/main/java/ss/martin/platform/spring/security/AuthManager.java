@@ -18,6 +18,7 @@ package ss.martin.platform.spring.security;
 
 import ss.martin.platform.security.SystemUserStatus;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.exception.SubscriptionHasExpiredException;
 
 /**
  * Authentication provider.
@@ -61,6 +63,9 @@ class AuthManager implements AuthenticationManager {
         }
         if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password: " + password);
+        }
+        if (user.getSubscription().getExpirationDate().before(new Date())) {
+            throw new SubscriptionHasExpiredException(user.getSubscription());
         }
         GrantedAuthority ga = new SimpleGrantedAuthority(user.getStandardRole().name());
         List<GrantedAuthority> gaList = new ArrayList<>();

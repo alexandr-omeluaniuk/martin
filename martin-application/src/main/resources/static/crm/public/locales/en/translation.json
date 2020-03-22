@@ -29,7 +29,8 @@
         "err": {
             "userNotFound": "This email address is not registered",
             "badPassword": "Wrong password",
-            "userDeactivated": "Account deactivated"
+            "userDeactivated": "Account deactivated",
+            "subscriptionExpired": "Subscription has expired"
         }
     },
     "finishRegistrationPage": {
