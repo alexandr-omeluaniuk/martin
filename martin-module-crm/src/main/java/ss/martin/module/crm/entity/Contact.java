@@ -76,14 +76,14 @@ public class Contact extends EntityAudit implements HasAvatar {
     @Column(name = "has_avatar")
     private boolean hasAvatar;
     /** First name. */
-    @ListViewColumn
+    @ListViewColumn(link = true)
     @FormField(lg = "6", md = "6", sm = "12")
     @CardSubTitle
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "firstname", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String firstname;
     /** Last name. */
-    @ListViewColumn
+    @ListViewColumn(link = true)
     @FormField(lg = "6", md = "6", sm = "12")
     @CardTitle
     @NotEmpty

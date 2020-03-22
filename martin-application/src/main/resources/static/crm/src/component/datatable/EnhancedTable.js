@@ -26,8 +26,6 @@ import DataService from '../../service/DataService';
 import { useTranslation } from 'react-i18next';
 import StandardForm from '../form/StandardForm';
 import DataTypeService from '../../service/DataTypeService';
-import AppURLs from '../../constants/AppURLs';
-import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -172,13 +170,12 @@ function EnhancedTable(props) {
                                     <TableRow hover role="checkbox" key={index} 
                                         aria-checked={isItemSelected} tabIndex={-1} selected={isItemSelected}>
                                         <TableCell padding="checkbox">
-                                            <NavLink to={AppURLs.links.entity + '/' + entity + '/' + row.id}>
-                                                <Tooltip title={t('common.open')}>
-                                                    <IconButton>
-                                                        <Icon>open_in_new</Icon>
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </NavLink>
+                                            <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }}
+                                                    onClick={event => {
+                                                        event.preventDefault();
+                                                        event.stopPropagation();
+                                                        handleCheckboxClick(event, row);
+                                                    }}/>
                                         </TableCell>
                                         {headCells.map((column, i) => {
                                             let cellValue = DataTypeService.renderTableCell(entity, column, t, row);
@@ -203,14 +200,6 @@ function EnhancedTable(props) {
                                                     <Icon>edit</Icon>
                                                 </IconButton>
                                             </Tooltip>
-                                        </TableCell>
-                                        <TableCell padding="checkbox">
-                                            <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }}
-                                                    onClick={event => {
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                        handleCheckboxClick(event, row)
-                                                    }}/>
                                         </TableCell>
                                     </TableRow>
                                 );

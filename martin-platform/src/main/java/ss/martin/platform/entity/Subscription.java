@@ -68,7 +68,7 @@ public class Subscription extends DataModel {
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "organization_name", length = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "12")
-    @ListViewColumn
+    @ListViewColumn(link = true)
     private String organizationName;
     /** Started. */
     @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
