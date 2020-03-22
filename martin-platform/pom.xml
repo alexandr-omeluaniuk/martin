@@ -35,6 +35,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.mailjet</groupId>
+            <artifactId>mailjet-client</artifactId>
+            <version>4.2.1</version>
+        </dependency>
         <!-- PROVIDED -->
         <dependency>
             <groupId>org.hibernate</groupId>

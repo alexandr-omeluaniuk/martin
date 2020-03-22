@@ -34,8 +34,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -51,6 +49,8 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SystemUserStatus;
+import ss.martin.platform.service.EmailService;
+import ss.martin.platform.wrapper.EmailRequest;
 
 /**
  * System user service implementation.
@@ -72,7 +72,7 @@ class SystemUserServiceImpl implements SystemUserService {
     private UserDAO userDAO;
     /** Email service. */
     @Autowired
-    private JavaMailSender emailService;
+    private EmailService emailService;
     /** Password encoder. */
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -89,11 +89,6 @@ class SystemUserServiceImpl implements SystemUserService {
             throw new RegistrationUserException(RegistrationUserException.CODE_DUPLICATE_USER);
         }
         String validationString = UUID.randomUUID().toString();
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(systemUser.getEmail());
-        msg.setSubject("Регистрация нового пользователя");
-        msg.setText("Пройдите по ссылке: " + config.getServerDomain()
-                + AppURLs.APP_CRM_FINISH_REGISTRATION + "/" + validationString);
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
         if (securityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
@@ -101,7 +96,18 @@ class SystemUserServiceImpl implements SystemUserService {
         } else {
             coreDAO.create(systemUser);
         }
-        emailService.send(msg);
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setSender(
+                new EmailRequest.EmailContact(config.getSystemEmailContactName(), config.getSystemEmailContactEmail()));
+        emailRequest.setRecipients(new EmailRequest.EmailContact[] {
+            new EmailRequest.EmailContact(
+                    (systemUser.getFirstname() == null ? "" : systemUser.getFirstname() + " ")
+                            + systemUser.getLastname(), systemUser.getEmail())
+        });
+        emailRequest.setSubject("Регистрация нового пользователя");
+        emailRequest.setMessage("Пройдите по ссылке: " + config.getServerDomain()
+                + AppURLs.APP_CRM_FINISH_REGISTRATION + "/" + validationString);
+        emailService.sendEmail(emailRequest);
     }
     @Override
     public void finishRegistration(String validationString, String password) throws Exception {

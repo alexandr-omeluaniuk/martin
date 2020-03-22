@@ -43,7 +43,39 @@ public class PlatformConfiguration {
     private String superAdminPassword;
     /** External server domain. Uses for access to public resources. */
     private String serverDomain;
+    /** Mailjet api key (If Mailjet is used as email service). */
+    private String mailjetApiKey;
+    /** Mailjet secret key (If Mailjet is used as email service). */
+    private String mailjetSecretKey;
+    /** Email contact name (for system emails). */
+    private String systemEmailContactName;
+    /** Email contact email (for system emails). */
+    private String systemEmailContactEmail;
     // ========================================== SET & GET ===========================================================
+    /**
+     * @return the systemEmailContactName
+     */
+    public String getSystemEmailContactName() {
+        return systemEmailContactName;
+    }
+    /**
+     * @param systemEmailContactName the systemEmailContactName to set
+     */
+    public void setSystemEmailContactName(String systemEmailContactName) {
+        this.systemEmailContactName = systemEmailContactName;
+    }
+    /**
+     * @return the systemEmailContactEmail
+     */
+    public String getSystemEmailContactEmail() {
+        return systemEmailContactEmail;
+    }
+    /**
+     * @param systemEmailContactEmail the systemEmailContactEmail to set
+     */
+    public void setSystemEmailContactEmail(String systemEmailContactEmail) {
+        this.systemEmailContactEmail = systemEmailContactEmail;
+    }
     /**
      * @return the superAdminEmail
      */
@@ -103,5 +135,29 @@ public class PlatformConfiguration {
      */
     public void setServerDomain(String serverDomain) {
         this.serverDomain = serverDomain;
+    }
+    /**
+     * @return the mailjetApiKey
+     */
+    public String getMailjetApiKey() {
+        return mailjetApiKey;
+    }
+    /**
+     * @param mailjetApiKey the mailjetApiKey to set
+     */
+    public void setMailjetApiKey(String mailjetApiKey) {
+        this.mailjetApiKey = mailjetApiKey;
+    }
+    /**
+     * @return the mailjetSecretKey
+     */
+    public String getMailjetSecretKey() {
+        return mailjetSecretKey;
+    }
+    /**
+     * @param mailjetSecretKey the mailjetSecretKey to set
+     */
+    public void setMailjetSecretKey(String mailjetSecretKey) {
+        this.mailjetSecretKey = mailjetSecretKey;
     }
 }
