@@ -27,6 +27,7 @@
                     <exclude>**/crm/src/**</exclude>
                     <exclude>**/crm/nbproject/**</exclude>
                     <exclude>**/crm/public/**</exclude>
+                    <exclude>application.yml</exclude>
                 </excludes>
             </resource>
         </resources>

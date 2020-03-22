@@ -6,7 +6,6 @@ LABEL maintainer="starshistrelok@gmail.com"
 
 # Copy files
 COPY martin-platform.jar /martin-platform.jar
-COPY application.yml /application.yml
 
 ENTRYPOINT ["java","-jar","/martin-platform.jar"]
 

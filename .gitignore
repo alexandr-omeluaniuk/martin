@@ -10,3 +10,4 @@
 /martin-module-crm/target/
 /docker/docker-compose.yml
 /docker/application.yml
+/docker/config/
