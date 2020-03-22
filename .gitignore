@@ -11,3 +11,4 @@
 /docker/docker-compose.yml
 /docker/application.yml
 /docker/config/
+/martin-application/src/main/resources/application.yml
