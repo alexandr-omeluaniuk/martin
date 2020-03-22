@@ -75,6 +75,36 @@ export default function SideNavBar(props) {
     const { t } = useTranslation();
     const classes = useStyles();
     const { navItems , open, setOpen, onItemSelected} = props;
+    
+    const createNavItem = (item, i) => {
+        let label = '';
+        if (item.metadata) {
+            let meta = item.metadata;
+            if (meta.source === 'APPLICATION_MODULE') {
+                label = t('enum.ss.martin.platform.constants.ApplicationModule.' + meta.className);
+            } else if (meta.source === 'ENTITY') {
+                label = t('model.' + meta.className + '.label.many');
+            }
+        } else {
+            label = t('sideNavBar.' + item.sideNavBar);
+        }
+        item.label = label;
+        return (
+            <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
+                onItemSelected(item);
+            }}>
+                <ListItem button selected={window.location.pathname === item.path}>
+                    <Tooltip title={label}>
+                        <ListItemIcon>
+                            <Icon>{item.icon}</Icon>
+                        </ListItemIcon>
+                    </Tooltip>
+                    <ListItemText primary={label} />
+                </ListItem>
+            </NavLink>
+        );
+    };
+    
     const createSideBarNavigation = () => {
         if (!navItems) {
             return null;
@@ -82,32 +112,11 @@ export default function SideNavBar(props) {
         return (
                 <div>
                     {navItems.map((item, i) => {
-                        let label = '';
-                        if (item.metadata) {
-                            let meta = item.metadata;
-                            if (meta.source === 'APPLICATION_MODULE') {
-                                label = t('enum.ss.martin.platform.constants.ApplicationModule.' + meta.className);
-                            } else if (meta.source === 'ENTITY') {
-                                label = t('model.' + meta.className + '.label.many');
-                            }
+                        if (!item.hidden) {
+                            return createNavItem(item, i);
                         } else {
-                            label = t('sideNavBar.' + item.sideNavBar);
+                            return null;
                         }
-                        item.label = label;
-                        return (
-                            <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
-                                onItemSelected(item);
-                            }}>
-                                <ListItem button selected={window.location.pathname === item.path}>
-                                    <Tooltip title={label}>
-                                        <ListItemIcon>
-                                            <Icon>{item.icon}</Icon>
-                                        </ListItemIcon>
-                                    </Tooltip>
-                                    <ListItemText primary={label} />
-                                </ListItem>
-                            </NavLink>
-                        );
                     })}
                 </div>
         );

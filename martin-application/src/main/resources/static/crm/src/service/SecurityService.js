@@ -68,7 +68,8 @@ class SecurityService {
                     sideNavBar: 'settings',
                     icon: 'settings',
                     path: AppURLs.links.settings,
-                    component: Settings
+                    component: Settings,
+                    hidden: true
                 });
                 resolve(navItems);
             });

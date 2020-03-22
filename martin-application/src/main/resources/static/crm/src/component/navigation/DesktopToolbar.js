@@ -40,6 +40,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useTranslation } from 'react-i18next';
 import AppURLs from '../../constants/AppURLs';
 import { history } from '../../index';
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -74,6 +75,10 @@ const useStyles = makeStyles(theme => ({
     },
     menuIcon: {
         minWidth: '30px'
+    },
+    navLink: {
+        textDecoration: 'none',
+        color: 'inherit'
     }
 }));
 
@@ -115,10 +120,12 @@ function DesktopToolbar(props) {
             <Menu anchorEl={anchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} id={menuId} keepMounted
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }} open={isMenuOpen} onClose={handleMenuClose}>
                 <MenuItem disabled={true}><Typography variant="caption">{fullname}<hr/></Typography></MenuItem>
-                <MenuItem onClick={() => {
-                    history.push(AppURLs.links.settings);
-                    setAnchorEl(null);
-                }}><Icon className={classes.menuIcon}>settings</Icon> {t('toolbar.accountmenu.settings')}</MenuItem>
+                <NavLink to={AppURLs.links.settings} className={classes.navLink}>
+                    <MenuItem onClick={() => {
+                        history.push(AppURLs.links.settings);
+                        setAnchorEl(null);
+                    }}><Icon className={classes.menuIcon}>settings</Icon> {t('toolbar.accountmenu.settings')}</MenuItem>
+                </NavLink>
                 <MenuItem onClick={logout}><Icon className={classes.menuIcon}>power_settings_new</Icon> {t('toolbar.accountmenu.logout')}</MenuItem>
             </Menu>
     );
