@@ -39,6 +39,7 @@ import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.EntityMetadataService;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.security.SecurityContext;
+import ss.martin.platform.ui.RepresentationComponent;
 import ss.martin.platform.wrapper.UserPermissions;
 
 /**
@@ -83,7 +84,8 @@ class SecurityServiceImpl implements SecurityService {
         modules.stream().filter((m) -> {
             return subscription.getModules().contains(m.module());
         }).forEach((provider) -> {
-            permissions.getSideBarNavItems().add(provider.representationComponent());
+            RepresentationComponent component = provider.representationComponent();
+            permissions.getSideBarNavItems().add(component);
         });
         // side bar navigation (static)
         for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
@@ -93,10 +95,14 @@ class SecurityServiceImpl implements SecurityService {
                     Set<StandardRole> accessibleForRoles = new HashSet<>(Arrays.asList(sideBarNavItem.roles()));
                     if (accessibleForRoles.contains(currentUser.getStandardRole())) {
                         try {
+                            RepresentationComponent component = null;
                             if (sideBarNavItem.component() == RepresentationComponentType.LIST_VIEW) {
-                                permissions.getSideBarNavItems()
-                                        .add(entityMetadataService.getEntityListView(dataModelClass));
+                                component = entityMetadataService.getEntityListView(dataModelClass);
                             }
+                            Optional.ofNullable(component).ifPresent((c) -> {
+                                c.setPath(sideBarNavItem.path());
+                                permissions.getSideBarNavItems().add(c);
+                            });
                         } catch (Exception e) {
                             LOG.warn("impossible to create a side nav bar item!", e);
                         }

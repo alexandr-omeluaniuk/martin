@@ -69,6 +69,7 @@ class CRM implements ApplicationModuleProvider {
         component.setSource(RepresentationComponentSource.APPLICATION_MODULE);
         MaterialIcon icon = getClass().getAnnotation(MaterialIcon.class);
         component.setIcon(icon.icon());
+        component.setPath("crm");
         component.setClassName(module().name());
         for (Class<? extends DataModel> model : dataModel()) {
             try {

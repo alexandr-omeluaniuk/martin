@@ -35,6 +35,8 @@ public abstract class RepresentationComponent {
     protected RepresentationComponentType type;
     /** Representation component source. */
     private RepresentationComponentSource source;
+    /** URL relative path. */
+    private String path;
     /**
      * @return the type
      */
@@ -52,5 +54,17 @@ public abstract class RepresentationComponent {
      */
     public void setSource(RepresentationComponentSource source) {
         this.source = source;
+    }
+    /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
     }
 }

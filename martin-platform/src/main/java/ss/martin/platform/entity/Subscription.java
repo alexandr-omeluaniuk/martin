@@ -57,7 +57,8 @@ import ss.martin.platform.security.StandardRole;
 @Entity
 @Table(name = "subscription")
 @MaterialIcon(icon = "subscriptions")
-@SideBarNavigationItem(roles = { StandardRole.ROLE_SUPER_ADMIN }, component = RepresentationComponentType.LIST_VIEW)
+@SideBarNavigationItem(roles = { StandardRole.ROLE_SUPER_ADMIN },
+        component = RepresentationComponentType.LIST_VIEW, path = "subscriptions")
 public class Subscription extends DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

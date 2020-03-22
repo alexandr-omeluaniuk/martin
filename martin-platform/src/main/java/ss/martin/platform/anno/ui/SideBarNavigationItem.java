@@ -47,4 +47,9 @@ public @interface SideBarNavigationItem {
      * @return component type.
      */
     public RepresentationComponentType component();
+    /**
+     * Relative URL path to component.
+     * @return relative path.
+     */
+    public String path();
 }

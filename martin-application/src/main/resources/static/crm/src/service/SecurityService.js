@@ -59,7 +59,7 @@ class SecurityService {
                     permissions.sideBarNavItems.forEach(meta => {
                         navItems.push({
                             icon: meta.icon ? meta.icon : 'help',
-                            path: AppURLs.links.view + '/' + meta.className,
+                            path: AppURLs.links.view + '/' + meta.path,
                             metadata: meta
                         });
                     });

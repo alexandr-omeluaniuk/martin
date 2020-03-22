@@ -58,7 +58,7 @@ import ss.martin.platform.security.SystemUserStatus;
 @Table(name = "users")
 @MaterialIcon(icon = "supervisor_account")
 @SideBarNavigationItem(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR },
-        component = RepresentationComponentType.LIST_VIEW)
+        component = RepresentationComponentType.LIST_VIEW, path = "users")
 public class SystemUser extends TenantEntity implements HasAvatar {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
