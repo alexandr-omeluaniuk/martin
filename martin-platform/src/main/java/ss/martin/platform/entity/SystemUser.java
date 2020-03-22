@@ -91,14 +91,14 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "6")
     @CardSubTitle
-    @ListViewColumn(link = true)
+    @ListViewColumn
     @Column(name = "firstname", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String firstname;
     /** Last name. */
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "6")
     @CardTitle
-    @ListViewColumn(link = true)
+    @ListViewColumn
     @NotEmpty
     @Column(name = "lastname", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
     private String lastname;
