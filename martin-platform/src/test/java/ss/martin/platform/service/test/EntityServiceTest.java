@@ -27,6 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ss.martin.platform.entity.Subscription;
+import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.test.AbstractTest;
 
@@ -42,6 +43,7 @@ public class EntityServiceTest extends AbstractTest {
     @DisplayName("Create entity")
     @Test
     public void testCreateEntity() throws Exception {
+        auth(StandardRole.ROLE_SUPER_ADMIN);
         Subscription subscription = dataFactory.getSubscription();
         entityService.createEntity(subscription);
     }

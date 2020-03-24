@@ -12,3 +12,4 @@
 /docker/application.yml
 /docker/config/
 /martin-application/src/main/resources/application.yml
+/target/
