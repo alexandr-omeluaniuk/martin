@@ -31,6 +31,7 @@ import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.PlatformSecurityException;
+import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.test.AbstractTest;
@@ -44,6 +45,9 @@ public class EntityServiceTest extends AbstractTest {
     
     @Autowired
     private EntityService entityService;
+    
+    @Autowired
+    private SecurityContext securityContext;
     
     @DisplayName("Create entity")
     @Test
@@ -66,6 +70,41 @@ public class EntityServiceTest extends AbstractTest {
             Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.CREATE, ex.getEntityPermission());
+        }
+    }
+    
+    @DisplayName("Update entity")
+    @Test
+    public void testUpdateEntity() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        Contact entity = new Contact();
+        entity.setLastname("Dowson");
+        entityService.createEntity(entity);
+        entity.setLastname("Mikky");
+        entity = entityService.updateEntity(entity);
+        Assertions.assertEquals("Mikky", entity.getLastname());
+        try {
+            entityService.updateEntity(securityContext.subscription());
+            Assertions.fail("Security exception expected");
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.UPDATE, ex.getEntityPermission());
+        }
+    }
+    @DisplayName("Find by ID")
+    @Test
+    public void testFindEntityByID() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        Contact entity = new Contact();
+        entity.setLastname("Dowson");
+        entity = entityService.createEntity(entity);
+        Assertions.assertNotNull(entity.getId());
+        Contact contact2 = entityService.findEntityByID(entity.getId(), Contact.class);
+        Assertions.assertEquals("Dowson", contact2.getLastname());
+        try {
+            entityService.findEntityByID(securityContext.subscription().getId(), Subscription.class);
+            Assertions.fail("Security exception expected");
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
     }
 }
