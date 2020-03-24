@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashSet;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.entity.Subscription;
+import ss.martin.platform.entity.SystemUser;
 
 /**
  *
@@ -42,6 +43,13 @@ public class DataFactory {
         model.setOrganizationName("Test subscription");
         model.setSubscriptionAdminEmail("test@test.com");
         model.setModules(new HashSet<>());
+        return model;
+    }
+    
+    public SystemUser getSystemUser() {
+        SystemUser model = new SystemUser();
+        model.setEmail("test@test.com");
+        //model.
         return model;
     }
 }
