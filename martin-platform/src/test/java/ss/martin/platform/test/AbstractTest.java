@@ -37,8 +37,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import ss.martin.platform.dao.UserDAO;
+import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.service.EntityService;
 import ss.martin.platform.spring.config.ModuleConfig;
 import ss.martin.platform.spring.security.UserPrincipal;
 
@@ -54,6 +56,17 @@ public abstract class AbstractTest {
     
     protected static final String SUPER_ADMIN_PASSWORD = "password";
     
+    protected static final String SUBSCRIPTION_ADMIN_USERNAME = "subscription.admin@domain.com";
+    
+    protected static final String SUBSCRIPTION_ADMIN_PASSWORD = "password";
+    
+    protected static final String SUBSCRIPTION_USER_USERNAME = "subscription.user@domain.com";
+    
+    protected static final String SUBSCRIPTION_USER_PASSWORD = "password";
+    
+    @Autowired
+    private EntityService entityService;
+    
     @Autowired
     private UserDAO userDAO;
     
@@ -68,12 +81,28 @@ public abstract class AbstractTest {
     @BeforeEach
     public void beforeEveryTest() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
+        if (userDAO.findByUsername(SUBSCRIPTION_ADMIN_USERNAME) == null) {
+            auth(StandardRole.ROLE_SUPER_ADMIN);
+            Subscription subscription = dataFactory.getSubscription();
+            subscription.setSubscriptionAdminEmail(SUBSCRIPTION_ADMIN_USERNAME);
+            entityService.createEntity(subscription);
+        }
+        if (userDAO.findByUsername(SUBSCRIPTION_USER_USERNAME) == null) {
+            auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+            SystemUser subscriptionUser = dataFactory.getSystemUser(StandardRole.ROLE_SUBSCRIPTION_USER,
+                    SUBSCRIPTION_USER_USERNAME, SUBSCRIPTION_USER_PASSWORD, "John", "Murrey");
+            entityService.createEntity(subscriptionUser);
+        }
     }
     
     protected void auth(StandardRole role) {
         SystemUser user = null;
         if (StandardRole.ROLE_SUPER_ADMIN == role) {
             user = userDAO.findByUsername(SUPER_ADMIN_USERNAME);
+        } else if (StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR == role) {
+            user = userDAO.findByUsername(SUBSCRIPTION_ADMIN_USERNAME);
+        } else if (StandardRole.ROLE_SUBSCRIPTION_USER == role) {
+            user = userDAO.findByUsername(SUBSCRIPTION_USER_USERNAME);
         }
         if (user == null) {
             throw new RuntimeException("User is not found! Authentication failed...");

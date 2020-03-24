@@ -28,6 +28,8 @@ import java.util.HashSet;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.security.SystemUserStatus;
 
 /**
  *
@@ -46,10 +48,15 @@ public class DataFactory {
         return model;
     }
     
-    public SystemUser getSystemUser() {
+    public SystemUser getSystemUser(
+            StandardRole role, String username, String password, String firstname, String lastname) {
         SystemUser model = new SystemUser();
-        model.setEmail("test@test.com");
-        //model.
+        model.setEmail(username);
+        model.setFirstname(firstname);
+        model.setLastname(lastname);
+        model.setPassword(password);
+        model.setStatus(SystemUserStatus.ACTIVE);
+        model.setStandardRole(role);
         return model;
     }
 }

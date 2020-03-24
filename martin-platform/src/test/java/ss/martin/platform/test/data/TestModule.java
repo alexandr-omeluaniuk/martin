@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.test.module;
+package ss.martin.platform.test.data;
 
 import org.springframework.stereotype.Component;
 import ss.martin.platform.anno.ui.MaterialIcon;

@@ -13,3 +13,4 @@
 /docker/config/
 /martin-application/src/main/resources/application.yml
 /target/
+/martin-platform/src/test/resources/application.yml

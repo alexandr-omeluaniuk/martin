@@ -33,6 +33,8 @@ import ss.martin.platform.entity.DataModel;
 public class PlatformSecurityException extends PlatformException {
     /** Entity permission. */
     private EntityPermission entityPermission;
+    /** Data model. */
+    private Class<? extends DataModel> dataModel;
     /**
      * Constructor.
      * @param msg message.
@@ -47,5 +49,31 @@ public class PlatformSecurityException extends PlatformException {
      */
     public PlatformSecurityException(EntityPermission entityPermission, Class<? extends DataModel> dataModel) {
         super("Access denied to '" + dataModel.getName() + "', operation '" + entityPermission.name() + "'");
+        this.entityPermission = entityPermission;
+        this.dataModel = dataModel;
+    }
+    /**
+     * @return the entityPermission
+     */
+    public EntityPermission getEntityPermission() {
+        return entityPermission;
+    }
+    /**
+     * @param entityPermission the entityPermission to set
+     */
+    public void setEntityPermission(EntityPermission entityPermission) {
+        this.entityPermission = entityPermission;
+    }
+    /**
+     * @return the dataModel
+     */
+    public Class<? extends DataModel> getDataModel() {
+        return dataModel;
+    }
+    /**
+     * @param dataModel the dataModel to set
+     */
+    public void setDataModel(Class<? extends DataModel> dataModel) {
+        this.dataModel = dataModel;
     }
 }
