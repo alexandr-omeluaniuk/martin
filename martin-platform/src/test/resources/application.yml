@@ -30,7 +30,19 @@ logging:
     org:
       hibernate: INFO
     ss:
-      martin: TRACE
+      martin: DEBUG
       
 platform:
-  rememberMeKey: 80wfj23nf0g03hgjasdf98h3fljs
+  # system email settings
+  systemEmailContactName: Platform support
+  systemEmailContactEmail: platform.support@domain.com
+  # super admin registration info
+  superAdminEmail: superadmin@domain.com
+  superAdminFirstName: Jack
+  superAdminLastName: Hubert
+  superAdminPassword: password
+  # domain settings
+  serverDomain: http://localhost:3000
+  # mailjet settings
+  mailjetApiKey: 492d0272c772703cf12e9557857b9947
+  mailjetSecretKey: d1808011418953c5f357a2d6a5886fee

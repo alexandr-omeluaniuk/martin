@@ -21,40 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.test;
+package ss.martin.platform.service.test;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-import ss.martin.platform.spring.config.ModuleConfig;
+import ss.martin.platform.entity.Subscription;
+import ss.martin.platform.service.EntityService;
+import ss.martin.platform.test.AbstractTest;
 
 /**
  *
  * @author ss
  */
-@SpringBootTest(classes = { ModuleConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@Transactional
-public abstract class AbstractTest {
-    
-    protected static final String SUPER_ADMIN_USERNAME = "superadmin@domain.com";
-    
-    protected static final String SUPER_ADMIN_PASSWORD = "password";
+public class EntityServiceTest extends AbstractTest {
     
     @Autowired
-    protected DataFactory dataFactory;
+    private EntityService entityService;
     
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-    
-    protected MockMvc mvc;
-    
-    @BeforeEach
-    public void beforeEveryTest() throws Exception {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
+    @DisplayName("Create entity")
+    @Test
+    public void testCreateEntity() throws Exception {
+        Subscription subscription = dataFactory.getSubscription();
+        entityService.createEntity(subscription);
     }
 }
