@@ -49,6 +49,20 @@ public class EntitySearchRequest {
     private List<FilterCondition> filter;
     /** Ignore count request. Required for optimization. */
     private boolean ignoreCount;
+    // =========================================== CONSTRUCTORS =======================================================
+    /**
+     * Constructor.
+     */
+    public EntitySearchRequest() {
+    }
+    /**
+     * Constructor.
+     * @param limit limit result.
+     */
+    public EntitySearchRequest(int limit) {
+        this.pageSize = limit;
+        this.page = 1;
+    }
     // =========================================== ACTIONS ============================================================
     /**
      * Create new request.

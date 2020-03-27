@@ -17,13 +17,6 @@ import ss.martin.platform.wrapper.EntitySearchResponse;
  */
 public interface CoreDAO {
     /**
-     * Create entity ignore subscription.
-     * @param <T> entity class.
-     * @param entity entity.
-     * @return created entity.
-     */
-    <T extends DataModel> T createIgnoreSubscription(T entity);
-    /**
      * Create entity (subscription will be assigned automatically).
      * @param <T> entity class.
      * @param entity entity.

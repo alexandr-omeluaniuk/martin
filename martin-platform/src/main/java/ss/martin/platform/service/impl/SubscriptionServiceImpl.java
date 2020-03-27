@@ -23,6 +23,8 @@
  */
 package ss.martin.platform.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,6 +42,8 @@ import ss.martin.platform.service.SystemUserService;
  */
 @Service
 class SubscriptionServiceImpl implements SubscriptionService {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(SubscriptionService.class);
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -54,8 +58,10 @@ class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionAdmin.setLastname(subscription.getOrganizationName());
         subscriptionAdmin.setEmail(subscription.getSubscriptionAdminEmail());
         subscription = coreDAO.create(subscription);
+        LOG.debug("new subscription created: " + subscription);
         subscriptionAdmin.setSubscription(subscription);
         systemUserService.startRegistration(subscriptionAdmin);
+        LOG.debug("new subscription administrator created: " + subscriptionAdmin);
         return subscription;
     }
 }

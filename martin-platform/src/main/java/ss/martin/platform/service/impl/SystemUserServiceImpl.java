@@ -92,7 +92,7 @@ class SystemUserServiceImpl implements SystemUserService {
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
         if (securityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
-            coreDAO.createIgnoreSubscription(systemUser);
+            em.persist(systemUser);
         } else {
             coreDAO.create(systemUser);
         }
@@ -115,7 +115,7 @@ class SystemUserServiceImpl implements SystemUserService {
         systemUser.setValidationString(null);
         systemUser.setStatus(SystemUserStatus.ACTIVE);
         systemUser.setPassword(bCryptPasswordEncoder.encode(password));
-        coreDAO.update(systemUser);
+        em.merge(systemUser);
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED)

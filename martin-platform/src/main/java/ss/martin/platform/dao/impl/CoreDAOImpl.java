@@ -25,7 +25,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
@@ -36,7 +35,6 @@ import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
-import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.wrapper.EntitySearchRequest;
@@ -57,15 +55,6 @@ class CoreDAOImpl implements CoreDAO {
     /** Reflection utilities. */
     @Autowired
     private ReflectionUtils reflectionUtils;
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> T createIgnoreSubscription(final T entity) {
-        if (securityContext.currentUser().getStandardRole() != StandardRole.ROLE_SUPER_ADMIN) {
-            throw new AccessDeniedException("You can't create entity ignore subscription. Access denied!");
-        }
-        em.persist(entity);
-        return entity;
-    }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T create(final T entity) throws Exception {
