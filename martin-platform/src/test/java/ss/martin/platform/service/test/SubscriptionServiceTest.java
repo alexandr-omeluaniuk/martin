@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
@@ -47,9 +48,10 @@ public class SubscriptionServiceTest extends AbstractTest {
     @Autowired
     private UserDAO userDAO;
     
-    @DisplayName("Register new subscription")
+    @DisplayName("Register new subscription as super admin")
     @Test
-    public void testRegisterNewSubscription() throws Exception {
+    public void testRegisterNewSubscription_ROLE_SUPER_ADMIN() throws Exception {
+        auth(StandardRole.ROLE_SUPER_ADMIN);
         final String email = "newsubscription@domain.com";
         Subscription subscription = dataFactory.getSubscription();
         subscription.setSubscriptionAdminEmail(email);
@@ -59,5 +61,33 @@ public class SubscriptionServiceTest extends AbstractTest {
         Assertions.assertNotNull(systemUser.getValidationString());
         Assertions.assertNull(systemUser.getPassword());
         Assertions.assertEquals(SystemUserStatus.REGISTRATION, systemUser.getStatus());
+    }
+    @DisplayName("Register new subscription as subscription admin")
+    @Test
+    public void testRegisterNewSubscription_ROLE_SUBSCRIPTION_ADMINISTRATOR() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        final String email = "newsubscription@domain.com";
+        Subscription subscription = dataFactory.getSubscription();
+        subscription.setSubscriptionAdminEmail(email);
+        try {
+            subscriptionService.createSubscription(subscription);
+            Assertions.fail("Must be error!");
+        } catch (AccessDeniedException ex) {
+            Assertions.assertNotNull(ex);
+        }
+    }
+    @DisplayName("Register new subscription as subscription user")
+    @Test
+    public void testRegisterNewSubscription_ROLE_SUBSCRIPTION_USER() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        final String email = "newsubscription@domain.com";
+        Subscription subscription = dataFactory.getSubscription();
+        subscription.setSubscriptionAdminEmail(email);
+        try {
+            subscriptionService.createSubscription(subscription);
+            Assertions.fail("Must be error!");
+        } catch (AccessDeniedException ex) {
+            Assertions.assertNotNull(ex);
+        }
     }
 }

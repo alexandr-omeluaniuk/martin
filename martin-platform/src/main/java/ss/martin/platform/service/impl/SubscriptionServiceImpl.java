@@ -26,6 +26,7 @@ package ss.martin.platform.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,7 @@ class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     private SystemUserService systemUserService;
     @Override
+    @Secured("ROLE_SUPER_ADMIN")
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Subscription createSubscription(Subscription subscription) throws Exception {
         SystemUser subscriptionAdmin = new SystemUser();
