@@ -10,7 +10,7 @@ cd ../../../../../../
 export JAVA_HOME="/usr/lib/jvm/jdk-13"
 mvn clean install -P production-profile
 cd docker
-cp config/application.yml /var/martin/config/application.yml
+#cp config/application.yml /var/martin/config/application.yml
 cp ../martin-application/target/martin-platform.jar .
 echo "JAR copied"
 docker image build --no-cache -t martin:1.3 .
