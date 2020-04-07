@@ -15,22 +15,54 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
-    <!-- Package as an executable jar -->
+    <profiles>
+        <profile>
+            <id>production-profile</id>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>**/node_modules/**</exclude>
+                            <exclude>**/crm/src/**</exclude>
+                            <exclude>**/crm/nbproject/**</exclude>
+                            <exclude>**/crm/public/**</exclude>
+                            <exclude>application.yml</exclude>
+                        </excludes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>development-profile</id>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>**/node_modules/**</exclude>
+                            <exclude>**/crm/src/**</exclude>
+                            <exclude>**/crm/nbproject/**</exclude>
+                            <exclude>**/crm/public/**</exclude>
+                        </excludes>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <build>
         <finalName>martin-platform</finalName>
-        <resources>
-            <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>**/node_modules/**</exclude>
-                    <exclude>**/crm/src/**</exclude>
-                    <exclude>**/crm/nbproject/**</exclude>
-                    <exclude>**/crm/public/**</exclude>
-                    <!--exclude>application.yml</exclude-->
-                </excludes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -38,5 +70,4 @@
             </plugin>
         </plugins>
     </build>
-    <name>martin-application</name>
 </project>
