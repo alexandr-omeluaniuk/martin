@@ -23,6 +23,9 @@
  */
 package ss.martin.platform.service.test;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,8 @@ import ss.martin.platform.service.EntityService;
 import ss.martin.platform.test.AbstractTest;
 import ss.martin.platform.test.data.Contact;
 import ss.martin.platform.test.data.ContactAdmin;
+import ss.martin.platform.wrapper.EntitySearchRequest;
+import ss.martin.platform.wrapper.EntitySearchResponse;
 
 /**
  *
@@ -92,6 +97,7 @@ public class EntityServiceTest extends AbstractTest {
             Assertions.assertEquals(EntityPermission.UPDATE, ex.getEntityPermission());
         }
     }
+    
     @DisplayName("Find by ID")
     @Test
     public void testFindEntityByID() throws Exception {
@@ -109,6 +115,7 @@ public class EntityServiceTest extends AbstractTest {
             Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
     }
+    
     @DisplayName("Get entity avatar")
     @Test
     public void testGetEntityAvatar() throws Exception {
@@ -128,9 +135,57 @@ public class EntityServiceTest extends AbstractTest {
             Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
     }
+    
     @DisplayName("Mass delete entities")
     @Test
     public void testMassDeleteEntities() throws Exception {
-        
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        ContactAdmin entity = new ContactAdmin();
+        entity.setLastname("Dowson");
+        entityService.createEntity(entity);
+        Set<Long> ids = new HashSet<>();
+        ids.add(entity.getId());
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        try {
+            entityService.massDeleteEntities(ids, ContactAdmin.class);
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.DELETE, ex.getEntityPermission());
+        }
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        entityService.massDeleteEntities(ids, ContactAdmin.class);
+    }
+    
+    @DisplayName("Search entities")
+    @Test
+    public void testSearchEntities() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        ContactAdmin entity = new ContactAdmin();
+        entity.setLastname("Dowson");
+        entityService.createEntity(entity);
+        EntitySearchRequest searchRequest = new EntitySearchRequest();
+        searchRequest.setPage(1);
+        searchRequest.setPageSize(Integer.MAX_VALUE);
+        EntitySearchResponse response = entityService.searchEntities(ContactAdmin.class, searchRequest);
+        Assertions.assertEquals(1, response.getData().size());
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        try {
+            entityService.searchEntities(ContactAdmin.class, searchRequest);
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
+        }
+    }
+    
+    @DisplayName("Get data for collection field")
+    @Test
+    public void testGetDataForCollectionField() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        try {
+            entityService.getDataForCollectionField(Subscription.class, "modules");
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
+        }
+        auth(StandardRole.ROLE_SUPER_ADMIN);
+        List result = entityService.getDataForCollectionField(Subscription.class, "modules");
+        Assertions.assertTrue(!result.isEmpty());
     }
 }
