@@ -28,6 +28,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ss.martin.platform.constants.EntityPermission;
+import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.PlatformSecurityException;
@@ -36,6 +37,7 @@ import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.test.AbstractTest;
 import ss.martin.platform.test.data.Contact;
+import ss.martin.platform.test.data.ContactAdmin;
 
 /**
  *
@@ -106,5 +108,29 @@ public class EntityServiceTest extends AbstractTest {
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
+    }
+    @DisplayName("Get entity avatar")
+    @Test
+    public void testGetEntityAvatar() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        ContactAdmin entity = new ContactAdmin();
+        entity.setLastname("Dowson");
+        entityService.createEntity(entity);
+        EntityFile ava = dataFactory.getAvatar(entity);
+        entity.setAvatar(ava);
+        entityService.updateEntity(entity);
+        EntityFile avatar = entityService.getEntityAvatar(entity.getId(), entity.getClass());
+        Assertions.assertNotNull(avatar);
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        try {
+            entityService.getEntityAvatar(entity.getId(), entity.getClass());
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
+        }
+    }
+    @DisplayName("Mass delete entities")
+    @Test
+    public void testMassDeleteEntities() throws Exception {
+        
     }
 }

@@ -26,6 +26,10 @@ package ss.martin.platform.test;
 import java.util.Date;
 import java.util.HashSet;
 import org.springframework.stereotype.Service;
+import ss.martin.platform.constants.EntityFileType;
+import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.security.StandardRole;
@@ -58,5 +62,15 @@ public class DataFactory {
         model.setStatus(SystemUserStatus.ACTIVE);
         model.setStandardRole(role);
         return model;
+    }
+    
+    public EntityFile getAvatar(HasAvatar parent) throws Exception {
+        EntityFile file = new EntityFile();
+        file.setBinaryData("Tasfs-k32f-k".getBytes("UTF-8"));
+        file.setMimeType("text");
+        file.setOwnerClass(parent.getClass().getName());
+        file.setOwnerId(((DataModel) parent).getId());
+        file.setType(EntityFileType.AVATAR);
+        return file;
     }
 }
