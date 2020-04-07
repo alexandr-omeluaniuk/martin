@@ -131,6 +131,7 @@ public class EntityServiceTest extends AbstractTest {
         auth(StandardRole.ROLE_SUBSCRIPTION_USER);
         try {
             entityService.getEntityAvatar(entity.getId(), entity.getClass());
+            Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
@@ -148,6 +149,7 @@ public class EntityServiceTest extends AbstractTest {
         auth(StandardRole.ROLE_SUBSCRIPTION_USER);
         try {
             entityService.massDeleteEntities(ids, ContactAdmin.class);
+            Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.DELETE, ex.getEntityPermission());
         }
@@ -170,6 +172,7 @@ public class EntityServiceTest extends AbstractTest {
         auth(StandardRole.ROLE_SUBSCRIPTION_USER);
         try {
             entityService.searchEntities(ContactAdmin.class, searchRequest);
+            Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
@@ -181,11 +184,31 @@ public class EntityServiceTest extends AbstractTest {
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         try {
             entityService.getDataForCollectionField(Subscription.class, "modules");
+            Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.READ, ex.getEntityPermission());
         }
         auth(StandardRole.ROLE_SUPER_ADMIN);
         List result = entityService.getDataForCollectionField(Subscription.class, "modules");
         Assertions.assertTrue(!result.isEmpty());
+    }
+    
+    @DisplayName("Deactivate entity")
+    @Test
+    public void testDeactivateEntity() throws Exception {
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        SystemUser entity = dataFactory.getSystemUser(
+                StandardRole.ROLE_SUBSCRIPTION_USER, "al@test.com", "ijsdf", "Mike", "McMur");
+        entity = entityService.createEntity(entity);
+        Assertions.assertTrue(entity.isActive());
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        try {
+            entityService.deactivateEntity(entity.getId(), SystemUser.class);
+            Assertions.fail("Security exception expected");
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.UPDATE, ex.getEntityPermission());
+        }
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        entityService.deactivateEntity(entity.getId(), SystemUser.class);
     }
 }

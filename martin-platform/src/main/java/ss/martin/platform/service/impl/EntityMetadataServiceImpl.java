@@ -71,6 +71,7 @@ import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.TextArea;
 import static ss.martin.platform.constants.DataType.ENTITY_COLLECTION;
 import ss.martin.platform.constants.DataTypeAttribute;
+import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 
 /**
@@ -103,6 +104,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         Layout layout = new Layout();
         layout.setFields(new ArrayList<>());
         layout.setAudit(reflectionUtils.hasSuperClass(clazz, EntityAudit.class));
+        layout.setUndeletable(clazz.isAssignableFrom(Undeletable.class));
         for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
                 layout.getFields().add(createEntityLayoutField(field));
@@ -237,7 +239,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
      * @return data type.
      * @throws Exception error.
      */
-    public void defineDataType(Field field, Layout.Field layoutField) throws Exception {
+    private void defineDataType(Field field, Layout.Field layoutField) throws Exception {
         layoutField.setAttributes(new HashMap<>());
         DataType type = DataType.STRING;
         if (field.getType().isEnum()) {

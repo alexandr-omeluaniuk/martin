@@ -60,7 +60,7 @@ import ss.martin.platform.security.StandardRole;
 @MaterialIcon(icon = "subscriptions")
 @EntityAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
 @SideBarNavigationItem(component = RepresentationComponentType.LIST_VIEW, path = "subscriptions")
-public class Subscription extends DataModel {
+public class Subscription extends DataModel implements Undeletable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // =========================================== FIELDS =============================================================
@@ -101,6 +101,9 @@ public class Subscription extends DataModel {
     @Enumerated(EnumType.STRING)
     @JoinTable(name = "subscription_module")
     private Set<ApplicationModule> modules;
+    /** Active. */
+    @Column(name = "active", nullable = false)
+    private boolean active;
     // =========================================== SET & GET ==========================================================
     /**
      * @return the organizationName
@@ -161,6 +164,20 @@ public class Subscription extends DataModel {
      */
     public void setModules(Set<ApplicationModule> modules) {
         this.modules = modules;
+    }
+    /**
+     * @return the active
+     */
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+    /**
+     * @param active the active to set
+     */
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
     }
     // ================================================================================================================
     @Override

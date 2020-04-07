@@ -8,6 +8,7 @@ package ss.martin.platform.dao;
 import java.io.Serializable;
 import java.util.Set;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -66,4 +67,11 @@ public interface CoreDAO {
      */
     <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest)
             throws Exception;
+    /**
+     * Deactivate entity.
+     * @param <T> entity type.
+     * @param id entity ID.
+     * @param cl entity class.
+     */
+    <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl);
 }

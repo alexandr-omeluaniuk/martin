@@ -44,6 +44,8 @@ import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.entity.Undeletable;
+import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.service.SecurityService;
@@ -87,6 +89,9 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.CREATE)) {
             throw new PlatformSecurityException(EntityPermission.CREATE, entity.getClass());
         }
+        if (Undeletable.class.isAssignableFrom(entity.getClass())) {
+            ((Undeletable) entity).setActive(true);
+        }
         if (entity instanceof Subscription) {
             return (T) subscriptionService.createSubscription((Subscription) entity);
         } else if (entity instanceof SystemUser) {
@@ -117,6 +122,9 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, cl);
         }
+        if (Undeletable.class.isAssignableFrom(cl)) {
+            throw new PlatformException("Attempt to delete undeletable entity: " + cl.getName());
+        }
         return coreDAO.findById(id, cl);
     }
     @Override
@@ -144,6 +152,13 @@ class EntityServiceImpl implements EntityService {
             throw new PlatformSecurityException(EntityPermission.READ, (Class<? extends DataModel>) cl);
         }
         return entityFileDAO.getAvatar(id, cl);
+    }
+    @Override
+    public <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl) throws Exception {
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.UPDATE)) {
+            throw new PlatformSecurityException(EntityPermission.UPDATE, cl);
+        }
+        coreDAO.deactivateEntity(id, cl);
     }
     // ==================================== PRIVATE ===================================================================
     /**

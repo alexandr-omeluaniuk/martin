@@ -60,7 +60,7 @@ import ss.martin.platform.security.SystemUserStatus;
 @MaterialIcon(icon = "supervisor_account")
 @EntityAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
 @SideBarNavigationItem(component = RepresentationComponentType.LIST_VIEW, path = "users")
-public class SystemUser extends TenantEntity implements HasAvatar {
+public class SystemUser extends TenantEntity implements HasAvatar, Undeletable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
@@ -118,6 +118,9 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     /** Validation string for registration. */
     @Column(name = "validation_string")
     private String validationString;
+    /** Active. */
+    @Column(name = "active", nullable = false)
+    private boolean active;
 // ==================================== SET & GET =================================================
     /**
      * @return the email
@@ -229,6 +232,20 @@ public class SystemUser extends TenantEntity implements HasAvatar {
     @Override
     public void setHasAvatar(boolean hasAvatar) {
         this.hasAvatar = hasAvatar;
+    }
+    /**
+     * @return the active
+     */
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+    /**
+     * @param active the active to set
+     */
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
     }
 // ================================================================================================
     @Override

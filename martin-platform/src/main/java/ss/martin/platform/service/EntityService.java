@@ -28,6 +28,7 @@ import java.util.Set;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.HasAvatar;
+import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -95,4 +96,12 @@ public interface EntityService {
      * @throws Exception error.
      */
     EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception;
+    /**
+     * Deactivate entity.
+     * @param <T> undeletable entity.
+     * @param id entity ID.
+     * @param cl entity class.
+     * @throws Exception error.
+     */
+    <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl) throws Exception;
 }

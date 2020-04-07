@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
@@ -35,6 +36,7 @@ import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
+import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.wrapper.EntitySearchRequest;
@@ -138,6 +140,17 @@ class CoreDAOImpl implements CoreDAO {
             response.setTotal(count == null ? 0 : Integer.valueOf(String.valueOf(count)));
         }
         return response;
+    }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
+        Root<T> c = criteria.from(cl);
+        criteria.set(c.get("active"), false).where(
+                cb.equal(c.get(DataModel_.id), id)
+        );
+        em.createQuery(criteria).executeUpdate();
     }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,

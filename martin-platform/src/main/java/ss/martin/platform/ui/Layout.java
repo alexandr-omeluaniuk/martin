@@ -41,6 +41,8 @@ public class Layout {
     private String cardSubTitle;
     /** Has audit info. */
     private boolean audit;
+    /** Undeletable. */
+    private boolean undeletable;
     // ====================================== SET & GET ===============================================================
     /**
      * @return the fields
@@ -89,6 +91,18 @@ public class Layout {
      */
     public void setAudit(boolean audit) {
         this.audit = audit;
+    }
+    /**
+     * @return the undeletable
+     */
+    public boolean isUndeletable() {
+        return undeletable;
+    }
+    /**
+     * @param undeletable the undeletable to set
+     */
+    public void setUndeletable(boolean undeletable) {
+        this.undeletable = undeletable;
     }
     // ====================================== PRIVATE CLASSES =========================================================
     /**
