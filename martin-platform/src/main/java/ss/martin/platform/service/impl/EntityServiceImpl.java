@@ -115,15 +115,15 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
             throw new PlatformSecurityException(EntityPermission.DELETE, cl);
         }
+        if (Undeletable.class.isAssignableFrom(cl)) {
+            throw new PlatformException("Attempt to delete undeletable entity: " + cl.getName());
+        }
         coreDAO.massDelete(ids, cl);
     }
     @Override
     public <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, cl);
-        }
-        if (Undeletable.class.isAssignableFrom(cl)) {
-            throw new PlatformException("Attempt to delete undeletable entity: " + cl.getName());
         }
         return coreDAO.findById(id, cl);
     }

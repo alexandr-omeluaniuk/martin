@@ -34,6 +34,7 @@ import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
@@ -155,6 +156,14 @@ public class EntityServiceTest extends AbstractTest {
         }
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         entityService.massDeleteEntities(ids, ContactAdmin.class);
+        // try to delete undeletable
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        try {
+            entityService.massDeleteEntities(ids, SystemUser.class);
+            Assertions.fail("Security exception expected");
+        } catch (PlatformException ex) {
+            Assertions.assertTrue(true);
+        }
     }
     
     @DisplayName("Search entities")
