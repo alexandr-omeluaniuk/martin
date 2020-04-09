@@ -41,6 +41,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.EntityAccess;
+import ss.martin.platform.anno.ui.CardSubTitle;
+import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
@@ -70,6 +72,7 @@ public class Subscription extends DataModel implements Undeletable {
     @Column(name = "organization_name", length = AppConstants.SIMPLE_TEXT_SIZE)
     @FormField(xs = "12")
     @ListViewColumn
+    @CardTitle
     private String organizationName;
     /** Started. */
     @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
@@ -93,6 +96,7 @@ public class Subscription extends DataModel implements Undeletable {
     @FormField(xs = "12")
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "admin_email", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false, updatable = false)
+    @CardSubTitle
     private String subscriptionAdminEmail;
     /** Application modules. */
     @ListViewColumn

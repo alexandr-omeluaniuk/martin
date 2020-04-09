@@ -29,6 +29,8 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -49,6 +51,9 @@ const useStyles = makeStyles(theme => ({
     captionLabel: {
         color: 'grey',
         marginRight: theme.spacing(2)
+    },
+    dangerButton: {
+        color: theme.palette.error.main
     }
 }));
 
@@ -123,6 +128,18 @@ function EntityCard(props) {
         );
     };
     
+    const actions = () => {
+        // TODO: on click handlers
+        let undeletable = entityData.layout;
+        return (
+                <Tooltip title={undeletable ? t('common.deactivate') : t('common.delete')}>
+                    <IconButton className={classes.dangerButton}>
+                        <Icon>{undeletable ? 'block' : 'delete'}</Icon>
+                    </IconButton>
+                </Tooltip>
+        );
+    };
+    
     const tabContent = (entityCollections) => {
         return (
                 <React.Fragment>
@@ -191,8 +208,7 @@ function EntityCard(props) {
     let generalTabIcon = (<Icon>{entityData.listView.icon}</Icon>);
     return (
             <Card>
-                <CardHeader avatar={ava} title={title} subheader={subHeader}>
-            
+                <CardHeader avatar={ava} title={title} subheader={subHeader} action={actions()}>
                 </CardHeader>
                 <CardContent>
                     <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
