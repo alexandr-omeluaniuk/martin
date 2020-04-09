@@ -125,7 +125,11 @@
             "selectedRecords": "Records selected",
             "clearSelection": "Clear selection",
             "toolbar": {
-                "add": "New record"
+                "add": "New record",
+                "confirmDeactivationTitle": "Confirm deactivation",
+                "confirmDeactivationContent": "Are you sure you want to deactivate {{count}} entries?",
+                "confirmDeleteTitle": "Confirm deletion",
+                "confirmDeleteContent": "Are you sure you want to delete the {{count}} entries?"
             }
         },
         "standardForm": {
@@ -158,7 +162,9 @@
         "noResults": "No results",
         "search": "Search",
         "forward": "Forward",
-        "back": "Back"
+        "back": "Back",
+        "deactivate": "Deactivate",
+        "confirm": "Confirm"
     },
     "enum": {
         "ss": {

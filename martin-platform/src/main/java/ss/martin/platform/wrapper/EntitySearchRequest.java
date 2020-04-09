@@ -49,6 +49,8 @@ public class EntitySearchRequest {
     private List<FilterCondition> filter;
     /** Ignore count request. Required for optimization. */
     private boolean ignoreCount;
+    /** Show deactivated records. */
+    private boolean showDeactivated;
     // =========================================== ACTIONS ============================================================
     /**
      * Create new request.
@@ -147,6 +149,18 @@ public class EntitySearchRequest {
      */
     public void setIgnoreCount(boolean ignoreCount) {
         this.ignoreCount = ignoreCount;
+    }
+    /**
+     * @return the showDeactivated
+     */
+    public boolean isShowDeactivated() {
+        return showDeactivated;
+    }
+    /**
+     * @param showDeactivated the showDeactivated to set
+     */
+    public void setShowDeactivated(boolean showDeactivated) {
+        this.showDeactivated = showDeactivated;
     }
     /**
      * Filter condition.

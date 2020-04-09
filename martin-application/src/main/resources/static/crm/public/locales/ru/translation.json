@@ -125,7 +125,11 @@
             "selectedRecords": "Выбрано записей",
             "clearSelection": "Очистить выделение",
             "toolbar": {
-                "add": "Новая запись"
+                "add": "Новая запись",
+                "confirmDeactivationTitle": "Подтверждение деактивации",
+                "confirmDeactivationContent": "Вы действительно желаете деактивировать {{count}} записей?",
+                "confirmDeleteTitle": "Подтверждение удаления",
+                "confirmDeleteContent": "Вы действительно хотите удалить {{count}} записей?"
             }
         },
         "standardForm": {
@@ -158,7 +162,9 @@
         "noResults": "Нет результатов",
         "search": "Искать",
         "forward": "Вперед",
-        "back": "Назад"
+        "back": "Назад",
+        "deactivate": "Деактивировать",
+        "confirm": "Подтвердить"
     },
     "enum": {
         "ss": {

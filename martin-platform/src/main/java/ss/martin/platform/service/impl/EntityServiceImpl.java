@@ -111,7 +111,7 @@ class EntityServiceImpl implements EntityService {
         return coreDAO.update(fromDB);
     }
     @Override
-    public <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
+    public <T extends DataModel> void deleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
             throw new PlatformSecurityException(EntityPermission.DELETE, cl);
         }
@@ -119,6 +119,13 @@ class EntityServiceImpl implements EntityService {
             throw new PlatformException("Attempt to delete undeletable entity: " + cl.getName());
         }
         coreDAO.massDelete(ids, cl);
+    }
+    @Override
+    public <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) throws Exception {
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
+            throw new PlatformSecurityException(EntityPermission.DELETE, cl);
+        }
+        coreDAO.deactivateEntities(ids, cl);
     }
     @Override
     public <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception {
@@ -152,13 +159,6 @@ class EntityServiceImpl implements EntityService {
             throw new PlatformSecurityException(EntityPermission.READ, (Class<? extends DataModel>) cl);
         }
         return entityFileDAO.getAvatar(id, cl);
-    }
-    @Override
-    public <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl) throws Exception {
-        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.UPDATE)) {
-            throw new PlatformSecurityException(EntityPermission.UPDATE, cl);
-        }
-        coreDAO.deactivateEntity(id, cl);
     }
     // ==================================== PRIVATE ===================================================================
     /**

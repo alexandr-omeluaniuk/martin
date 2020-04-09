@@ -133,7 +133,22 @@ public class EntityRESTController {
     public RESTResponse deleteEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
             throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        entityService.massDeleteEntities(ids, entityClass);
+        entityService.deleteEntities(ids, entityClass);
+        return new RESTResponse();
+    }
+    /**
+     * Deactivate entities.
+     * @param entityName entity name.
+     * @param ids set of IDs.
+     * @return response.
+     * @throws Exception error. 
+     */
+    @RequestMapping(value = "/deactivate/{entity}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public RESTResponse deactivateEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
+            throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+        entityService.deactivateEntities(ids, entityClass);
         return new RESTResponse();
     }
     /**
@@ -163,20 +178,5 @@ public class EntityRESTController {
             throws Exception {
         EntityFile avatar = entityService.getEntityAvatar(id, cl);
         return avatar == null ? new byte[0] : avatar.getBinaryData();
-    }
-    /**
-     * Deactivate entity.
-     * @param entityName entity class.
-     * @param id entity ID.
-     * @return empty response.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/deactivate/{entity}/{id}", method = RequestMethod.PUT, 
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse deactivateEntities(@PathVariable("entity") String entityName, @PathVariable("id") Long id)
-            throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        entityService.deactivateEntity(id, entityClass);
-        return new RESTResponse();
     }
 }

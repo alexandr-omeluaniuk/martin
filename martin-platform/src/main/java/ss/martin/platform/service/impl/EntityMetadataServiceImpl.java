@@ -126,6 +126,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         component.setListViewColumns(new ArrayList());
         component.setClassName(clazz.getName());
         component.setAudit(reflectionUtils.hasSuperClass(clazz, EntityAudit.class));
+        component.setUndeletable(Undeletable.class.isAssignableFrom(clazz));
         Optional.ofNullable(clazz.getAnnotation(MaterialIcon.class)).ifPresent((anno) -> {
             component.setIcon(anno.icon());
         });

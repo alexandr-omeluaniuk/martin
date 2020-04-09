@@ -63,13 +63,21 @@ public interface EntityService {
      */
     <T extends DataModel> T updateEntity(T entity) throws Exception;
     /**
-     * Mass deletion.
+     * Delete entities.
      * @param <T> entity type.
      * @param ids set of IDs.
      * @param cl entity class.
      * @throws Exception error.
      */
-    <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception;
+    <T extends DataModel> void deleteEntities(Set<Long> ids, Class<T> cl) throws Exception;
+    /**
+     * Deactivate entities.
+     * @param <T> entity type.
+     * @param ids set of IDs.
+     * @param cl entity class.
+     * @throws Exception error.
+     */
+    <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) throws Exception;
     /**
      * Find entity by ID.
      * @param <T> entity type.
@@ -96,12 +104,4 @@ public interface EntityService {
      * @throws Exception error.
      */
     EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception;
-    /**
-     * Deactivate entity.
-     * @param <T> undeletable entity.
-     * @param id entity ID.
-     * @param cl entity class.
-     * @throws Exception error.
-     */
-    <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl) throws Exception;
 }

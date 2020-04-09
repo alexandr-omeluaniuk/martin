@@ -15,6 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
+import ConfirmDialog from '../window/ConfirmDialog';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -39,7 +40,9 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { numSelected, title, clearSelection, massDeletion, createEntry } = props;
+    const [open, setOpen] = React.useState(false);
+    const [dialogType, setDialogType] = React.useState('');
+    const { numSelected, title, clearSelection, massDeletion, massDeactivation, createEntry } = props;
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
                 {numSelected > 0 ? (
@@ -53,11 +56,24 @@ function EnhancedTableToolbar(props) {
                 )}
                 {numSelected > 0 ? (
                     <React.Fragment>
+                        {massDeletion ? (
                         <Tooltip title={t('common.delete')}>
-                            <IconButton aria-label="delete" onClick={massDeletion}>
+                            <IconButton aria-label="delete" onClick={() => {
+                                setDialogType('DELETE');
+                                setOpen(true);
+                            }}>
                                 <Icon>delete</Icon>
                             </IconButton>
-                        </Tooltip>
+                        </Tooltip>) : null}
+                        {massDeactivation ? (
+                        <Tooltip title={t('common.deactivate')}>
+                            <IconButton aria-label="deactivate" onClick={() => {
+                                setDialogType('DEACTIVATION');
+                                setOpen(true);
+                            }}>
+                                <Icon>block</Icon>
+                            </IconButton>
+                        </Tooltip>) : null}
                         <Tooltip title={t('components.datatable.clearSelection')}>
                             <IconButton aria-label="clear selection" onClick={clearSelection}>
                                 <Icon>close</Icon>
@@ -73,6 +89,16 @@ function EnhancedTableToolbar(props) {
                         </Tooltip>
                     </React.Fragment>
                 )}
+                <ConfirmDialog open={open} handleClose={() => setOpen(false)} 
+                        title={dialogType === 'DELETE'
+                            ? t('components.datatable.toolbar.confirmDeleteTitle')
+                            : t('components.datatable.toolbar.confirmDeactivationTitle')} 
+                        contentText={dialogType === 'DELETE' 
+                            ? t('components.datatable.toolbar.confirmDeleteContent', {count: numSelected})
+                            : t('components.datatable.toolbar.confirmDeactivationContent', {count: numSelected})} 
+                        declineBtnOnClick={() => setOpen(false)}
+                        acceptBtnOnClick={dialogType === 'DELETE' ? massDeletion : massDeactivation}
+                        acceptBtnLabel={t('common.confirm')} declineBtnLabel={t('common.cancel')}/>
             </Toolbar>
     );
 }
@@ -81,7 +107,8 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
     title: PropTypes.string,
     clearSelection: PropTypes.func.isRequired,
-    massDeletion: PropTypes.func.isRequired,
+    massDeletion: PropTypes.func,
+    massDeactivation: PropTypes.func,
     createEntry: PropTypes.func.isRequired
 };
 

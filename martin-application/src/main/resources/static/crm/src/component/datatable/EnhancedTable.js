@@ -85,6 +85,12 @@ function EnhancedTable(props) {
             reloadTable();
         });
     };
+    const massDeactivation = () => {
+        DataService.requestPut('/entity/deactivate/' + entity, Array.from(selected)).then(resp => {
+            setSelected(new Set());
+            reloadTable();
+        });
+    };
     const handleSelectAllClick = event => {
         if (event.target.checked) {
             const newSelecteds = rows.map(n => n.name);
@@ -158,7 +164,8 @@ function EnhancedTable(props) {
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <EnhancedTableToolbar numSelected={selected.size} title={title} reloadTable={reloadTable} 
-                            clearSelection={clearSelection} massDeletion={massDeletion} createEntry={createEntry}/>
+                                          clearSelection={clearSelection} massDeletion={metadata.undeletable ? null : massDeletion}
+                                          massDeactivation={metadata.undeletable ? massDeactivation : null} createEntry={createEntry}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">

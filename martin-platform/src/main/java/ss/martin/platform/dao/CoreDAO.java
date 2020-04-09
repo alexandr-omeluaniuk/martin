@@ -68,10 +68,10 @@ public interface CoreDAO {
     <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest)
             throws Exception;
     /**
-     * Deactivate entity.
+     * Deactivate entities.
      * @param <T> entity type.
-     * @param id entity ID.
+     * @param ids entity IDs.
      * @param cl entity class.
      */
-    <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl);
+    <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl);
 }

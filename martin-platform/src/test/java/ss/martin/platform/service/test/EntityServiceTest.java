@@ -149,17 +149,17 @@ public class EntityServiceTest extends AbstractTest {
         ids.add(entity.getId());
         auth(StandardRole.ROLE_SUBSCRIPTION_USER);
         try {
-            entityService.massDeleteEntities(ids, ContactAdmin.class);
+            entityService.deleteEntities(ids, ContactAdmin.class);
             Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
             Assertions.assertEquals(EntityPermission.DELETE, ex.getEntityPermission());
         }
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
-        entityService.massDeleteEntities(ids, ContactAdmin.class);
+        entityService.deleteEntities(ids, ContactAdmin.class);
         // try to delete undeletable
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         try {
-            entityService.massDeleteEntities(ids, SystemUser.class);
+            entityService.deleteEntities(ids, SystemUser.class);
             Assertions.fail("Security exception expected");
         } catch (PlatformException ex) {
             Assertions.assertTrue(true);
@@ -211,13 +211,15 @@ public class EntityServiceTest extends AbstractTest {
         entity = entityService.createEntity(entity);
         Assertions.assertTrue(entity.isActive());
         auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        Set<Long> ids = new HashSet<>();
+        ids.add(entity.getId());
         try {
-            entityService.deactivateEntity(entity.getId(), SystemUser.class);
+            entityService.deactivateEntities(ids, SystemUser.class);
             Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
-            Assertions.assertEquals(EntityPermission.UPDATE, ex.getEntityPermission());
+            Assertions.assertEquals(EntityPermission.DELETE, ex.getEntityPermission());
         }
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
-        entityService.deactivateEntity(entity.getId(), SystemUser.class);
+        entityService.deactivateEntities(ids, SystemUser.class);
     }
 }

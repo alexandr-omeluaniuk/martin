@@ -143,14 +143,16 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel & Undeletable> void deactivateEntity(Long id, Class<T> cl) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
-        Root<T> c = criteria.from(cl);
-        criteria.set(c.get("active"), false).where(
-                cb.equal(c.get(DataModel_.id), id)
-        );
-        em.createQuery(criteria).executeUpdate();
+    public <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) {
+        if (!ids.isEmpty()) {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
+            Root<T> c = criteria.from(cl);
+            criteria.set(c.get("active"), false).where(
+                c.get(DataModel_.id).in(ids)
+            );
+            em.createQuery(criteria).executeUpdate();
+        }
     }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
@@ -160,6 +162,9 @@ class CoreDAOImpl implements CoreDAO {
         if (reflectionUtils.hasSuperClass(clazz, TenantEntity.class)) {
             Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
             predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription), subscription));
+        }
+        if (!searchRequest.isShowDeactivated() && Undeletable.class.isAssignableFrom(clazz)) {
+            predicates.add(cb.equal(c.get("active"), true));
         }
         Optional.ofNullable(searchRequest.getFilter()).ifPresent((filter) -> {
             filter.forEach((f) -> {

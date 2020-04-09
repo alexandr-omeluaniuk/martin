@@ -40,6 +40,8 @@ public class ListView extends RepresentationComponent {
     private List<ListViewColumn> listViewColumns;
     /** Has audit info. */
     private boolean audit;
+    /** Undeletable. */
+    private boolean undeletable;
     /**
      * Constructor.
      */
@@ -93,6 +95,18 @@ public class ListView extends RepresentationComponent {
      */
     public void setListViewColumns(List<ListViewColumn> listViewColumns) {
         this.listViewColumns = listViewColumns;
+    }
+    /**
+     * @return the undeletable
+     */
+    public boolean isUndeletable() {
+        return undeletable;
+    }
+    /**
+     * @param undeletable the undeletable to set
+     */
+    public void setUndeletable(boolean undeletable) {
+        this.undeletable = undeletable;
     }
     /**
      * List view column.
