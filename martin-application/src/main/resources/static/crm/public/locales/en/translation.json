@@ -129,7 +129,9 @@
                 "confirmDeactivationTitle": "Confirm deactivation",
                 "confirmDeactivationContent": "Are you sure you want to deactivate {{count}} entries?",
                 "confirmDeleteTitle": "Confirm deletion",
-                "confirmDeleteContent": "Are you sure you want to delete the {{count}} entries?"
+                "confirmDeleteContent": "Are you sure you want to delete the {{count}} entries?",
+                "hideDeactivated": "Hide deactivated records",
+                "showDeactivated": "Display deactivated records"
             }
         },
         "standardForm": {

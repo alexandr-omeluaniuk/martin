@@ -42,7 +42,8 @@ function EnhancedTableToolbar(props) {
     const { t } = useTranslation();
     const [open, setOpen] = React.useState(false);
     const [dialogType, setDialogType] = React.useState('');
-    const { numSelected, title, clearSelection, massDeletion, massDeactivation, createEntry } = props;
+    const { numSelected, title, clearSelection, massDeletion, massDeactivation, createEntry,
+        showDeactivated, toggleShowDeactivated } = props;
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
                 {numSelected > 0 ? (
@@ -82,6 +83,14 @@ function EnhancedTableToolbar(props) {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
+                        {massDeactivation ? (
+                            <Tooltip title={showDeactivated ? t('components.datatable.toolbar.hideDeactivated')
+                                        : t('components.datatable.toolbar.showDeactivated')}>
+                                <IconButton onClick={toggleShowDeactivated}>
+                                    <Icon>{showDeactivated ? 'visibility_off' : 'visibility'}</Icon>
+                                </IconButton>
+                            </Tooltip>
+                        ) : null}
                         <Tooltip title={t('components.datatable.toolbar.add')}>
                             <IconButton aria-label="add record" className={classes.greenButton} onClick={createEntry}>
                                 <Icon>add</Icon>

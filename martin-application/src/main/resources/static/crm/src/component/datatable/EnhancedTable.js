@@ -69,6 +69,7 @@ function EnhancedTable(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [formOpen, setFormOpen] = React.useState(false);
     const [editId, setEditId] = React.useState(null);
+    const [showDeactivated, setShowDeactivated] = React.useState(false);
     // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
     const reloadTable = () => {
         setLoad(!load);
@@ -78,6 +79,9 @@ function EnhancedTable(props) {
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
         reloadTable();
+    };
+    const toggleShowDeactivated = () => {
+        setShowDeactivated(!showDeactivated);
     };
     const massDeletion = () => {
         DataService.requestPut('/entity/delete/' + entity, Array.from(selected)).then(resp => {
@@ -141,7 +145,8 @@ function EnhancedTable(props) {
             pageSize: rowsPerPage,
             order: order,
             orderBy: orderBy,
-            filter: filter
+            filter: filter,
+            showDeactivated: showDeactivated
         }).then(resp => {
             if (resp) {
                 setRows(resp.data);
@@ -152,7 +157,7 @@ function EnhancedTable(props) {
             }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [load, entity, page, rowsPerPage, order, orderBy]);
+    }, [load, entity, page, rowsPerPage, order, orderBy, showDeactivated]);
     useEffect(() => {
         return () => {
             DataService.abort();
@@ -165,7 +170,8 @@ function EnhancedTable(props) {
                 <Paper className={classes.paper}>
                     <EnhancedTableToolbar numSelected={selected.size} title={title} reloadTable={reloadTable} 
                                           clearSelection={clearSelection} massDeletion={metadata.undeletable ? null : massDeletion}
-                                          massDeactivation={metadata.undeletable ? massDeactivation : null} createEntry={createEntry}/>
+                                          massDeactivation={metadata.undeletable ? massDeactivation : null} createEntry={createEntry}
+                                          showDeactivated={showDeactivated} toggleShowDeactivated={toggleShowDeactivated}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">
@@ -176,7 +182,7 @@ function EnhancedTable(props) {
                                 const isItemSelected = isSelected(row);
                                 const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
-                                    <TableRow hover role="checkbox" key={index} 
+                                    <TableRow hover role="checkbox" key={index} style={{textDecoration: metadata.undeletable && !row.active ? 'line-through' : 'none'}}
                                         aria-checked={isItemSelected} tabIndex={-1} selected={isItemSelected}>
                                         <TableCell padding="checkbox">
                                             <NavLink to={AppURLs.links.entity + '/' + entity + '/' + row.id}>

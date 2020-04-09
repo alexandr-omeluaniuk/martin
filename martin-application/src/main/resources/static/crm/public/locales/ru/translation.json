@@ -129,7 +129,9 @@
                 "confirmDeactivationTitle": "Подтверждение деактивации",
                 "confirmDeactivationContent": "Вы действительно желаете деактивировать {{count}} записей?",
                 "confirmDeleteTitle": "Подтверждение удаления",
-                "confirmDeleteContent": "Вы действительно хотите удалить {{count}} записей?"
+                "confirmDeleteContent": "Вы действительно хотите удалить {{count}} записей?",
+                "hideDeactivated": "Скрыть деактивированные записи",
+                "showDeactivated": "Показать деактивированные записи"
             }
         },
         "standardForm": {
