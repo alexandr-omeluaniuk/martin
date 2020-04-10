@@ -166,7 +166,9 @@
         "forward": "Forward",
         "back": "Back",
         "deactivate": "Deactivate",
-        "confirm": "Confirm"
+        "activate": "Activate",
+        "confirm": "Confirm",
+        "close": "Close"
     },
     "enum": {
         "ss": {

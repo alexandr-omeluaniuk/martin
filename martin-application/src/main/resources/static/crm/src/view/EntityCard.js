@@ -69,6 +69,9 @@ function EntityCard(props) {
     const [activeTab, setActiveTab] = React.useState(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
+    const onClose = () => {
+        history.goBack();
+    };
     const onChangeFieldValue = (name, value) => {
         entityData.data[name] = value;
         setEntityData(JSON.parse(JSON.stringify(entityData)));
@@ -129,15 +132,45 @@ function EntityCard(props) {
     };
     
     const actions = () => {
-        // TODO: on click handlers
-        let undeletable = entityData.layout;
-        return (
-                <Tooltip title={undeletable ? t('common.deactivate') : t('common.delete')}>
+        let undeletable = entityData.layout.undeletable;
+        let buttons = [];
+        if (undeletable) {
+            if (entityData.data.active) {
+                buttons.push(
+                    <Tooltip title={t('common.deactivate')} key="2">
+                        <IconButton className={classes.dangerButton}>
+                            <Icon>block</Icon>
+                        </IconButton>
+                    </Tooltip>
+                );
+            } else {
+                buttons.push(
+                    <Tooltip title={t('common.activate')} key="2">
+                        <IconButton>
+                            <Icon>restore</Icon>
+                        </IconButton>
+                    </Tooltip>
+                );
+            }
+        } else {
+            buttons.push(
+                <Tooltip title={t('common.delete')} key="2">
                     <IconButton className={classes.dangerButton}>
-                        <Icon>{undeletable ? 'block' : 'delete'}</Icon>
+                        <Icon>delete</Icon>
                     </IconButton>
                 </Tooltip>
-        );
+            );
+        }
+        if (history.length > 0) {
+            buttons.push(
+                <Tooltip title={t('common.close')} key="1" onClick={onClose}>
+                    <IconButton>
+                        <Icon>close</Icon>
+                    </IconButton>
+                </Tooltip>
+            );
+        }
+        return buttons;
     };
     
     const tabContent = (entityCollections) => {
@@ -206,9 +239,12 @@ function EntityCard(props) {
     let subHeader = entityData.layout.cardSubTitle && entityData.data[entityData.layout.cardSubTitle]
             ? entityData.data[entityData.layout.cardSubTitle] : '';
     let generalTabIcon = (<Icon>{entityData.listView.icon}</Icon>);
+    let isDeactivated = entityData.layout.undeletable && !entityData.data.active;
     return (
             <Card>
-                <CardHeader avatar={ava} title={title} subheader={subHeader} action={actions()}>
+                <CardHeader avatar={ava} subheader={subHeader} action={actions()} title={
+                    (<Typography style={{textDecoration: isDeactivated ? 'line-through' : ''}}>{title}</Typography>)
+                }>
                 </CardHeader>
                 <CardContent>
                     <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {

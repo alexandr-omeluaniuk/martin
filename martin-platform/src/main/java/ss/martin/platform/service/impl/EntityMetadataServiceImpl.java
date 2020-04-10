@@ -104,7 +104,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         Layout layout = new Layout();
         layout.setFields(new ArrayList<>());
         layout.setAudit(reflectionUtils.hasSuperClass(clazz, EntityAudit.class));
-        layout.setUndeletable(clazz.isAssignableFrom(Undeletable.class));
+        layout.setUndeletable(Undeletable.class.isAssignableFrom(clazz));
         for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
                 layout.getFields().add(createEntityLayoutField(field));
