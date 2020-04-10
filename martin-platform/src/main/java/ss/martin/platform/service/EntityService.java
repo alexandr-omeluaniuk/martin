@@ -79,6 +79,14 @@ public interface EntityService {
      */
     <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) throws Exception;
     /**
+     * Activate entities.
+     * @param <T> entity type.
+     * @param ids set of IDs.
+     * @param cl entity class.
+     * @throws Exception error.
+     */
+    <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl) throws Exception;
+    /**
      * Find entity by ID.
      * @param <T> entity type.
      * @param id entity ID.

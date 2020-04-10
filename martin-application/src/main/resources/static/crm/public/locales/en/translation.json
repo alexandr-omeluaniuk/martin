@@ -128,8 +128,12 @@
                 "add": "New record",
                 "confirmDeactivationTitle": "Confirm deactivation",
                 "confirmDeactivationContent": "Are you sure you want to deactivate {{count}} entries?",
+                "confirmDeactivationContentSingle": "Are you sure you want to deactivate this entry?",
                 "confirmDeleteTitle": "Confirm deletion",
                 "confirmDeleteContent": "Are you sure you want to delete the {{count}} entries?",
+                "confirmDeleteContentSingle": "Are you sure you want to delete this entry?",
+                "confirmActivateTitle": "Activation confirmation",
+                "confirmActivateContent": "Are you sure you want to activate this entry?",
                 "hideDeactivated": "Hide deactivated records",
                 "showDeactivated": "Display deactivated records"
             }

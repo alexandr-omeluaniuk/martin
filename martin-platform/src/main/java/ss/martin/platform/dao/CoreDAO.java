@@ -74,4 +74,11 @@ public interface CoreDAO {
      * @param cl entity class.
      */
     <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl);
+    /**
+     * Activate entities.
+     * @param <T> entity type.
+     * @param ids entity IDs.
+     * @param cl entity class.
+     */
+    <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl);
 }

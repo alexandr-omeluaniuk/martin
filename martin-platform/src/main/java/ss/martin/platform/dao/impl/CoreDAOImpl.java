@@ -154,6 +154,19 @@ class CoreDAOImpl implements CoreDAO {
             em.createQuery(criteria).executeUpdate();
         }
     }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl) {
+        if (!ids.isEmpty()) {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
+            Root<T> c = criteria.from(cl);
+            criteria.set(c.get("active"), true).where(
+                c.get(DataModel_.id).in(ids)
+            );
+            em.createQuery(criteria).executeUpdate();
+        }
+    }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
             EntitySearchRequest searchRequest) throws Exception {

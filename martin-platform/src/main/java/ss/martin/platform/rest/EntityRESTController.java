@@ -152,6 +152,21 @@ public class EntityRESTController {
         return new RESTResponse();
     }
     /**
+     * Activate entities.
+     * @param entityName entity name.
+     * @param ids set of IDs.
+     * @return response.
+     * @throws Exception error. 
+     */
+    @RequestMapping(value = "/activate/{entity}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public RESTResponse activateEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
+            throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+        entityService.activateEntities(ids, entityClass);
+        return new RESTResponse();
+    }
+    /**
      * Get data for entity collection field.
      * @param entityName entity name.
      * @param field field name.

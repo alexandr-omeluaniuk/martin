@@ -43,6 +43,7 @@ import InlineTabHeader from '../component/util/InlineTabHeader';
 import { history } from '../index';
 import AppURLs from '../constants/AppURLs';
 import ListView from './ListView';
+import ConfirmDialog from '../component/window/ConfirmDialog';
 
 const useStyles = makeStyles(theme => ({
     tabs: {
@@ -68,9 +69,47 @@ function EntityCard(props) {
     const [dataSnapshot, setDataSnapshot] = React.useState(null);
     const [activeTab, setActiveTab] = React.useState(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
+    
+    const [openConfirm, setOpenConfirm] = React.useState(false);
+    const [confirmTitle, setConfirmTitle] = React.useState('');
+    const [confirmContent, setConfirmContent] = React.useState('');
+    const [confirmAcceptAction, setConfirmAcceptAction] = React.useState(null);
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
     const onClose = () => {
         history.goBack();
+    };
+    const onOpenConfirm = (action) => {
+        if (action === 'activate') {
+            setConfirmTitle(t('components.datatable.toolbar.confirmActivateTitle'));
+            setConfirmContent(t('components.datatable.toolbar.confirmActivateContent'));
+            setConfirmAcceptAction(action);
+            setOpenConfirm(true);
+        } else if (action === 'deactivate') {
+            setConfirmTitle(t('components.datatable.toolbar.confirmDeactivationTitle'));
+            setConfirmContent(t('components.datatable.toolbar.confirmDeactivationContentSingle'));
+            setConfirmAcceptAction(action);
+            setOpenConfirm(true);
+        } else if (action === 'delete') {
+            setConfirmTitle(t('components.datatable.toolbar.confirmDeleteTitle'));
+            setConfirmContent(t('components.datatable.toolbar.confirmDeleteContentSingle'));
+            setConfirmAcceptAction(action);
+            setOpenConfirm(true);
+        }
+    };
+    const doActivation = () => {
+        DataService.requestPut('/entity/activate/' + entity, [id]).then(resp => {
+            setUpdate(!update);
+        });
+    };
+    const doDeactivation = () => {
+        DataService.requestPut('/entity/deactivate/' + entity, [id]).then(resp => {
+            setUpdate(!update);
+        });
+    };
+    const doDelete = () => {
+        DataService.requestPut('/entity/delete/' + entity, [id]).then(resp => {
+            history.goBack();
+        });
     };
     const onChangeFieldValue = (name, value) => {
         entityData.data[name] = value;
@@ -137,7 +176,7 @@ function EntityCard(props) {
         if (undeletable) {
             if (entityData.data.active) {
                 buttons.push(
-                    <Tooltip title={t('common.deactivate')} key="2">
+                    <Tooltip title={t('common.deactivate')} key="2" onClick={() => {onOpenConfirm('deactivate');}}>
                         <IconButton className={classes.dangerButton}>
                             <Icon>block</Icon>
                         </IconButton>
@@ -145,7 +184,7 @@ function EntityCard(props) {
                 );
             } else {
                 buttons.push(
-                    <Tooltip title={t('common.activate')} key="2">
+                    <Tooltip title={t('common.activate')} key="2" onClick={() => {onOpenConfirm('activate');}}>
                         <IconButton>
                             <Icon>restore</Icon>
                         </IconButton>
@@ -154,7 +193,7 @@ function EntityCard(props) {
             }
         } else {
             buttons.push(
-                <Tooltip title={t('common.delete')} key="2">
+                <Tooltip title={t('common.delete')} key="2" onClick={() => {onOpenConfirm('delete');}}>
                     <IconButton className={classes.dangerButton}>
                         <Icon>delete</Icon>
                     </IconButton>
@@ -240,33 +279,47 @@ function EntityCard(props) {
             ? entityData.data[entityData.layout.cardSubTitle] : '';
     let generalTabIcon = (<Icon>{entityData.listView.icon}</Icon>);
     let isDeactivated = entityData.layout.undeletable && !entityData.data.active;
+    let confirmAcceptFunction = null;
+    if (confirmAcceptAction === 'activate') {
+        confirmAcceptFunction = doActivation;
+    } else if (confirmAcceptAction === 'deactivate') {
+        confirmAcceptFunction = doDeactivation;
+    } else if (confirmAcceptAction === 'delete') {
+        confirmAcceptFunction = doDelete;
+    }
     return (
-            <Card>
-                <CardHeader avatar={ava} subheader={subHeader} action={actions()} title={
-                    (<Typography style={{textDecoration: isDeactivated ? 'line-through' : ''}}>{title}</Typography>)
-                }>
-                </CardHeader>
-                <CardContent>
-                    <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
-                        setActiveTab(index);
-                        history.push(AppURLs.links.entity + '/' + entity + '/' + id + '#' + index);
-                    }} className={classes.tabs} >
-                        <Tab label={(
-                                <InlineTabHeader icon={generalTabIcon} title={t('model.' + entity + '.label.single')}/>
-                        )}></Tab>
-                        {entityCollections.map((tab, idx) => {
-                            return (
-                                    <Tab key={idx} label={(
-                                        <InlineTabHeader icon={tab.attributes.COLLECTION_TYPE_METADATA.icon}
-                                            title={t('model.' + tab.attributes.COLLECTION_TYPE_METADATA.className + '.label.many')
-                                                + ' (' + (countMap.has(tab.name) ? countMap.get(tab.name) : 0) + ')'}/>
-                                    )}></Tab>
-                            );
-                        })}
-                    </Tabs>
-                    {tabContent(entityCollections)}
-                </CardContent>
-            </Card>
+            <React.Fragment>
+                <Card>
+                    <CardHeader avatar={ava} subheader={subHeader} action={actions()} title={
+                        (<Typography style={{textDecoration: isDeactivated ? 'line-through' : ''}}>{title}</Typography>)
+                    }>
+                    </CardHeader>
+                    <CardContent>
+                        <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
+                            setActiveTab(index);
+                            history.push(AppURLs.links.entity + '/' + entity + '/' + id + '#' + index);
+                        }} className={classes.tabs} >
+                            <Tab label={(
+                                    <InlineTabHeader icon={generalTabIcon} title={t('model.' + entity + '.label.single')}/>
+                            )}></Tab>
+                            {entityCollections.map((tab, idx) => {
+                                return (
+                                        <Tab key={idx} label={(
+                                            <InlineTabHeader icon={tab.attributes.COLLECTION_TYPE_METADATA.icon}
+                                                title={t('model.' + tab.attributes.COLLECTION_TYPE_METADATA.className + '.label.many')
+                                                    + ' (' + (countMap.has(tab.name) ? countMap.get(tab.name) : 0) + ')'}/>
+                                        )}></Tab>
+                                );
+                            })}
+                        </Tabs>
+                        {tabContent(entityCollections)}
+                    </CardContent>
+                </Card>
+                <ConfirmDialog open={openConfirm} handleClose={() => setOpenConfirm(false)} title={confirmTitle}
+                            contentText={confirmContent} declineBtnOnClick={() => setOpenConfirm(false)}
+                            acceptBtnOnClick={confirmAcceptFunction}
+                            acceptBtnLabel={t('common.confirm')} declineBtnLabel={t('common.cancel')}/>
+            </React.Fragment>
     );
 }
 

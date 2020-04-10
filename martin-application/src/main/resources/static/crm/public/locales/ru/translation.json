@@ -128,8 +128,12 @@
                 "add": "Новая запись",
                 "confirmDeactivationTitle": "Подтверждение деактивации",
                 "confirmDeactivationContent": "Вы действительно желаете деактивировать {{count}} записей?",
+                "confirmDeactivationContentSingle": "Вы действительно желаете деактивировать эту запись?",
                 "confirmDeleteTitle": "Подтверждение удаления",
                 "confirmDeleteContent": "Вы действительно хотите удалить {{count}} записей?",
+                "confirmDeleteContentSingle": "Вы действительно хотите удалить эту запись?",
+                "confirmActivateTitle": "Подтверждение восстановления",
+                "confirmActivateContent": "Вы действительно хотите восстановить эту запись?",
                 "hideDeactivated": "Скрыть деактивированные записи",
                 "showDeactivated": "Показать деактивированные записи"
             }
