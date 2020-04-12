@@ -122,15 +122,15 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) throws Exception {
-        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
-            throw new PlatformSecurityException(EntityPermission.DELETE, cl);
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DEACTIVATE)) {
+            throw new PlatformSecurityException(EntityPermission.DEACTIVATE, cl);
         }
         coreDAO.deactivateEntities(ids, cl);
     }
     @Override
     public <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl) throws Exception {
-        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.UPDATE)) {
-            throw new PlatformSecurityException(EntityPermission.UPDATE, cl);
+        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.ACTIVATE)) {
+            throw new PlatformSecurityException(EntityPermission.ACTIVATE, cl);
         }
         coreDAO.activateEntities(ids, cl);
     }

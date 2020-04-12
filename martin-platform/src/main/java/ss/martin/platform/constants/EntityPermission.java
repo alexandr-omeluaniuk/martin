@@ -35,5 +35,9 @@ public enum EntityPermission {
     /** Read. */
     READ,
     /** Delete. */
-    DELETE;
+    DELETE,
+    /** Activate. */
+    ACTIVATE,
+    /** Deactivate. */
+    DEACTIVATE;
 }

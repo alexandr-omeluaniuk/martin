@@ -202,7 +202,7 @@ public class EntityServiceTest extends AbstractTest {
         Assertions.assertTrue(!result.isEmpty());
     }
     
-    @DisplayName("Deactivate entity")
+    @DisplayName("Deactivate/activate entity")
     @Test
     public void testDeactivateEntity() throws Exception {
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
@@ -217,9 +217,19 @@ public class EntityServiceTest extends AbstractTest {
             entityService.deactivateEntities(ids, SystemUser.class);
             Assertions.fail("Security exception expected");
         } catch (PlatformSecurityException ex) {
-            Assertions.assertEquals(EntityPermission.DELETE, ex.getEntityPermission());
+            Assertions.assertEquals(EntityPermission.DEACTIVATE, ex.getEntityPermission());
         }
         auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         entityService.deactivateEntities(ids, SystemUser.class);
+        // activation
+        auth(StandardRole.ROLE_SUBSCRIPTION_USER);
+        try {
+            entityService.activateEntities(ids, SystemUser.class);
+            Assertions.fail("Security exception expected");
+        } catch (PlatformSecurityException ex) {
+            Assertions.assertEquals(EntityPermission.ACTIVATE, ex.getEntityPermission());
+        }
+        auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
+        entityService.activateEntities(ids, SystemUser.class);
     }
 }
