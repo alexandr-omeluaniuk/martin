@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 function App() {
     const classes = useStyles();
     const theme = useTheme();
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
     // ------------------------------------------------ STATE -----------------------------------------------------------------------------
     const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState('');
@@ -51,7 +51,7 @@ function App() {
             } else if (lang === 'en') {
                 theme.props = enUS.props;
             }
-            SecurityService.getNavigation().then(p => {
+            SecurityService.getNavigation(t).then(p => {
                 setNavItems(p);
                 let currentRoute = p.filter(item => { return window.location.pathname === item.path; });
                 setTitle(currentRoute.length > 0 ? currentRoute[0].label : '');
@@ -77,7 +77,10 @@ function App() {
                     <CssBaseline />
                     <DesktopToolbar title={title} open={open} setOpen={setOpen} fullname={permissions ? permissions.fullname : ''}
                             icon={icon} hasAvatar={permissions ? permissions.hasAvatar : false}
-                            userId={permissions ? permissions.userId : null}/>
+                            userId={permissions ? permissions.userId : null} onMenuItemSelected={(item) => {
+                        setTitle(item.label);
+                        setIcon(item.icon);
+                    }}/>
                     <SideNavBar open={open} setOpen={setOpen} navItems={navItems} onItemSelected={(item) => {
                         setTitle(item.label);
                         setIcon(item.icon);

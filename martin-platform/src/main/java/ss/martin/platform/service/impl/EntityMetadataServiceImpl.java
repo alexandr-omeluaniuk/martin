@@ -67,6 +67,7 @@ import ss.martin.platform.ui.ListView;
 import ss.martin.platform.anno.ui.EntityCollection;
 import ss.martin.platform.anno.ui.FilterCondition;
 import ss.martin.platform.anno.ui.FilterPredicate;
+import ss.martin.platform.anno.ui.HTMLEditor;
 import ss.martin.platform.anno.ui.LookupField;
 import ss.martin.platform.anno.ui.TextArea;
 import static ss.martin.platform.constants.DataType.ENTITY_COLLECTION;
@@ -306,6 +307,8 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             layoutField.getAttributes().put(DataTypeAttribute.TEXTAREA_ROWS, anno.rows());
         } else if (field.getAnnotation(MobilePhoneNumber.class) != null) {
             type = DataType.MOBILE_PHONE_NUMBER;
+        } else if (field.getAnnotation(HTMLEditor.class) != null) {
+            type = DataType.HTML_EDITOR;
         }
         layoutField.setDataType(type);
     }

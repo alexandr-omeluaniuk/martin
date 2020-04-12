@@ -52,6 +52,7 @@ function Settings(props) {
                         setActiveTab(index);
                     }}>
                         <Tab label={(<InlineTabHeader icon={'equalizer'} title={t('settings.userInterface')}/>)}/>
+                        <Tab label={(<InlineTabHeader icon={'drafts'} title={t('settings.emailTemplates')}/>)}/>
                     </Tabs>
                     <Theming />
                 </React.Fragment>

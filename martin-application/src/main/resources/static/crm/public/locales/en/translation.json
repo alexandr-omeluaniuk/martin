@@ -200,6 +200,7 @@
         }    
     },
     "settings": {
-        "userInterface": "Interface settings"
+        "userInterface": "Interface settings",
+        "emailTemplates": "Email templates"
     }
 }

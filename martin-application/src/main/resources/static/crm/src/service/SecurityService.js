@@ -44,7 +44,7 @@ class SecurityService {
         });
     }
     
-    static getNavigation = () => {
+    static getNavigation = (t) => {
         let service = this;
         return new Promise((resolve, reject) => {
             service.getPermissions().then(permissions => {
@@ -71,10 +71,28 @@ class SecurityService {
                     component: Settings,
                     hidden: true
                 });
+                navItems.forEach(ni => {
+                    ni.label = service.translateNavItem(ni, t);
+                });
                 resolve(navItems);
             });
         });
     };
+    
+    static translateNavItem = (item, t) => {
+        let label = '';
+        if (item.metadata) {
+            let meta = item.metadata;
+            if (meta.source === 'APPLICATION_MODULE') {
+                label = t('enum.ss.martin.platform.constants.ApplicationModule.' + meta.className);
+            } else if (meta.source === 'ENTITY') {
+                label = t('model.' + meta.className + '.label.many');
+            }
+        } else {
+            label = t('sideNavBar.' + item.sideNavBar);
+        }
+        return label;
+    }
 }
 
 export default SecurityService;

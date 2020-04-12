@@ -200,6 +200,7 @@
         }    
     },
     "settings": {
-        "userInterface": "Настройки интерфейса"
+        "userInterface": "Настройки интерфейса",
+        "emailTemplates": "Шаблоны для писем"
     }
 }

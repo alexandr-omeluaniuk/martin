@@ -21,35 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.constants;
+package ss.martin.platform.anno.ui;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Data type.
+ * HTML editor.
  * @author ss
  */
-public enum DataType {
-    /** String, length to 255 characters. */
-    STRING,
-    /** Text (big string). */
-    TEXTAREA,
-    /** Mobile phone number. */
-    MOBILE_PHONE_NUMBER,
-    /** Datetime. */
-    DATETIME,
-    /** Date. */
-    DATE,
-    /** Time. */
-    TIME,
-    /** Avatar. */
-    AVATAR,
-    /** Lookup field. */
-    LOOKUP,
-    /** Enum collection. */
-    ENUM_COLLECTION,
-    /** Enum. */
-    ENUM,
-    /** Entity collection. */
-    ENTITY_COLLECTION,
-    /** HTML editor. */
-    HTML_EDITOR;
+@Target(value = {ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface HTMLEditor {
 }

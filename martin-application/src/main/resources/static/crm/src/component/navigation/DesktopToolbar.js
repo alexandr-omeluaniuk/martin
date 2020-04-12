@@ -39,8 +39,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useTranslation } from 'react-i18next';
 import AppURLs from '../../constants/AppURLs';
-import { history } from '../../index';
 import { NavLink } from "react-router-dom";
+import SecurityService from '../../service/SecurityService';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -87,7 +87,7 @@ const menuId = 'account-menu-id';
 function DesktopToolbar(props) {
     const { t } = useTranslation();
     const classes = useStyles();
-    const { title, open, setOpen, fullname, icon, hasAvatar, userId } = props;
+    const { title, open, setOpen, fullname, icon, hasAvatar, userId, onMenuItemSelected } = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     
@@ -122,8 +122,13 @@ function DesktopToolbar(props) {
                 <MenuItem disabled={true}><Typography variant="caption">{fullname}<hr/></Typography></MenuItem>
                 <NavLink to={AppURLs.links.settings} className={classes.navLink}>
                     <MenuItem onClick={() => {
-                        history.push(AppURLs.links.settings);
-                        setAnchorEl(null);
+                        SecurityService.getNavigation(t).then(navItems => {
+                            let item = navItems.filter(ni => {
+                                return ni.path === AppURLs.links.settings;
+                            })[0];
+                            onMenuItemSelected(item);
+                            setAnchorEl(null);
+                        });
                     }}><Icon className={classes.menuIcon}>settings</Icon> {t('toolbar.accountmenu.settings')}</MenuItem>
                 </NavLink>
                 <MenuItem onClick={logout}><Icon className={classes.menuIcon}>power_settings_new</Icon> {t('toolbar.accountmenu.logout')}</MenuItem>
