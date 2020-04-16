@@ -56,6 +56,7 @@ class SubscriptionServiceImpl implements SubscriptionService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Subscription createSubscription(Subscription subscription) throws Exception {
         SystemUser subscriptionAdmin = new SystemUser();
+        subscriptionAdmin.setActive(true);
         subscriptionAdmin.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         subscriptionAdmin.setLastname(subscription.getOrganizationName());
         subscriptionAdmin.setEmail(subscription.getSubscriptionAdminEmail());

@@ -84,6 +84,7 @@ class SystemUserServiceImpl implements SystemUserService {
     private SecurityContext securityContext;
 // =================================================== PUBLIC =========================================================
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void startRegistration(SystemUser systemUser) throws Exception {
         if (userDAO.findByUsername(systemUser.getEmail()) != null) {
             throw new RegistrationUserException(RegistrationUserException.CODE_DUPLICATE_USER);
@@ -110,6 +111,7 @@ class SystemUserServiceImpl implements SystemUserService {
         emailService.sendEmail(emailRequest);
     }
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void finishRegistration(String validationString, String password) throws Exception {
         SystemUser systemUser = userDAO.getUserByValidationString(validationString);
         systemUser.setValidationString(null);
@@ -128,6 +130,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(new Date());
                 Subscription superAdminSubscription = new Subscription();
+                superAdminSubscription.setActive(true);
                 superAdminSubscription.setStarted(calendar.getTime());
                 calendar.add(Calendar.YEAR, 33);
                 superAdminSubscription.setExpirationDate(calendar.getTime());
@@ -135,6 +138,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 superAdminSubscription.setSubscriptionAdminEmail(config.getSuperAdminEmail());
                 em.persist(superAdminSubscription);
                 superAdmin = new SystemUser();
+                superAdmin.setActive(true);
                 superAdmin.setSubscription(superAdminSubscription);
                 superAdmin.setEmail(config.getSuperAdminEmail());
                 superAdmin.setFirstname(config.getSuperAdminFirstName());

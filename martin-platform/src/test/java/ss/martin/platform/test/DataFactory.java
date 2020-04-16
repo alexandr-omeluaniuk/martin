@@ -55,6 +55,7 @@ public class DataFactory {
     public SystemUser getSystemUser(
             StandardRole role, String username, String password, String firstname, String lastname) {
         SystemUser model = new SystemUser();
+        model.setActive(true);
         model.setEmail(username);
         model.setFirstname(firstname);
         model.setLastname(lastname);
