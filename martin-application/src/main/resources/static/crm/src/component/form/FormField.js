@@ -84,8 +84,10 @@ function FormField(props) {
     
     const commitChanges = (event) => {
         if (onFieldEdit) {
-            event.preventDefault();
-            event.stopPropagation();
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
             setReadOnly(true);
             onFieldEdit(field, fieldValue);
         }
@@ -138,6 +140,9 @@ function FormField(props) {
                         onChange={(data) => onChangeFieldValue(name, data)}/>
             );
         } else if (dataType === DataTypes.TEXTAREA) {
+            if (!readOnly) {
+                inputRef.current.value='';  // prevent bug with readonly attribute for textarea
+            }
             return (
                     <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                                 value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} inputRef={inputRef}
