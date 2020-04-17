@@ -67,6 +67,7 @@ function CalendarView(props) {
         let map = new Map();
         map.set('start', info.date);
         map.set('end', info.date);
+        setEditId(null);
         setPredefinedValues(map);
         setFormOpen(true);
     };

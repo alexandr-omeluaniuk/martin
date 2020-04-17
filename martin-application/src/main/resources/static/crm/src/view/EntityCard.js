@@ -67,7 +67,7 @@ function EntityCard(props) {
     const [countMap, setCountMap] = React.useState(new Map());
     const [entityData, setEntityData] = React.useState(null);
     const [dataSnapshot, setDataSnapshot] = React.useState(null);
-    const [activeTab, setActiveTab] = React.useState(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
+    const [activeTab, setActiveTab] = React.useState(0);
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     
     const [openConfirm, setOpenConfirm] = React.useState(false);
@@ -76,6 +76,8 @@ function EntityCard(props) {
     const [confirmAcceptAction, setConfirmAcceptAction] = React.useState(null);
     // --------------------------------------------------- FUNCTIONS ----------------------------------------------------------------------
     const onClose = () => {
+        setActiveTab(0);
+        setEntityData(null);
         history.goBack();
     };
     const onOpenConfirm = (action) => {
@@ -255,6 +257,7 @@ function EntityCard(props) {
         DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
             setEntityData(resp);
             setDataSnapshot(JSON.stringify(resp.data));
+            setActiveTab(window.location.hash ? parseInt(window.location.hash.replace(/\D/g,'')) : 0);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [entity, id, update]);
@@ -271,6 +274,9 @@ function EntityCard(props) {
     let entityCollections = entityData.layout.fields.filter(f => {
         return f.dataType === DataTypes.ENTITY_COLLECTION;
     });
+    if (activeTab > entityCollections.length) {
+        return null;
+    }
     let ava = entityData.data.hasAvatar ? (<Avatar src={DataTypeService.getAvatarUrl(entity, entityData.data.id)} />)
             : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
     let title = entityData.layout.cardTitle && entityData.data[entityData.layout.cardTitle]
