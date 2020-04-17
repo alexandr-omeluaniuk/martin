@@ -64,7 +64,6 @@ public class Contact extends EntityAudit implements HasAvatar {
     private static final long serialVersionUID = 1L;
 // ========================================== FIELDS ==================================================================
     /** Contact avatar. */
-    /** Avatar. */
     @Avatar
     @ListViewColumn(sortable = false)
     @FormField(xs = "12")

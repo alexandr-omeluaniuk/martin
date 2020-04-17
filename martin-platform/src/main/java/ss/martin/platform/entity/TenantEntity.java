@@ -24,17 +24,20 @@
 package ss.martin.platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import ss.martin.platform.entity.listener.TenantEntityListener;
 
 /**
  * Tenant entity.
  * @author ss
  */
 @MappedSuperclass
+@EntityListeners(TenantEntityListener.class)
 public abstract class TenantEntity extends DataModel {
     /** Subscription. */
     @JsonIgnore
