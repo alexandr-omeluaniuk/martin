@@ -59,7 +59,7 @@ function TabPanel(props) {
                         <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} 
                                 className={classes.tabs} onChange={(e, index) => {
                             setActiveTab(index);
-                            history.push(AppURLs.links.view + '/' + metadata.className + '#' + index);
+                            history.push(AppURLs.links.view + '/' + metadata.path + '#' + index);
                         }}>
                             {metadata.tabs.map((item, i) => {
                                 const icon = (<Icon>{item.icon}</Icon>);

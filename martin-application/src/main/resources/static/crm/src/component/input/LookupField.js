@@ -65,7 +65,8 @@ function LookupField(props) {
         let searchToken = e.target.value;
         setDisplayedValue(searchToken);
         if (searchToken.length > 1) {
-            let filter = field.attributes.LOOKUP_FILTER ? field.attributes.LOOKUP_FILTER : [];
+            let filterOrigin = field.attributes.LOOKUP_FILTER ? field.attributes.LOOKUP_FILTER : [];
+            let filter = JSON.parse(JSON.stringify(filterOrigin));
             filter.forEach(cond => {
                 cond.predicates.forEach(predicate => {
                     predicate.value = predicate.value.replace('{val}', searchToken);
