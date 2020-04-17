@@ -26,11 +26,14 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.DataModel_;
+import ss.martin.platform.entity.EntityFile;
+import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
@@ -57,13 +60,27 @@ class CoreDAOImpl implements CoreDAO {
     private ReflectionUtils reflectionUtils;
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> T create(final T entity) throws Exception {
-        em.persist(entity);
+    public <T extends DataModel> T create(final T entity) {
+        if (HasAvatar.class.isAssignableFrom(entity.getClass())) {
+            HasAvatar avatarEntity = (HasAvatar) entity;
+            EntityFile avatar = avatarEntity.getAvatar();
+            avatarEntity.setAvatar(null);
+            em.persist(avatarEntity);
+            if (avatar != null) {
+                avatarEntity.setAvatar(avatar);
+                update((DataModel) avatarEntity);
+            }
+        } else {
+            em.persist(entity);
+        }
         return entity;
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> T update(final T entity) throws Exception {
+    public <T extends DataModel> T update(final T entity) {
+        if (HasAvatar.class.isAssignableFrom(entity.getClass())) {
+            persistAvatar((HasAvatar) entity);
+        }
         T updated = em.merge(entity);
         return updated;
     }
@@ -221,5 +238,14 @@ class CoreDAOImpl implements CoreDAO {
         } else {
             throw new RuntimeException("Boolean operator for filter condition is required!");
         }
+    }
+    
+    private void persistAvatar(HasAvatar entity) {
+        entity.setHasAvatar(entity.getAvatar() != null);
+        Optional.ofNullable(entity.getAvatar()).ifPresent((file) -> {
+            file.setOwnerId(((DataModel) entity).getId());
+            file.setType(EntityFileType.AVATAR);
+            file.setOwnerClass(entity.getClass().getName());
+        });
     }
 }

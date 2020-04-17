@@ -23,14 +23,10 @@
  */
 package ss.martin.platform.entity;
 
-import javax.persistence.EntityListeners;
-import ss.martin.platform.entity.listener.HasAvatarListener;
-
 /**
  * Has avatar.
  * @author ss
  */
-@EntityListeners(HasAvatarListener.class)
 public interface HasAvatar {
     /**
      * Get entity avatar.
