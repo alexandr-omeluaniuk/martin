@@ -11,7 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>ss.martin</groupId>
-            <artifactId>martin-module-crm</artifactId>
+            <artifactId>martin-platform</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>
