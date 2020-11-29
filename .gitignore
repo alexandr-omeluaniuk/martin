@@ -15,3 +15,4 @@
 /target/
 /martin-platform/src/test/resources/application.yml
 /docker/martin-platform.jar
+/martin-application/src/main/resources/static/martin-platform-client/nbproject/
