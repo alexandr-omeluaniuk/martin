@@ -36,11 +36,10 @@ import Container from '@material-ui/core/Container';
 import Copyright from '../component/Copyright';
 import { useTranslation } from 'react-i18next';
 import Form from '../component/form/Form';
-import { backgroundImage } from '../constants/style';
 import { TYPES, VALIDATORS } from '../service/DataTypeService'
-import DataService, { CONTENT_TYPE_FORM } from '../service/DataService';
+import DataService from '../service/DataService';
 import { history } from '../index';
-import AppURLs from '../constants/AppURLs';
+import AppURLs from '../conf/app-urls';
 
 let dataService = new DataService();
 
@@ -61,16 +60,13 @@ const useStyles = makeStyles(theme => ({
             content: '""',
             display: "block",
             opacity: ".3",
-            backgroundImage: 'url(' + backgroundImage + ')',
+            //backgroundImage: 'url(' + backgroundImage + ')',
             backgroundSize: "cover",
             backgroundPosition: "center center"
         }
     },
     avatar: {
         backgroundColor: theme.palette.secondary.main
-    },
-    brand: {
-        marginTop: theme.spacing(8)
     }
 }));
 
@@ -84,7 +80,7 @@ export default function Welcome() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const doLogin = (data) => {
-        dataService.request('POST', '/anonym/openapi/login', DataService.toFormString(data), CONTENT_TYPE_FORM).then(resp => {
+        dataService.request('POST', '/anonym/openapi/login', DataService.toFormString(data)).then(resp => {
             if (resp.jwt) {
                 DataService.setJWT(resp.jwt);
                 history.push(AppURLs.context + '/queue_management');
@@ -135,7 +131,6 @@ export default function Welcome() {
             <div className={classes.background}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
-                    <img alt="brand" src={brand} className={classes.brand}/>
                     <Card raised>
                         <CardHeader avatar={avatar()} title={(<Typography variant="h5">{t('component.welcomePage.title')}</Typography>)}/>
                         <CardContent>

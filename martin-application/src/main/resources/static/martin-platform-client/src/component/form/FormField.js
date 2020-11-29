@@ -12,7 +12,6 @@ import Icon from '@material-ui/core/Icon';
 import NumberField from './input/NumberField';
 import Dropdown from './input/Dropdown';
 import NewOptionDropdown from './input/NewOptionDropdown';
-import Summernote from './input/Summernote';
 import FileUpload from './input/FileUpload';
 import MultipleSelect from './input/MultipleSelect';
 import TextFieldWithTranslations from './input/TextFieldWithTranslations';
@@ -106,9 +105,6 @@ function FormField (props) {
                         keyboardIcon={(<Icon>access_time</Icon>)}/>
                 </MuiPickersUtilsProvider>
             );
-        } else if (fieldConfig.type === TYPES.SUMMERNOTE_EDITOR) {
-            return <Summernote label={label} value={fieldValue ? fieldValue : ''} required={isRequired} 
-                        onChangeFieldValue={onChangeFieldValue} fullWidth={true} name={name} helperText={invalidFields.get(name)}/>;
         } else if (fieldConfig.type === TYPES.MULTIPLESELECT) {
             return <MultipleSelect label={label} options={attributes.options ? attributes.options : []} name={name}
                         value={fieldValue ? fieldValue : []} fullWidth={true} onChangeFieldValue={onChangeFieldValue}
