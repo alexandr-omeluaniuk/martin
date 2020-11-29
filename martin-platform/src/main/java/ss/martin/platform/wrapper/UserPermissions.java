@@ -23,9 +23,7 @@
  */
 package ss.martin.platform.wrapper;
 
-import java.util.List;
 import ss.martin.platform.entity.Subscription;
-import ss.martin.platform.ui.RepresentationComponent;
 
 /**
  * User permissions for UI.
@@ -34,26 +32,12 @@ import ss.martin.platform.ui.RepresentationComponent;
 public class UserPermissions {
     /** Subscription. */
     private Subscription subscription;
-    /** Side bar navigation items. */
-    private List<RepresentationComponent> sideBarNavItems;
     /** User full name. */
     private String fullname;
     /** Has avatar. */
     private boolean hasAvatar;
     /** User ID. */
     private Long userId;
-    /**
-     * @return the sideBarNavItems
-     */
-    public List<RepresentationComponent> getSideBarNavItems() {
-        return sideBarNavItems;
-    }
-    /**
-     * @param sideBarNavItems the sideBarNavItems to set
-     */
-    public void setSideBarNavItems(List<RepresentationComponent> sideBarNavItems) {
-        this.sideBarNavItems = sideBarNavItems;
-    }
     /**
      * @return the fullname
      */

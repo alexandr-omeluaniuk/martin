@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
+package ss.martin.platform.anno.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,30 +29,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Lookup field settings.
+ * UI form field. Can be updated via UI.
+ * UI 12-columns grid system annotation
  * @author ss
  */
 @Target(value = {ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface LookupField {
-    /**
-     * Displayed label template, like {name} or '{firstname} {lastname}'
-     * @return template.
-     */
-    public String template();
-    /**
-     * Order by field.
-     * @return order by field.
-     */
-    public String orderBy() default "id";
-    /**
-     * Sort order.
-     * @return sort order.
-     */
-    public String order() default "asc";
-    /**
-     * Filter conditions.
-     * @return filter conditions.
-     */
-    public FilterCondition[] filter() default {};
+public @interface FormField {
+    
 }

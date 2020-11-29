@@ -34,14 +34,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import ss.martin.platform.anno.ui.FormField;
-import ss.martin.platform.anno.ui.ListViewColumn;
-import ss.martin.platform.anno.ui.MaterialIcon;
-import ss.martin.platform.anno.validation.MobilePhoneNumber;
-import ss.martin.platform.constants.ListViewColumnAlign;
-import ss.martin.platform.anno.ui.Avatar;
-import ss.martin.platform.anno.ui.CardSubTitle;
-import ss.martin.platform.anno.ui.CardTitle;
+import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.EntityAudit;
 import ss.martin.platform.entity.EntityFile;
@@ -53,16 +46,13 @@ import ss.martin.platform.entity.HasAvatar;
  */
 @Entity
 @Table(name = "contact")
-@MaterialIcon(icon = "perm_identity")
 public class Contact extends EntityAudit implements HasAvatar {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================== FIELDS ==================================================================
     /** Contact avatar. */
     /** Avatar. */
-    @Avatar
-    @ListViewColumn(sortable = false)
-    @FormField(xs = "12")
+    @FormField
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "avatar")
@@ -71,31 +61,24 @@ public class Contact extends EntityAudit implements HasAvatar {
     @Column(name = "has_avatar")
     private boolean hasAvatar;
     /** First name. */
-    @ListViewColumn
-    @FormField(lg = "6", md = "6", sm = "12")
-    @CardSubTitle
+    @FormField
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "firstname", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String firstname;
     /** Last name. */
-    @ListViewColumn
-    @FormField(lg = "6", md = "6", sm = "12")
-    @CardTitle
+    @FormField
     @NotEmpty
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "lastname", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false)
     private String lastname;
     /** Email. */
-    @ListViewColumn
-    @FormField(lg = "6", md = "6", sm = "12")
+    @FormField
     @Email
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "email", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String email;
     /** Mobile phone. */
-    @ListViewColumn(align = ListViewColumnAlign.right)
-    @FormField(lg = "6", md = "6", sm = "12")
-    @MobilePhoneNumber
+    @FormField
     @Column(name = "phone_mobile", length = 17)
     private String phoneMobile;
 // ========================================== SET & GET ===============================================================

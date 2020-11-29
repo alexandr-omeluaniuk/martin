@@ -28,9 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import ss.martin.platform.anno.ui.FormField;
-import ss.martin.platform.anno.ui.HTMLEditor;
-import ss.martin.platform.anno.ui.ListViewColumn;
+import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.AppConstants;
 
 /**
@@ -44,16 +42,13 @@ public class EmailTemplate extends EntityAudit implements Undeletable {
     private static final long serialVersionUID = 1L;
 // =============================================== FIELDS =============================================================
     /** Email subject. */
-    @ListViewColumn
-    @FormField(xs = "12")
+    @FormField()
     @NotNull
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "subject", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
     private String subject;
     /** Email content. */
-    @ListViewColumn
-    @FormField(xs = "12")
-    @HTMLEditor
+    @FormField()
     @NotNull
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "content", nullable = false, length = AppConstants.LONG_TEXT_SIZE)

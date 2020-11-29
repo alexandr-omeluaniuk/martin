@@ -39,15 +39,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.EntityAccess;
-import ss.martin.platform.anno.ui.Avatar;
-import ss.martin.platform.anno.ui.CardSubTitle;
-import ss.martin.platform.anno.ui.CardTitle;
-import ss.martin.platform.anno.ui.FormField;
-import ss.martin.platform.anno.ui.ListViewColumn;
-import ss.martin.platform.anno.ui.MaterialIcon;
-import ss.martin.platform.anno.ui.SideBarNavigationItem;
+import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.AppConstants;
-import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SystemUserStatus;
 
@@ -57,17 +50,13 @@ import ss.martin.platform.security.SystemUserStatus;
  */
 @Entity
 @Table(name = "users")
-@MaterialIcon(icon = "supervisor_account")
 @EntityAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
-@SideBarNavigationItem(component = RepresentationComponentType.LIST_VIEW, path = "users")
 public class SystemUser extends TenantEntity implements HasAvatar, Undeletable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
     /** Avatar. */
-    @Avatar
-    @ListViewColumn(sortable = false)
-    @FormField(xs = "12")
+    @FormField
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "avatar")
@@ -77,8 +66,7 @@ public class SystemUser extends TenantEntity implements HasAvatar, Undeletable {
     private boolean hasAvatar;
     /** Email. */
     @Email
-    @FormField(xs = "12")
-    @ListViewColumn
+    @FormField
     @NotEmpty
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "email", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
@@ -90,28 +78,22 @@ public class SystemUser extends TenantEntity implements HasAvatar, Undeletable {
     private String password;
     /** First name. */
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
-    @FormField(xs = "6")
-    @CardSubTitle
-    @ListViewColumn
+    @FormField
     @Column(name = "firstname", length = AppConstants.SIMPLE_TEXT_SIZE)
     private String firstname;
     /** Last name. */
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
-    @FormField(xs = "6")
-    @CardTitle
-    @ListViewColumn
+    @FormField
     @NotEmpty
     @Column(name = "lastname", nullable = false, length = AppConstants.SIMPLE_TEXT_SIZE)
     private String lastname;
     /** Status. */
     @NotNull
-    @ListViewColumn(sortable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private SystemUserStatus status;
     /** Standard role. */
     @NotNull
-    @ListViewColumn(sortable = false)
     @Enumerated(EnumType.STRING)
     @Column(name = "standard_role", nullable = false)
     private StandardRole standardRole;

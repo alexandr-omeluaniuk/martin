@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import ss.martin.platform.anno.ui.FormField;
+import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.dao.EntityFileDAO;

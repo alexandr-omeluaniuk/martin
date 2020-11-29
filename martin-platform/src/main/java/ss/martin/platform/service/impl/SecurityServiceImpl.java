@@ -16,8 +16,6 @@
  */
 package ss.martin.platform.service.impl;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -30,18 +28,13 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.security.EntityAccess;
-import ss.martin.platform.anno.ui.SideBarNavigationItem;
 import ss.martin.platform.constants.EntityPermission;
-import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.security.ApplicationModuleProvider;
-import ss.martin.platform.security.StandardRole;
-import ss.martin.platform.service.EntityMetadataService;
-import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.security.SecurityContext;
-import ss.martin.platform.ui.RepresentationComponent;
+import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.wrapper.UserPermissions;
 
 /**
@@ -53,24 +46,12 @@ import ss.martin.platform.wrapper.UserPermissions;
 class SecurityServiceImpl implements SecurityService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SecurityService.class);
-    /** Data model classes. */
-    private static final Set<Class<? extends DataModel>> DATA_MODEL_CLASSES = new HashSet<>();
     /** Security context. */
     @Autowired
     private SecurityContext securityContext;
-    /** Entity metadata service. */
-    @Autowired
-    private EntityMetadataService entityMetadataService;
     /** Modules. */
     @Autowired
     private List<ApplicationModuleProvider> modules;
-    /**
-     * Static initialization.
-     */
-    static {
-        DATA_MODEL_CLASSES.add(SystemUser.class);
-        DATA_MODEL_CLASSES.add(Subscription.class);
-    }
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         SystemUser currentUser = securityContext.currentUser();
@@ -80,37 +61,6 @@ class SecurityServiceImpl implements SecurityService {
         permissions.setSubscription(securityContext.subscription());
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());
-        permissions.setSideBarNavItems(new ArrayList<>());
-        // side bar navigation (application modules)
-        Subscription subscription = securityContext.subscription();
-        modules.stream().filter((m) -> {
-            return subscription.getModules().contains(m.module());
-        }).forEach((provider) -> {
-            RepresentationComponent component = provider.representationComponent();
-            permissions.getSideBarNavItems().add(component);
-        });
-        // side bar navigation (static)
-        for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
-            if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
-                Optional.ofNullable(dataModelClass.getAnnotation(SideBarNavigationItem.class))
-                        .ifPresent(sideBarNavItem -> {
-                    try {
-                        if (getEntityPermissions(dataModelClass).contains(EntityPermission.READ)) {
-                            RepresentationComponent component = null;
-                            if (sideBarNavItem.component() == RepresentationComponentType.LIST_VIEW) {
-                                component = entityMetadataService.getEntityListView(dataModelClass);
-                            }
-                            Optional.ofNullable(component).ifPresent((c) -> {
-                                c.setPath(sideBarNavItem.path());
-                                permissions.getSideBarNavItems().add(c);
-                            });
-                        }
-                    } catch (Exception e) {
-                        LOG.warn("impossible to create a side nav bar item!", e);
-                    }
-                });
-            }
-        }
         return permissions;
     }
     @Override

@@ -38,9 +38,7 @@ import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.HasAvatar;
-import ss.martin.platform.service.EntityMetadataService;
 import ss.martin.platform.service.EntityService;
-import ss.martin.platform.wrapper.DataModelWrapper;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 import ss.martin.platform.wrapper.RESTResponse;
@@ -55,9 +53,6 @@ public class EntityRESTController {
     /** Entity service. */
     @Autowired
     private EntityService entityService;
-    /** Entity metadata service. */
-    @Autowired
-    private EntityMetadataService entityMetadataService;
     /**
      * Search entities.
      * @param entityName entity name.
@@ -80,16 +75,10 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public DataModelWrapper getEntityById(@PathVariable("entity") String entityName,
+    public DataModel getEntityById(@PathVariable("entity") String entityName,
             @PathVariable("id") Long id) throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        DataModelWrapper wrapper = new DataModelWrapper();
-        wrapper.setLayout(entityMetadataService.getEntityLayout(entityClass));
-        wrapper.setListView(entityMetadataService.getEntityListView(entityClass));
-        if (id > 0) {
-            wrapper.setData(entityService.findEntityByID(id, entityClass));
-        }
-        return wrapper;
+        return entityService.findEntityByID(id, entityClass);
     }
     /**
      * Create entity.

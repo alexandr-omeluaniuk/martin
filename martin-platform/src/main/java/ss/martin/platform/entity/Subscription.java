@@ -41,16 +41,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.EntityAccess;
-import ss.martin.platform.anno.ui.CardSubTitle;
-import ss.martin.platform.anno.ui.CardTitle;
-import ss.martin.platform.anno.ui.FormField;
-import ss.martin.platform.anno.ui.ListViewColumn;
-import ss.martin.platform.anno.ui.MaterialIcon;
-import ss.martin.platform.anno.ui.SideBarNavigationItem;
+import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.AppConstants;
-import ss.martin.platform.constants.ApplicationModule;
-import ss.martin.platform.constants.ListViewColumnAlign;
-import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.security.StandardRole;
 
 /**
@@ -59,9 +51,7 @@ import ss.martin.platform.security.StandardRole;
  */
 @Entity
 @Table(name = "subscription")
-@MaterialIcon(icon = "subscriptions")
 @EntityAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
-@SideBarNavigationItem(component = RepresentationComponentType.LIST_VIEW, path = "subscriptions")
 public class Subscription extends DataModel implements Undeletable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
@@ -70,41 +60,35 @@ public class Subscription extends DataModel implements Undeletable {
     @NotEmpty
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "organization_name", length = AppConstants.SIMPLE_TEXT_SIZE)
-    @FormField(xs = "12")
-    @ListViewColumn
-    @CardTitle
+    @FormField
     private String organizationName;
     /** Started. */
     @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
-    @FormField(xs = "6")
-    @ListViewColumn(align = ListViewColumnAlign.right)
+    @FormField
     private Date started;
     /** Expiration date. */
     @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)
-    @FormField(xs = "6")
-    @ListViewColumn(align = ListViewColumnAlign.right)
+    @FormField
     private Date expirationDate;
     /** Subscription admin email. */
     @NotEmpty
     @Email
-    @FormField(xs = "12")
+    @FormField
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "admin_email", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false, updatable = false)
-    @CardSubTitle
     private String subscriptionAdminEmail;
     /** Application modules. */
-    @ListViewColumn
-    @FormField(xs = "12")
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = ApplicationModule.class)
+    @FormField
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
     @Enumerated(EnumType.STRING)
     @JoinTable(name = "subscription_module")
-    private Set<ApplicationModule> modules;
+    private Set<String> modules;
     /** Active. */
     @Column(name = "active", nullable = false)
     private boolean active;
@@ -160,13 +144,13 @@ public class Subscription extends DataModel implements Undeletable {
     /**
      * @return the modules
      */
-    public Set<ApplicationModule> getModules() {
+    public Set<String> getModules() {
         return modules;
     }
     /**
      * @param modules the modules to set
      */
-    public void setModules(Set<ApplicationModule> modules) {
+    public void setModules(Set<String> modules) {
         this.modules = modules;
     }
     /**

@@ -23,9 +23,7 @@
  */
 package ss.martin.platform.security;
 
-import ss.martin.platform.constants.ApplicationModule;
 import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.ui.RepresentationComponent;
 
 /**
  * Application module provider.
@@ -33,18 +31,8 @@ import ss.martin.platform.ui.RepresentationComponent;
  */
 public interface ApplicationModuleProvider {
     /**
-     * Get application module.
-     * @return application module.
-     */
-    ApplicationModule module();
-    /**
      * Get application data models.
      * @return data models.
      */
     Class<? extends DataModel>[] dataModel();
-    /**
-     * Get representation component.
-     * @return representation component.
-     */
-    RepresentationComponent representationComponent();
 }
