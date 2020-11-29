@@ -9,8 +9,10 @@ import Spinner from './component/util/Spinner';
 import ErrorBoundary from './component/util/ErrorBoundary';
 import Notification from './component/util/Notification';
 import { createTheme } from './conf/theme';
+import './conf/i18next-config';
 
 import App from './pages/App';
+import Welcome from './pages/Welcome';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'fontsource-roboto';
@@ -20,6 +22,9 @@ export const history = createBrowserHistory();
 export var changeTheme;
 
 const indexRoutes = [{
+        path: AppURLs.welcome,
+        component: Welcome
+    }, {
         path: AppURLs.app,
         component: App
     }, {

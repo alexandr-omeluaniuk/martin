@@ -9,6 +9,7 @@ const context = '';
 const AppURLs = {
     context: context,
     api: '/api',
+    welcome: context + '/welcome',
     app: context + '/platform'
 };
 

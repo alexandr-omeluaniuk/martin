@@ -224,5 +224,5 @@ export function setDefaultTheme(themeId) {
 }
 
 export function getDefaultTheme() {
-    return localStorage.getItem(THEME) ? localStorage.getItem(THEME) : THEME_COMFORTAA.id;
+    return localStorage.getItem(THEME) ? localStorage.getItem(THEME) : THEME_STANDARD.id;
 }

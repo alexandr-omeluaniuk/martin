@@ -4,20 +4,20 @@
  * and open the template in the editor.
  */
 
-export const THEME = 'theme';
+export const THEME = 'MP-THEME';
 
-export const PRIMARY_COLOR = 'primaryColor';
+export const PRIMARY_COLOR = 'MP-PRIMATY-COLOR';
 
-export const SECONDARY_COLOR = 'secondaryColor';
+export const SECONDARY_COLOR = 'MP-SECONDARY-COLOR';
 
-export const PRIMARY_CONTRAST = 'primaryContrast';
+export const PRIMARY_CONTRAST = 'MP-PRIMARY-CONTRAST';
 
-export const SECONDARY_CONTRAST = 'secondaryContrast';
+export const SECONDARY_CONTRAST = 'MP-SECONDARY-CONTRAST';
 
-export const DENSE_PADDING = 'densePadding';
+export const DENSE_PADDING = 'MP-DENSE-PADDING';
 
-export const ITEMS_PER_PAGE = 'itemsPerPage';
+export const ITEMS_PER_PAGE = 'MP-ITEMS-PER-PAGE';
 
-export const DESKTOP_MENU_OPEN = 'desktopMenuOpen';
+export const DESKTOP_MENU_OPEN = 'MP-DESKTOP-MENU-OPEN';
 
-export const SHOW_FILTER = 'SHOW_FILTER';
+export const SHOW_FILTER = 'MP-SHOW_FILTER';
