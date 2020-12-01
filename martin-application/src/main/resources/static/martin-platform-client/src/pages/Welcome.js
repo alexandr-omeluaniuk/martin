@@ -63,7 +63,9 @@ export default function Welcome() {
         };
     }, []);
     const doLogin = (data) => {
-        console.log(data);
+        dataService.login().then(() => {
+            history.push(AppURLs.context);
+        });
     };
     
     let loginFormConfig = {

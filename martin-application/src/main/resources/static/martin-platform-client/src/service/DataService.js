@@ -24,19 +24,22 @@ class DataService {
     }
     
     get = (url) => {
-        return this._request('GET', url);
+        return this._request('GET', AppURLs.api + url);
     };
     put = (url, data) => {
-        return this._request('PUT', url, data);
+        return this._request('PUT', AppURLs.api + url, data);
     };
     post = (url, data) => {
-        return this._request('POST', url, data);
+        return this._request('POST', AppURLs.api + url, data);
     };
     delete = (url) => {
-        return this._request('DELETE', url);
+        return this._request('DELETE', AppURLs.api + url);
     };
     abort = () => {
         this.abortController.abort();
+    }
+    login(data) {
+        return this._request('POST', '/login', data);
     }
     static _request = (method, url, payload) => {
         let signal = this.abortController.signal;

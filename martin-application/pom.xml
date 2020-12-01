@@ -28,6 +28,9 @@
                             <exclude>**/crm/src/**</exclude>
                             <exclude>**/crm/nbproject/**</exclude>
                             <exclude>**/crm/public/**</exclude>
+                            <exclude>**/martin-platform-client/src/**</exclude>
+                            <exclude>**/martin-platform-client/nbproject/**</exclude>
+                            <exclude>**/martin-platform-client/public/**</exclude>
                             <exclude>application.yml</exclude>
                         </excludes>
                     </resource>
@@ -46,6 +49,9 @@
                             <exclude>**/crm/src/**</exclude>
                             <exclude>**/crm/nbproject/**</exclude>
                             <exclude>**/crm/public/**</exclude>
+                            <exclude>**/martin-platform-client/src/**</exclude>
+                            <exclude>**/martin-platform-client/nbproject/**</exclude>
+                            <exclude>**/martin-platform-client/public/**</exclude>
                         </excludes>
                     </resource>
                 </resources>
