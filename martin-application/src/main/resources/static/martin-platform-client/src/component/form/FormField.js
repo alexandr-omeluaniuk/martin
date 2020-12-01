@@ -27,7 +27,7 @@ function FormField (props) {
     // ==================================================== RENDERING =====================================================================
     const renderFormField = () => {
         let name = fieldConfig.name;
-        let label = fieldConfig.label ? t(fieldConfig.label) : '';
+        let label = fieldConfig.label ? fieldConfig.label : '';
         let attributes = fieldConfig.attributes ? fieldConfig.attributes : {};
         let isRequired = fieldConfig.validators && fieldConfig.validators.filter(v => {
             return v.type === VALIDATORS.REQUIRED;

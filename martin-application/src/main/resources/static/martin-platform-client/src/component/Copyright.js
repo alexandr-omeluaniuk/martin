@@ -30,9 +30,9 @@ function Copyright() {
     const { t } = useTranslation();
     return (
             <Typography variant="body2" color="textSecondary" align="center">
-                {t('components.copyright') + ' © '}
-                <Link color="inherit" href="https://material-ui.com/">
-                    Alexandr Omelyaniuk
+                {t('common:copyright') + ' © '}
+                <Link color="inherit" href={t('common:vendor_site')}>
+                    {t('common:author')}
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}

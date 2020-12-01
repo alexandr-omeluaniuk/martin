@@ -23,9 +23,7 @@
  */
 
 import React, { useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Icon from '@material-ui/core/Icon';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -50,23 +48,9 @@ const useStyles = makeStyles(theme => ({
         right: 0,
         top: 0,
         bottom: 0,
-        "&:after": {
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: "-1",
-            content: '""',
-            display: "block",
-            opacity: ".3",
-            //backgroundImage: 'url(' + backgroundImage + ')',
-            backgroundSize: "cover",
-            backgroundPosition: "center center"
-        }
-    },
-    avatar: {
-        backgroundColor: theme.palette.secondary.main
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 }));
 
@@ -77,29 +61,22 @@ export default function Welcome() {
         return () => {
             dataService.abort();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const doLogin = (data) => {
-        dataService.request('POST', '/anonym/openapi/login', DataService.toFormString(data)).then(resp => {
-            if (resp.jwt) {
-                DataService.setJWT(resp.jwt);
-                history.push(AppURLs.context + '/queue_management');
-                dataService.request('POST', '/ota/aufrufanlage/autologinToPlace');
-            }
-        });
+        console.log(data);
     };
     
     let loginFormConfig = {
         submit: {
-            label: t('component.welcomePage.btnLabel'),
-            icon: 'check_circle',
-            variant: 'contained',
+            label: t('welcome:sign_in'),
+            icon: 'login',
+            variant: 'outlined',
             color: "primary"
         },
         formFields: [{
                 type: TYPES.TEXTFIELD,
                 name: 'username',
-                label: 'common.username',
+                label: t('welcome:username'),
                 grid: {
                     xs: 12
                 },
@@ -109,7 +86,7 @@ export default function Welcome() {
             }, {
                 type: TYPES.PASSWORD,
                 name: 'password',
-                label: 'common.password',
+                label: t('welcome:password'),
                 grid: {
                     xs: 12
                 },
@@ -119,20 +96,12 @@ export default function Welcome() {
             }]
     };
     
-    let avatar = () => {
-        return (
-                <Avatar className={classes.avatar}>
-                    <Icon>lock</Icon>
-                </Avatar>
-        );
-    };
-    
     return (
             <div className={classes.background}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Card raised>
-                        <CardHeader avatar={avatar()} title={(<Typography variant="h5">{t('component.welcomePage.title')}</Typography>)}/>
+                        <CardHeader title={(<Typography variant="h5" align="center">{t('welcome:title')}</Typography>)}/>
                         <CardContent>
                             <Form onSubmitAction={doLogin} formConfig={loginFormConfig}/>
                         </CardContent>

@@ -14,9 +14,10 @@ i18n.use(LanguageDetector).use(XHR).use(initReactI18next).init({
     backend: {
         loadPath: AppURLs.context + '/locales/{{lng}}/{{ns}}.json'
     },
-    fallbackLng: "de",
+    ns: ['common', 'welcome'],
+    fallbackLng: "en",
     debug: false,
-    whitelist: ["de", "en", "ru"],
+    whitelist: ["en"],
     interpolation: {
         escapeValue: false
     }
