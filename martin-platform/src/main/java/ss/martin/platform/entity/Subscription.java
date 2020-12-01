@@ -29,8 +29,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
@@ -86,7 +84,6 @@ public class Subscription extends DataModel implements Undeletable {
     /** Application modules. */
     @FormField
     @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
-    @Enumerated(EnumType.STRING)
     @JoinTable(name = "subscription_module")
     private Set<String> modules;
     /** Active. */

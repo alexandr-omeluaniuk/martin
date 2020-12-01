@@ -18,7 +18,6 @@ package ss.martin.platform.service.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -31,7 +30,6 @@ import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.SystemUser;
-import ss.martin.platform.security.ApplicationModuleProvider;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.SecurityService;
@@ -49,9 +47,9 @@ class SecurityServiceImpl implements SecurityService {
     /** Security context. */
     @Autowired
     private SecurityContext securityContext;
-    /** Modules. */
-    @Autowired
-    private List<ApplicationModuleProvider> modules;
+//    /** Modules. */
+//    @Autowired
+//    private List<ApplicationModuleProvider> modules;
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         SystemUser currentUser = securityContext.currentUser();

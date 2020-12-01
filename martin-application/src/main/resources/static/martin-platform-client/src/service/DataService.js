@@ -41,7 +41,7 @@ class DataService {
     login(data) {
         return this._request('POST', '/login', data);
     }
-    static _request = (method, url, payload) => {
+    _request = (method, url, payload) => {
         let signal = this.abortController.signal;
         return fetch(AppURLs.api + url, {
             method: method,
