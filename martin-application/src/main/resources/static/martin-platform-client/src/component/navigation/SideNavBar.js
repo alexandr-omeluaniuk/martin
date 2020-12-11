@@ -64,6 +64,7 @@ export default function SideNavBar(props) {
         );
     };
     let currentModule = SessionService.currentModule();
+    console.log(currentModule);
     let moduleItems = [];
     let moduleId = null;
     let modulePath = '';

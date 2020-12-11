@@ -17,16 +17,57 @@ class SessionService {
      * @returns {applicationModules|currentModule}
      */
     static currentModule = () => {
+        const apps = modules();
         let currentModule = null;
         let internalAppUrl = window.location.pathname.replace(AppURLs.context, '');
         if (internalAppUrl) {
             let moduleUrl = '/' + internalAppUrl.split('/')[1];
-            currentModule = modules().filter(m => {
+            currentModule = apps.filter(m => {
                 return m.path === moduleUrl;
             })[0];
+            if (!currentModule) {
+                currentModule = apps[0];
+            }
         }
         return currentModule;
     }
+    
+    static getAllRoutes() {
+        let routes = [];
+        commonModule.forEach(item => {
+            routes.push(
+                <Route exact path={AppURLs.context + item.path} key={AppURLs.context + item.path} component={item.component}/>
+            );
+        });
+        let rootURL = AppURLs.context;
+        modules().forEach(module => {
+            this._visitItemRoutes(module, routes, rootURL);
+        });
+        return routes;
+    }
+    
+    static _visitItemRoutes = (item, routes, parentPath) => {
+        if (item !== null) {
+            let itemPath = parentPath + item.path;
+            if (item.component && item.visible) {
+                routes.push(<Route path={itemPath} component={item.component} key={itemPath}/>);
+            }
+            if (item.items) {
+                for (let i = 0; i < item.items.length; i++) {
+                    this._visitItemRoutes(item.items[i], routes, itemPath);
+                }
+                routes.push(
+                    <Route exact path={itemPath} key={itemPath}>
+                        <Redirect to={itemPath + item.items[0].path}/>
+                    </Route>
+                );
+            }
+        }
+    }
+    
+    
+    
+    
     static sideBarNavigationItems = (authData) => {
         let result = [];
         let currentModule = SessionService.currentModule(authData);
@@ -80,55 +121,8 @@ class SessionService {
         }
         return fullId ? fullId : ('COMMON.' + itemId);
     }
-    static getAllRoutes(authData) {
-        let routes = [];
-        commonModule.forEach(item => {
-            routes.push(
-                <Route exact path={AppURLs.context + item.path} key={AppURLs.context + item.path} component={item.component}/>
-            );
-        });
-        let rootURL = AppURLs.context;
-        SessionService.getAvailableApplications(authData).forEach(module => {
-            const modulePermissions = authData.permissions.module_permissions[module.id];
-            setItemPermissions(module, modulePermissions ? modulePermissions.view_permissions : null, authData.is_admin);
-            this._visitItemRoutes(module, routes, rootURL, authData);
-        });
-        return routes;
-    }
-    static getAvailableApplications(authData) {
-        const apps = modules();
-        const availableApplications = [];
-        apps.forEach(a => {
-            if (hasModuleAccess(authData, a)) {
-                availableApplications.push(a);
-            }
-        });
-        return availableApplications;
-    };
+    
     // ====================================================== PRIVATE =====================================================================
-    static _visitItemRoutes = (item, routes, parentPath, authData) => {
-        if (item !== null) {
-            let itemPath = parentPath + item.path;
-            if (item.component && item.visible) {
-                routes.push(<Route path={itemPath} component={item.component} key={itemPath}/>);
-            }
-            if (item.items) {
-                for (let i = 0; i < item.items.length; i++) {
-                    this._visitItemRoutes(item.items[i], routes, itemPath, authData);
-                }
-                const visibleChilds = item.items.filter(ch => {
-                    return ch && ch.visible;
-                });
-                if (item.visible) {
-                    routes.push(
-                        <Route exact path={itemPath} key={itemPath}>
-                            <Redirect to={itemPath + visibleChilds[0].path}/>
-                        </Route>
-                    );
-                }
-            }
-        }
-    }
     static _visitItemId = (item, parentId, itemId) => {
         if (item !== null) {
             let subResult = (parentId ? parentId + '.' : '') + item.id;
@@ -236,30 +230,3 @@ class SessionService {
 }
 
 export default SessionService;
-    
-const hasModuleAccess = function (authData, module) {
-    if (authData.is_admin) {
-        return true;
-    }
-    let modulePermissions = authData.permissions.module_permissions;
-    return modulePermissions[module.id] ? true : false;
-};
-
-const setItemPermissions = function (item, viewPermissions, isAdmin) {
-    if (item === null) {
-        return;
-    }
-    if (viewPermissions) {
-        item.visible = viewPermissions.filter(vp => {
-            return vp.view_id === item.id;
-        }).length > 0;
-    }
-    if (item.items) {
-        item.items.forEach(i => {
-            setItemPermissions(i, viewPermissions, isAdmin);
-        });
-        item.visible = item.items.filter(i => {
-            return i && i.visible;
-        }).length > 0;
-    }
-};
