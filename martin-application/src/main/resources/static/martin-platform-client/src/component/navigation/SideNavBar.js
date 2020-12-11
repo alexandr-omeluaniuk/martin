@@ -22,24 +22,19 @@
  * THE SOFTWARE.
  */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import clsx from 'clsx';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import { drawerWidth } from '../../conf/theme';
-import Hidden from "@material-ui/core/Hidden";
-import Typography from "@material-ui/core/Typography";
 import SessionService from '../../service/SessionService';
 import { useTranslation } from 'react-i18next';
 import NavItem from './NavItem';
 import AppURLs from '../../conf/app-urls';
 import SideNavBarDesktop from './SideNavBarDesktop';
 import SideNavBarMobile from './SideNavBarMobile';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 export default function SideNavBar(props) {
     const { open, setOpen, onItemSelected } = props;
     const { t } = useTranslation();
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     const createSideBarNavigation = (items, parentPath, parentId, level) => {
         let navItems = [];
         items.forEach(item => {
@@ -78,14 +73,6 @@ export default function SideNavBar(props) {
         modulePath = AppURLs.context + currentModule.path;
     }
     const navItems = createSideBarNavigation(moduleItems, modulePath, moduleId, 0);
-    return (
-        <React.Fragment>
-            <Hidden mdUp implementation="css">
-                <SideNavBarDesktopMobile open={open} setOpen={setOpen} navItems={navItems}/>
-            </Hidden>
-            <Hidden smDown implementation="css">
-                <SideNavBarDesktop open={open} setOpen={setOpen} navItems={navItems}/>
-            </Hidden>
-        </React.Fragment>
-    );
+    return isMobile ? <SideNavBarMobile open={open} setOpen={setOpen} navItems={navItems}/> 
+                : <SideNavBarDesktop open={open} setOpen={setOpen} navItems={navItems}/>;
 }

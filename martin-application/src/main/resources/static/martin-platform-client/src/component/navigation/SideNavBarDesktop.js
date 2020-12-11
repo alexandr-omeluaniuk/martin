@@ -30,7 +30,6 @@ import List from '@material-ui/core/List';
 import { drawerWidth } from '../../conf/theme';
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
-import SessionService from '../../service/SessionService';
 import { useTranslation } from 'react-i18next';
 import NavItem from './NavItem';
 
