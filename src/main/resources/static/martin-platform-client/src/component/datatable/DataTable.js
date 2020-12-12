@@ -41,7 +41,7 @@ function DataTable(props) {
     const { tableConfig } = props;
     const [load, setLoad] = React.useState(null);
     const [data, setData] = React.useState(null);
-    const [total, setTotal] = React.useState(null);
+    const [total, setTotal] = React.useState(0);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState(null);
     const [formTitle, setFormTitle] = React.useState('');

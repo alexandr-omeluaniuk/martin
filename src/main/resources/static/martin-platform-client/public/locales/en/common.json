@@ -1,5 +1,12 @@
 {
     "copyright": "Copyright",
     "vendor_site": "https://material-ui.com",
-    "author": "Alex Omelyaniuk"
+    "author": "Alex Omelyaniuk",
+    
+    "component": {
+        "datatable": {
+            "new": "New record",
+            "refresh": "Refresh"
+        }
+    }
 }
