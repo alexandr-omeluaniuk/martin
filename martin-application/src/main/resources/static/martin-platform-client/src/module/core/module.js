@@ -11,11 +11,11 @@ import { Module } from '../../util/model/Module';
 export const core = new Module('core', '/core', [{
         id: 'subscriptions',
         path: '/subscriptions',
-        icon: 'dashboard',
+        icon: 'api',
         component: Subscriptions
     }, {
         id: 'users',
         path: '/users',
-        icon: 'dashboard',
+        icon: 'group',
         component: Users
     }]);
