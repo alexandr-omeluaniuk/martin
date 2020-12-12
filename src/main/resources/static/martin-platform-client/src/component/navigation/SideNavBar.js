@@ -69,7 +69,7 @@ export default function SideNavBar(props) {
     
     const createNavItem = (id, path, icon, label, childs, level) => {
         return (
-            <NavItem path={path} icon={icon} label={label} onItemSelected={onItemSelected} key={path} isRoot={level === 0} itemId={id}>
+            <NavItem path={path} icon={icon} label={label} onItemSelected={onItemSelected} key={path} itemId={id}>
                 {childs}
             </NavItem>
         );

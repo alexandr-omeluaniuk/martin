@@ -5,6 +5,7 @@ import { Router } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DesktopToolbar from '../component/navigation/DesktopToolbar';
 import SideNavBar from '../component/navigation/SideNavBar';
+import MainContent from '../component/navigation/MainContent';
 import SessionService from '../service/SessionService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 
@@ -38,6 +39,7 @@ function App() {
                         //setOpen(false);
                         document.title = 'Martin | ' + label;
                     }}/>
+                    {routes ? <MainContent routes={routes} open={open}/> : null}
                 </div>
             </Router>
     );

@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
         minWidth: '40px'
     },
     selected: {
-        backgroundColor: fade(theme.palette.secondary.main, 1) + ' !important',
-        color: theme.palette.getContrastText(theme.palette.secondary.main) + ' !important'
+        backgroundColor: fade(theme.palette.grey[50], 1) + ' !important',
+        color: theme.palette.getContrastText(theme.palette.grey[50]) + ' !important'
     },
     innerList: {
         paddingBottom: 0,

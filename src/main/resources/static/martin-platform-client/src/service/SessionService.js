@@ -49,7 +49,7 @@ class SessionService {
     static _visitItemRoutes = (item, routes, parentPath) => {
         if (item !== null) {
             let itemPath = parentPath + item.path;
-            if (item.component && item.visible) {
+            if (item.component) {
                 routes.push(<Route path={itemPath} component={item.component} key={itemPath}/>);
             }
             if (item.items) {

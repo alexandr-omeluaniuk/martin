@@ -30,7 +30,7 @@ import { Switch } from "react-router-dom";
 import Copyright from '../Copyright';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import { drawerWidth } from '../../constants/style';
+import { drawerWidth } from '../../conf/theme';
 import ErrorBoundary from '../util/ErrorBoundary';
 import SessionService from '../../service/SessionService';
 
@@ -59,8 +59,8 @@ const useStyles = makeStyles(theme => ({
             zIndex: "-1",
             content: '""',
             display: "block",
-            opacity: `${SessionService.backgroundOpacity()}`,
-            backgroundImage: 'url(' + SessionService.moduleBackground() + ')',
+            opacity: `1`,
+            //backgroundImage: 'url(' + SessionService.moduleBackground() + ')',
             backgroundSize: "cover",
             backgroundPosition: "center center"
         }
@@ -86,14 +86,14 @@ const useStyles = makeStyles(theme => ({
 
 function MainContent(props) {
     const classes = useStyles();
-    const { routes, openSidebar, oneView } = props;
+    const { routes, open } = props;
     if (!routes) {
         return null;
     }
     const currentModule = SessionService.currentModule();
     const contentStyle = clsx({
         [classes.content]: true,
-        [classes.fullWidthContent]: oneView ? true : (!(currentModule && openSidebar))
+        [classes.fullWidthContent]: !(currentModule && open)
     });
     return (
         <main className={contentStyle}>
