@@ -55,7 +55,7 @@ function DataTable(props) {
             localStorage.getItem(ITEMS_PER_PAGE) ? parseInt(localStorage.getItem(ITEMS_PER_PAGE)) : 5);
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
-        dataService.get(`${tableConfig.apiUrl}?page=${page}&page_size=${rowsPerPage}`).then(resp => {
+        dataService.get(`${tableConfig.apiUrl}?page=${page + 1}&page_size=${rowsPerPage}`).then(resp => {
             setData(resp.data);
             setTotal(resp.total);
         });
