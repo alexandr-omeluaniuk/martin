@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 
-import Subscriptions from './view/Subscriptions';
+import Applications from './view/Applications';
 import { Module } from '../../util/model/Module';
 import { ModuleView } from '../../util/model/ModuleView';
 
-export const core = new Module('core', '/core', [
-    new ModuleView('subscriptions', '/subscriptions', 'api', Subscriptions)
+export const common = new Module('common', '/common', [
+    new ModuleView('applications', '/applications', 'widgets', Applications)
 ]);
+

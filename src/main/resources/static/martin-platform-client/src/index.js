@@ -25,9 +25,6 @@ const indexRoutes = [{
         path: AppURLs.welcome,
         component: Welcome
     }, {
-        path: AppURLs.app,
-        component: App
-    }, {
         path: AppURLs.context,
         component: App
     }];

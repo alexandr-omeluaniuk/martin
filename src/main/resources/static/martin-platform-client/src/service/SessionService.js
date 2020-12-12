@@ -9,8 +9,6 @@ import { modules } from '../conf/modules';
 import AppURLs from '../conf/app-urls';
 import { history } from '../index';
 
-let commonModule = [];
-
 class SessionService {
     /**
      * Get current module.
@@ -34,11 +32,6 @@ class SessionService {
     
     static getAllRoutes() {
         let routes = [];
-        commonModule.forEach(item => {
-            routes.push(
-                <Route exact path={AppURLs.context + item.path} key={AppURLs.context + item.path} component={item.component}/>
-            );
-        });
         let rootURL = AppURLs.context;
         modules().forEach(module => {
             this._visitItemRoutes(module, routes, rootURL);
@@ -77,12 +70,6 @@ class SessionService {
     static currentItem = (authData) => {
         let module = this.currentModule(authData);
         let path = window.location.pathname.replace(AppURLs.context, '');
-        let commonItems = commonModule.filter(item => {
-            return item.path === path;
-        });
-        if (commonItems.length > 0) {
-            return commonItems[0];
-        }
         if (module) {
             let currentItem = this._visitItem(module, path, '');
             if (currentItem && currentItem.visible) {

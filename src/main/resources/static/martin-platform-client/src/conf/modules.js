@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import { common } from '../module/common/module';
 import { core } from '../module/core/module';
 
 /**
@@ -13,6 +14,6 @@ import { core } from '../module/core/module';
  */
 export const modules = function () {
     return [
-        core
+        common, core
     ];
 };

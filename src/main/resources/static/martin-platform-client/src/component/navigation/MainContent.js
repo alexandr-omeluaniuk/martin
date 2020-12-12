@@ -33,6 +33,8 @@ import Box from '@material-ui/core/Box';
 import { drawerWidth } from '../../conf/theme';
 import ErrorBoundary from '../util/ErrorBoundary';
 import SessionService from '../../service/SessionService';
+import AppURLs from '../../conf/app-urls';
+import { Route, Redirect } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -102,6 +104,9 @@ function MainContent(props) {
                 <ErrorBoundary>
                     <Switch>
                         {routes}
+                        <Route exact path={AppURLs.context} key={'root'}>
+                            <Redirect to={'/common/applications'}/>
+                        </Route>
                     </Switch>
                 </ErrorBoundary>
                 <Box pt={4}>

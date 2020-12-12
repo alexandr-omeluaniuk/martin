@@ -16,9 +16,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { history } from '../../../index';
-import AppURLs from '../../../constants/AppURLs';
-import SessionService from '../../../service/SessionService';
+import AppURLs from '../../../conf/app-urls';
 import DataService from '../../../service/DataService';
+import { modules } from '../../../conf/modules';
 
 const dataService = new DataService();
 
@@ -39,19 +39,11 @@ function Applications(props) {
     // ============================================================ METHODS ===============================================================
     const openApplication = (app) => {
         history.push(AppURLs.context + app.path);
-        SessionService.updateSideBar();
     };
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         if (!applications) {
-            dataService.requestAuthInfo().then((authData) => {
-                const availableApplications = SessionService.getAvailableApplications(authData);
-                setApplications(availableApplications);
-            });
-        } else {
-            if (applications.length === 1) {
-                history.push(AppURLs.context + applications[0].path);
-            }
+            setApplications(modules);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [applications]);
@@ -61,6 +53,7 @@ function Applications(props) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    console.log(applications);
     // ============================================================ RENDERING =============================================================
     if (!applications) {
         return null;
