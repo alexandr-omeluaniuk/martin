@@ -9,12 +9,12 @@ import Users from './view/Users';
 import { Module } from '../../util/model/Module';
 
 export const core = new Module('CORE', '/core', [{
-        id: 'dashboardView',
+        id: 'subscriptions',
         path: '/subscriptions',
         icon: 'dashboard',
         component: Subscriptions
     }, {
-        id: 'dashboardView',
+        id: 'users',
         path: '/users',
         icon: 'dashboard',
         component: Users

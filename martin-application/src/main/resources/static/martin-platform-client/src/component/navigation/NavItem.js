@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function NavItem(props) {
-    const { path, label, icon, onItemSelected, children, isRoot, itemId } = props;
+    const { path, label, icon, onItemSelected, children, itemId } = props;
     let savedOpenState = localStorage.getItem('navItem_' + itemId);
     const isOpenDefault = savedOpenState === 'true' ? true : false;
     const classes = useStyles();

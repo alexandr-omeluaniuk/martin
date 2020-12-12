@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import DesktopToolbar from '../component/navigation/DesktopToolbar';
 import SideNavBar from '../component/navigation/SideNavBar';
 import SessionService from '../service/SessionService';
+import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,8 +16,9 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
     const classes = useStyles();
+    let isMenuOpen = localStorage.getItem(DESKTOP_MENU_OPEN);
     const [title, setTitle] = React.useState('');
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(isMenuOpen === 'true' ? true : false);
     const [icon, setIcon] = React.useState(null);
     const [routes, setRoutes] = React.useState(null);
     useEffect(() => {

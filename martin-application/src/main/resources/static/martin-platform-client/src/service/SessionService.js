@@ -68,18 +68,8 @@ class SessionService {
     
     
     
-    static sideBarNavigationItems = (authData) => {
-        let result = [];
-        let currentModule = SessionService.currentModule(authData);
-        if (!currentModule) {
-            return result;
-        }
-        let allItems = JSON.parse(JSON.stringify(currentModule.items));
-        allItems.filter(item => { return item !== null; }).forEach(item => {
-            this._visitModuleItem(item, authData, result);
-        });
-        return result;
-    }
+    
+    
     /**
      * Get current module item. Determined by URL.
      * @returns {SessionService@call;_visitItem}
@@ -170,27 +160,6 @@ class SessionService {
                     if (result) {
                         return result;
                     }
-                }
-            }
-        }
-    }
-    static _visitModuleItem = (item, authData, result) => {
-        if (item !== null) {
-            if (item.items) {
-                let childResult = [];
-                item.items.forEach(i => {
-                    this._visitModuleItem(i, authData, childResult);
-                });
-                item.items = childResult;
-                let atLeastChildVisible = item.items.filter(i => {
-                    return i.visible;
-                }).length > 0;
-                if (atLeastChildVisible) {
-                    result.push(item);
-                }
-            } else {
-                if (item.visible) {
-                    result.push(item);
                 }
             }
         }

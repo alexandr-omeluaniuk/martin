@@ -11,4 +11,8 @@ export class Module {
         this.path = path;
         this.items = items;
     }
+    
+    getItems() {
+        return this.items;
+    }
 }

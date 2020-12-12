@@ -24,15 +24,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import { drawerWidth } from '../../conf/theme';
-import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from 'react-i18next';
-import NavItem from './NavItem';
-import SideNavBarDesktop from './SideNavBarDesktop';
 
 const useStyles = makeStyles(theme => ({
     title: {
