@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import DataTable from '../../../component/datatable/DataTable';
 
 function Subscriptions() {
     return (
