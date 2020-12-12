@@ -12,6 +12,10 @@ export class Module {
         this.items = items;
     }
     
+    getId() {
+        return this.id;
+    }
+    
     getItems() {
         return this.items;
     }

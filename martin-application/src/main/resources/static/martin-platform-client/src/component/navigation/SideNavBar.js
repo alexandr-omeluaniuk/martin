@@ -69,10 +69,10 @@ export default function SideNavBar(props) {
     let modulePath = '';
     if (currentModule) {
         moduleItems = currentModule.getItems();
-        moduleId = currentModule.id;
+        moduleId = currentModule.getId();
         modulePath = AppURLs.context + currentModule.path;
     }
     const navItems = createSideBarNavigation(moduleItems, modulePath, moduleId, 0);
     return isMobile ? <SideNavBarMobile open={open} setOpen={setOpen} navItems={navItems}/> 
-                : <SideNavBarDesktop open={open} setOpen={setOpen} navItems={navItems}/>;
+                : <SideNavBarDesktop open={open} moduleId={moduleId} navItems={navItems}/>;
 }

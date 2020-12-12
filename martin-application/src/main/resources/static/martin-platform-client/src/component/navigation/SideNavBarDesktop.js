@@ -28,10 +28,8 @@ import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import { drawerWidth } from '../../conf/theme';
-import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from 'react-i18next';
-import NavItem from './NavItem';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -97,20 +95,17 @@ const useStyles = makeStyles(theme => ({
         '&::-webkit-scrollbar': {
             width: '0px'
         }
-    },
-    brand: {
-        height: '40px',
-        marginLeft: theme.spacing(2)
     }
 }));
 
 function SideNavBarDesktop(props) {
     const classes = useStyles();
-    const { open, setOpen, navItems } = props;
+    const { open, navItems, moduleId } = props;
     const { t } = useTranslation();
+    console.log(`m_${moduleId}:title`);
     let moduleTitle = (
         <Typography className={classes.title} variant={'caption'}>
-            {t('module.TODO')}
+            {t(`m_${moduleId}:title`)}
         </Typography>
     );
     return (
@@ -119,7 +114,6 @@ function SideNavBarDesktop(props) {
                 paper: clsx(classes.drawerPaper, classes.drawerPaperDesktop)
             }} open={open}>
             <div className={classes.brandContainer}>
-                <img alt="brand" src={/*brand*/''} className={classes.brand}/>
                 {moduleTitle}
             </div>
             <Divider variant="middle"/>
