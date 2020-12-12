@@ -87,13 +87,13 @@ public abstract class AbstractTest {
             auth(StandardRole.ROLE_SUPER_ADMIN);
             Subscription subscription = dataFactory.getSubscription();
             subscription.setSubscriptionAdminEmail(SUBSCRIPTION_ADMIN_USERNAME);
-            entityService.createEntity(subscription);
+            entityService.create(subscription);
         }
         if (userDAO.findByUsername(SUBSCRIPTION_USER_USERNAME) == null) {
             auth(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
             SystemUser subscriptionUser = dataFactory.getSystemUser(StandardRole.ROLE_SUBSCRIPTION_USER,
                     SUBSCRIPTION_USER_USERNAME, SUBSCRIPTION_USER_PASSWORD, "John", "Murrey");
-            entityService.createEntity(subscriptionUser);
+            entityService.create(subscriptionUser);
         }
     }
     

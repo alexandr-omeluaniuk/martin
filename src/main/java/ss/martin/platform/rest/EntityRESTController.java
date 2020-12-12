@@ -24,7 +24,6 @@
 package ss.martin.platform.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,17 +54,20 @@ public class EntityRESTController {
     /**
      * Search entities.
      * @param entityName entity name.
-     * @param searchParams search parameters.
+     * @param page page number.
+     * @param pageSize page size.
      * @return search response.
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse list(@PathVariable("entity") String entityName,
-            @RequestParam("search") String searchParams) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        EntitySearchRequest searchRequest = mapper.convertValue(searchParams, EntitySearchRequest.class);
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+            @RequestParam("page") Integer page,
+            @RequestParam("page_size") Integer pageSize) throws Exception {
+        EntitySearchRequest searchRequest = new EntitySearchRequest();
+        searchRequest.setPage(page);
+        searchRequest.setPageSize(pageSize);
+        Class entityClass = getEntityClass(entityName);
         return entityService.list(entityClass, searchRequest);
     }
     /**
@@ -77,7 +79,7 @@ public class EntityRESTController {
      */
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public DataModel get(@PathVariable("entity") String entityName, @PathVariable("id") Long id) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+        Class entityClass = getEntityClass(entityName);
         return entityService.get(id, entityClass);
     }
     /**
@@ -91,7 +93,7 @@ public class EntityRESTController {
     public Object create(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+        Class entityClass = getEntityClass(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.create(entity);
     }
@@ -106,7 +108,7 @@ public class EntityRESTController {
     public RESTResponse update(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+        Class entityClass = getEntityClass(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         entityService.update(entity);
         return new RESTResponse();
@@ -120,8 +122,11 @@ public class EntityRESTController {
      */
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public RESTResponse delete(@PathVariable("entity") String entityName, @PathVariable("id") Long id) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        entityService.delete(new HashSet(Arrays.asList(new Long[] {id})), entityClass);
+        entityService.delete(new HashSet(Arrays.asList(new Long[] {id})), getEntityClass(entityName));
         return new RESTResponse();
+    }
+    
+    private Class getEntityClass(String name) throws Exception {
+        return Class.forName("ss.martin.platform.entity." + name);
     }
 }

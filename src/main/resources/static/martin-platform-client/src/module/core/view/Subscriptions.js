@@ -10,7 +10,7 @@ import DataTable from '../../../component/datatable/DataTable';
 function Subscriptions() {
     
     const tableConfig = {
-        apiUrl: '/entity/ss.martin.platform.entity.Subscription',
+        apiUrl: '/entity/Subscription',
         columns: [{
             
         }],
