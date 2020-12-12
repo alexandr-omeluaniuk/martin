@@ -12,7 +12,6 @@
     </parent>
     <modules>
         <module>martin-platform</module>
-        <module>martin-application</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ss.martin.application;
+package ss.martin.platform.app;
 
 import org.springframework.boot.SpringApplication;
-import ss.martin.application.spring.config.WebConfig;
+import ss.martin.platform.spring.config.WebConfig;
 
 /**
  * Application entry point.

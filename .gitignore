@@ -16,3 +16,4 @@
 /martin-platform/src/test/resources/application.yml
 /docker/martin-platform.jar
 /martin-application/src/main/resources/static/martin-platform-client/nbproject/
+/martin-platform/src/main/resources/static/martin-platform-client/nbproject/private/
