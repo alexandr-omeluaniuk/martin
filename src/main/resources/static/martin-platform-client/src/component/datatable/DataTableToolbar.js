@@ -49,7 +49,6 @@ function DataTableToolbar(props) {
     let toolbarActionsBefore = tableConfig.toolbarActionsBefore ? tableConfig.toolbarActionsBefore : null;
     let toolbarActionsAfter = tableConfig.toolbarActionsAfter ? tableConfig.toolbarActionsAfter : null;
     let toolbarFilter = tableConfig.toolbarFilter ? tableConfig.toolbarFilter : null;
-    let newRecordFunc = tableConfig.ajax.create && tableConfig.ajax.create.action ? tableConfig.ajax.create.action : onNewRecord;
     const [showFilters, setShowFilters] = React.useState(
             localStorage.getItem(SHOW_FILTER) && localStorage.getItem(SHOW_FILTER) !== 'false' ? true : false);
     const handleShowFilters = () => {
@@ -75,10 +74,10 @@ function DataTableToolbar(props) {
                         </Grid>               
                         <Grid item xs={6} container justify="flex-end">
                             {toolbarActionsBefore}
-                            {newRecordFunc ? (
+                            {onNewRecord ? (
                                 <Tooltip title={t('common.newRecord')}>
                                     <IconButton aria-label="new record" className={classes.greenButton} 
-                                            onClick={() => newRecordFunc(onRefresh)}>
+                                            onClick={() => onNewRecord()}>
                                         <Icon color="primary">add</Icon>
                                     </IconButton>
                                 </Tooltip>

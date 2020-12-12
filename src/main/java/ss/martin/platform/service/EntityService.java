@@ -23,12 +23,8 @@
  */
 package ss.martin.platform.service;
 
-import java.util.List;
 import java.util.Set;
 import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.EntityFile;
-import ss.martin.platform.entity.HasAvatar;
-import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -44,7 +40,7 @@ public interface EntityService {
      * @return search response.
      * @throws Exception error.
      */
-    EntitySearchResponse searchEntities(Class<? extends DataModel> clazz, EntitySearchRequest searchRequest)
+    EntitySearchResponse list(Class<? extends DataModel> clazz, EntitySearchRequest searchRequest)
             throws Exception;
     /**
      * Create entity.
@@ -53,7 +49,7 @@ public interface EntityService {
      * @return entity.
      * @throws Exception error.
      */
-    <T extends DataModel> T createEntity(T entity) throws Exception;
+    <T extends DataModel> T create(T entity) throws Exception;
     /**
      * Update entity.
      * @param <T> entity type.
@@ -61,7 +57,7 @@ public interface EntityService {
      * @return updated entity.
      * @throws Exception error.
      */
-    <T extends DataModel> T updateEntity(T entity) throws Exception;
+    <T extends DataModel> T update(T entity) throws Exception;
     /**
      * Delete entities.
      * @param <T> entity type.
@@ -69,23 +65,7 @@ public interface EntityService {
      * @param cl entity class.
      * @throws Exception error.
      */
-    <T extends DataModel> void deleteEntities(Set<Long> ids, Class<T> cl) throws Exception;
-    /**
-     * Deactivate entities.
-     * @param <T> entity type.
-     * @param ids set of IDs.
-     * @param cl entity class.
-     * @throws Exception error.
-     */
-    <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) throws Exception;
-    /**
-     * Activate entities.
-     * @param <T> entity type.
-     * @param ids set of IDs.
-     * @param cl entity class.
-     * @throws Exception error.
-     */
-    <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl) throws Exception;
+    <T extends DataModel> void delete(Set<Long> ids, Class<T> cl) throws Exception;
     /**
      * Find entity by ID.
      * @param <T> entity type.
@@ -94,22 +74,5 @@ public interface EntityService {
      * @return entity.
      * @throws Exception error.
      */
-    <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception;
-    /**
-     * Get data for entity collection field.
-     * @param <T> entity type.
-     * @param cl entity class.
-     * @param fieldName field name.
-     * @return list of possible data for entity field.
-     * @throws Exception error.
-     */
-    <T extends DataModel> List getDataForCollectionField(Class<T> cl, String fieldName) throws Exception;
-    /**
-     * Get entity avatar.
-     * @param id entity ID.
-     * @param cl entity class.
-     * @return entity avatar.
-     * @throws Exception error.
-     */
-    EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception;
+    <T extends DataModel> T get(Long id, Class<T> cl) throws Exception;
 }

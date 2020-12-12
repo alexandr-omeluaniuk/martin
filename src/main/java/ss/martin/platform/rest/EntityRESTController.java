@@ -25,19 +25,18 @@ package ss.martin.platform.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.EntityFile;
-import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
@@ -56,16 +55,18 @@ public class EntityRESTController {
     /**
      * Search entities.
      * @param entityName entity name.
-     * @param searchRequest search request.
+     * @param searchParams search parameters.
      * @return search response.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/search/{entity}", method = RequestMethod.POST,
+    @RequestMapping(value = "/{entity}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntitySearchResponse searchEntities(@PathVariable("entity") String entityName,
-            @RequestBody EntitySearchRequest searchRequest) throws Exception {
+    public EntitySearchResponse list(@PathVariable("entity") String entityName,
+            @RequestParam("search") String searchParams) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        EntitySearchRequest searchRequest = mapper.convertValue(searchParams, EntitySearchRequest.class);
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        return entityService.searchEntities(entityClass, searchRequest);
+        return entityService.list(entityClass, searchRequest);
     }
     /**
      * Get entity by ID.
@@ -75,10 +76,9 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public DataModel getEntityById(@PathVariable("entity") String entityName,
-            @PathVariable("id") Long id) throws Exception {
+    public DataModel get(@PathVariable("entity") String entityName, @PathVariable("id") Long id) throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        return entityService.findEntityByID(id, entityClass);
+        return entityService.get(id, entityClass);
     }
     /**
      * Create entity.
@@ -88,12 +88,12 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData)
+    public Object create(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
-        return entityService.createEntity(entity);
+        return entityService.create(entity);
     }
     /**
      * Update entity.
@@ -103,84 +103,25 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse updateEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData)
+    public RESTResponse update(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
-        entityService.updateEntity(entity);
+        entityService.update(entity);
         return new RESTResponse();
     }
     /**
      * Mass deletion.
      * @param entityName entity name.
-     * @param ids set of IDs.
-     * @return response.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/delete/{entity}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse deleteEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
-            throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        entityService.deleteEntities(ids, entityClass);
-        return new RESTResponse();
-    }
-    /**
-     * Deactivate entities.
-     * @param entityName entity name.
-     * @param ids set of IDs.
-     * @return response.
-     * @throws Exception error. 
-     */
-    @RequestMapping(value = "/deactivate/{entity}", method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse deactivateEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
-            throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        entityService.deactivateEntities(ids, entityClass);
-        return new RESTResponse();
-    }
-    /**
-     * Activate entities.
-     * @param entityName entity name.
-     * @param ids set of IDs.
-     * @return response.
-     * @throws Exception error. 
-     */
-    @RequestMapping(value = "/activate/{entity}", method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse activateEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
-            throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        entityService.activateEntities(ids, entityClass);
-        return new RESTResponse();
-    }
-    /**
-     * Get data for entity collection field.
-     * @param entityName entity name.
-     * @param field field name.
-     * @return data.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/collection/{entity}/{field}", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public List getDataForCollectionField(@PathVariable("entity") String entityName,
-            @PathVariable("field") String field) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
-        return entityService.getDataForCollectionField(entityClass, field);
-    }
-    /**
-     * Get entity avatar.
-     * @param cl entity class.
      * @param id entity ID.
-     * @return entity avatar or empty value
+     * @return response.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/avatar/{class}/{id}", method = RequestMethod.GET,
-            produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getAvatar(@PathVariable("class") Class<? extends HasAvatar> cl, @PathVariable("id") Long id)
-            throws Exception {
-        EntityFile avatar = entityService.getEntityAvatar(id, cl);
-        return avatar == null ? new byte[0] : avatar.getBinaryData();
+    @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public RESTResponse delete(@PathVariable("entity") String entityName, @PathVariable("id") Long id) throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(entityName);
+        entityService.delete(new HashSet(Arrays.asList(new Long[] {id})), entityClass);
+        return new RESTResponse();
     }
 }

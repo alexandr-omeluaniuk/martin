@@ -32,10 +32,11 @@ const useStyles = makeStyles(theme => ({
 function DataTableHead(props) {
     const { t } = useTranslation();
     const classes = useStyles();
-    const { tableConfig, order, orderBy, onRequestSort, actionColumns } = props;
+    const { tableConfig, order, orderBy } = props;
     const createSortHandler = property => event => {
-        onRequestSort(event, property);
+        console.log('TODO: sort');
     };
+    let actionColumns = 2;
     let actionColumnsUI = [];
     for (let i = 0; i < actionColumns; i++) {
         actionColumnsUI.push(<TableCell className={classes.actionCell} key={i}></TableCell>);

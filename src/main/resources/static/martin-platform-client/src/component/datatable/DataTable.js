@@ -55,7 +55,11 @@ function DataTable(props) {
             localStorage.getItem(ITEMS_PER_PAGE) ? parseInt(localStorage.getItem(ITEMS_PER_PAGE)) : 5);
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
-        dataService.request(tableConfig.apiUrl).then(resp => {
+        const params = {
+            page: page,
+            pageSize: rowsPerPage
+        };
+        dataService.get(`${tableConfig.apiUrl}?search=${JSON.stringify(params)}`).then(resp => {
             setData(resp.data);
             setTotal(resp.total);
         });
@@ -143,7 +147,7 @@ function DataTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={isMobile ? classes.paperMobile : null} elevation={isMobile ? 0 : 3}>
-                <DataTableToolbar tableConfig={tableConfig} onNewRecord={tableConfig.ajax.create ? onNewRecord : null}
+                <DataTableToolbar tableConfig={tableConfig} onNewRecord={onNewRecord}
                         onRefresh={onRefresh} isMobile={isMobile}/>
                 {isMobile ? (
                     <DataTableBodyMobile tableConfig={tableConfig} data={data} onEditRecord={onEditRecord} onDeleteRecord={onDeleteRecord}/>
@@ -158,9 +162,7 @@ function DataTable(props) {
                 {pagination()}
             </Paper>
             {isMobile ? null : (
-                tableConfig.dense === false ? null : (
-                    <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.densePadding')} />
-                )
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.densePadding')} />
             )}
             <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
                 <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record}/>

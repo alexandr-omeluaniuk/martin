@@ -8,8 +8,18 @@ import React from 'react';
 import DataTable from '../../../component/datatable/DataTable';
 
 function Subscriptions() {
+    
+    const tableConfig = {
+        apiUrl: '/entity/ss.martin.platform.entity.Subscription',
+        columns: [{
+            
+        }],
+        formConfig: {
+            formFields: []
+        }
+    };
     return (
-        <div>Subscriptions</div>
+        <DataTable tableConfig={tableConfig}/>
     );
 }
 

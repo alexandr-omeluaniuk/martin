@@ -24,12 +24,6 @@
 package ss.martin.platform.service.impl;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -40,8 +34,6 @@ import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.dao.EntityFileDAO;
 import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.EntityFile;
-import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.entity.Undeletable;
@@ -77,7 +69,7 @@ class EntityServiceImpl implements EntityService {
     @Autowired
     private SecurityService securityService;
     @Override
-    public EntitySearchResponse searchEntities(Class<? extends DataModel> clazz,
+    public EntitySearchResponse list(Class<? extends DataModel> clazz,
             EntitySearchRequest searchRequest) throws Exception {
         if (!securityService.getEntityPermissions(clazz).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, clazz);
@@ -85,7 +77,7 @@ class EntityServiceImpl implements EntityService {
         return coreDAO.searchEntities(clazz, searchRequest);
     }
     @Override
-    public <T extends DataModel> T createEntity(T entity) throws Exception {
+    public <T extends DataModel> T create(T entity) throws Exception {
         if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.CREATE)) {
             throw new PlatformSecurityException(EntityPermission.CREATE, entity.getClass());
         }
@@ -101,7 +93,7 @@ class EntityServiceImpl implements EntityService {
         }
     }
     @Override
-    public <T extends DataModel> T updateEntity(T entity) throws Exception {
+    public <T extends DataModel> T update(T entity) throws Exception {
         if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.UPDATE)) {
             throw new PlatformSecurityException(EntityPermission.UPDATE, entity.getClass());
         }
@@ -111,7 +103,7 @@ class EntityServiceImpl implements EntityService {
         return coreDAO.update(fromDB);
     }
     @Override
-    public <T extends DataModel> void deleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
+    public <T extends DataModel> void delete(Set<Long> ids, Class<T> cl) throws Exception {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
             throw new PlatformSecurityException(EntityPermission.DELETE, cl);
         }
@@ -121,51 +113,11 @@ class EntityServiceImpl implements EntityService {
         coreDAO.massDelete(ids, cl);
     }
     @Override
-    public <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) throws Exception {
-        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DEACTIVATE)) {
-            throw new PlatformSecurityException(EntityPermission.DEACTIVATE, cl);
-        }
-        coreDAO.deactivateEntities(ids, cl);
-    }
-    @Override
-    public <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl) throws Exception {
-        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.ACTIVATE)) {
-            throw new PlatformSecurityException(EntityPermission.ACTIVATE, cl);
-        }
-        coreDAO.activateEntities(ids, cl);
-    }
-    @Override
-    public <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception {
+    public <T extends DataModel> T get(Long id, Class<T> cl) throws Exception {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
             throw new PlatformSecurityException(EntityPermission.READ, cl);
         }
         return coreDAO.findById(id, cl);
-    }
-    @Override
-    public <T extends DataModel> List getDataForCollectionField(Class<T> cl, String fieldName) throws Exception {
-        if (!securityService.getEntityPermissions(cl).contains(EntityPermission.READ)) {
-            throw new PlatformSecurityException(EntityPermission.READ, cl);
-        }
-        List result = new ArrayList();
-        Field field = cl.getDeclaredField(fieldName);
-        Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
-        genericTypes.ifPresent((gt) -> {
-            if (gt instanceof ParameterizedType) {
-                ParameterizedType parType = (ParameterizedType) gt;
-                Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
-                if (genericClass.isEnum()) {
-                    result.addAll(Arrays.asList(genericClass.getEnumConstants()));
-                }
-            }
-        });
-        return result;
-    }
-    @Override
-    public EntityFile getEntityAvatar(Long id, Class<? extends HasAvatar> cl) throws Exception {
-        if (!securityService.getEntityPermissions((Class<? extends DataModel>) cl).contains(EntityPermission.READ)) {
-            throw new PlatformSecurityException(EntityPermission.READ, (Class<? extends DataModel>) cl);
-        }
-        return entityFileDAO.getAvatar(id, cl);
     }
     // ==================================== PRIVATE ===================================================================
     /**

@@ -46,7 +46,7 @@ class DataService {
     }
     _request = (method, url, payload) => {
         let signal = this.abortController.signal;
-        return fetch(AppURLs.api + url, {
+        return fetch(url, {
             method: method,
             signal: signal,
             headers: {
