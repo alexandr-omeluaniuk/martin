@@ -35,6 +35,17 @@ export default function SideNavBar(props) {
     const { open, setOpen, onItemSelected } = props;
     const { t } = useTranslation();
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
+    // module data
+    let currentModule = SessionService.currentModule();
+    let moduleItems = [];
+    let moduleId = null;
+    let modulePath = '';
+    if (currentModule) {
+        moduleItems = currentModule.getItems();
+        moduleId = currentModule.getId();
+        modulePath = AppURLs.context + currentModule.path;
+    }
+    // create sidebar navigation
     const createSideBarNavigation = (items, parentPath, parentId, level) => {
         let navItems = [];
         items.forEach(item => {
@@ -45,7 +56,7 @@ export default function SideNavBar(props) {
                             item.id,
                             parentPath + item.path,
                             item.icon,
-                            t(parentId + '.' + item.id + 'Title'),
+                            t(`m_${moduleId}:${parentId}.${item.id}`),
                             childs,
                             level
                         )
@@ -63,15 +74,6 @@ export default function SideNavBar(props) {
             </NavItem>
         );
     };
-    let currentModule = SessionService.currentModule();
-    let moduleItems = [];
-    let moduleId = null;
-    let modulePath = '';
-    if (currentModule) {
-        moduleItems = currentModule.getItems();
-        moduleId = currentModule.getId();
-        modulePath = AppURLs.context + currentModule.path;
-    }
     const navItems = createSideBarNavigation(moduleItems, modulePath, moduleId, 0);
     return isMobile ? <SideNavBarMobile open={open} setOpen={setOpen} navItems={navItems}/> 
                 : <SideNavBarDesktop open={open} moduleId={moduleId} navItems={navItems}/>;

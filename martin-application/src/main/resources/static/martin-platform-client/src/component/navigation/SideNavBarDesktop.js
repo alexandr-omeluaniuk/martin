@@ -102,7 +102,6 @@ function SideNavBarDesktop(props) {
     const classes = useStyles();
     const { open, navItems, moduleId } = props;
     const { t } = useTranslation();
-    console.log(`m_${moduleId}:title`);
     let moduleTitle = (
         <Typography className={classes.title} variant={'caption'}>
             {t(`m_${moduleId}:title`)}

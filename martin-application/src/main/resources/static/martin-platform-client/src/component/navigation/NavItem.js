@@ -33,19 +33,15 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(0)
     },
     itemIcon: {
-        color: 'inherit !important',
         minWidth: '40px'
     },
-    itemIconComfortaa: {
+    itemIconSelected: {
+        color: theme.palette.getContrastText(theme.palette.text.primary) + ' !important',
         minWidth: '40px'
     },
     selected: {
         backgroundColor: fade(theme.palette.secondary.main, 1) + ' !important',
         color: theme.palette.getContrastText(theme.palette.secondary.main) + ' !important'
-    },
-    selectedComfortaa: {
-        backgroundColor: 'inherit !important',
-        color: theme.palette.primary.main
     },
     innerList: {
         paddingBottom: 0,
@@ -71,15 +67,15 @@ function NavItem(props) {
             </Icon> : null;
     const listIcon = (
         <Tooltip title={label}>
-            <ListItemIcon className={classes.itemIconComfortaa}>
-                <Icon className={isSelected ? classes.selectedComfortaa : null}>{icon}</Icon>
+            <ListItemIcon className={classes.itemIcon}>
+                <Icon className={isSelected ? classes.selected : null}>{icon}</Icon>
             </ListItemIcon>
         </Tooltip>
     );
     const listItem = (
         <ListItem button selected={isSelected} 
                 className={classes.itemLink} classes={{
-                    selected: classes.selectedComfortaa
+                    selected: classes.selected
                 }} onClick={() => {
                     if (children) {
                         let nValue = !open;

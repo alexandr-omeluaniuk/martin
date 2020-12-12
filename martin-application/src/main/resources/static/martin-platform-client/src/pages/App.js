@@ -35,7 +35,7 @@ function App() {
                     <SideNavBar open={open} setOpen={setOpen} onItemSelected={(label, icon) => {
                         setTitle(label);
                         setIcon(icon);
-                        setOpen(false);
+                        //setOpen(false);
                         document.title = 'Martin | ' + label;
                     }}/>
                 </div>
