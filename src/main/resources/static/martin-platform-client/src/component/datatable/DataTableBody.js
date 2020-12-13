@@ -18,8 +18,7 @@ import Icon from '@material-ui/core/Icon';
 const useStyles = makeStyles(theme => ({
     actionCell: {
         padding: 0,
-        margin: 0,
-        marginRight: theme.spacing(1)
+        margin: 0
     },
     editButton: {
         color: theme.palette.secondary.main
@@ -70,9 +69,6 @@ function DataTableBody (props) {
                         innerContent = rowData[column.name];
                     }
                     let className = null;
-                    if (column.className) {
-                        className = classes[column.className];
-                    }
                     if (column.type === 'action') {
                         className = classes.actionCell;
                     }
@@ -96,7 +92,7 @@ function DataTableBody (props) {
                 })}
                 {onEditRecord ? (
                     <TableCell className={classes.actionCell}>
-                        <Tooltip title={t('common.edit')}>
+                        <Tooltip title={t('common:component.datatable.edit')}>
                             <IconButton aria-label="edit record" className={classes.editButton} onClick={() => onEditRecord(rowData)}>
                                 <Icon>edit</Icon>
                             </IconButton>
@@ -105,7 +101,7 @@ function DataTableBody (props) {
                 ) : null}
                 {onDeleteRecord ? (
                     <TableCell className={classes.actionCell}>
-                        <Tooltip title={t('common.delete')}>
+                        <Tooltip title={t('common:component.datatable.delete')}>
                             <IconButton aria-label="delete record" className={classes.deleteButton}
                                     onClick={() => onDeleteRecord(rowData)}>
                                 <Icon>delete</Icon>

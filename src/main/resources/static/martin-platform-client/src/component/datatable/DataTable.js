@@ -56,15 +56,12 @@ function DataTable(props) {
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         dataService.get(`${tableConfig.apiUrl}?page=${page + 1}&page_size=${rowsPerPage}`).then(resp => {
+            console.log(resp.data);
             setData(resp.data);
             setTotal(resp.total);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load]);
-    useEffect(() => {
-        setLoad(!load);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [order, orderBy]);
     useEffect(() => {
         return () => {
             if (tableConfig.abort !== false) {
@@ -158,7 +155,7 @@ function DataTable(props) {
                 {pagination()}
             </Paper>
             {isMobile ? null : (
-                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.densePadding')} />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('common:component.datatable.dense_padding')} />
             )}
             <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
                 <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record}/>

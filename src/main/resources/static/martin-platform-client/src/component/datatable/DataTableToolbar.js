@@ -66,9 +66,9 @@ function DataTableToolbar(props) {
                 <Grid container>
                     <Grid item container>
                         <Grid item xs={6}>
-                            {tableConfig.tableTitle ? (
-                                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                                    {t(tableConfig.tableTitle)}
+                            {tableConfig.title ? (
+                                <Typography className={classes.title} variant="h6" component="div">
+                                    {t(tableConfig.title)}
                                 </Typography>
                             ) : null}
                         </Grid>               
@@ -76,9 +76,8 @@ function DataTableToolbar(props) {
                             {toolbarActionsBefore}
                             {onNewRecord ? (
                                 <Tooltip title={t('common:component.datatable.new')}>
-                                    <IconButton aria-label="new record" className={classes.greenButton} 
-                                            onClick={() => onNewRecord()}>
-                                        <Icon color="secondary">add</Icon>
+                                    <IconButton aria-label="new record" onClick={() => onNewRecord()}>
+                                        <Icon className={classes.greenButton}>add</Icon>
                                     </IconButton>
                                 </Tooltip>
                             ) : null}

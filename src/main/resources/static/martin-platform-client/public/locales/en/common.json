@@ -6,7 +6,10 @@
     "component": {
         "datatable": {
             "new": "New record",
-            "refresh": "Refresh"
+            "refresh": "Refresh",
+            "edit": "Edit",
+            "delete": "Delete",
+            "dense_padding": "Dense padding"
         }
     }
 }
