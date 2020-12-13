@@ -23,10 +23,8 @@
  */
 package ss.martin.platform.wrapper;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import java.util.Set;
-import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.CalendarEvent;
 
 /**
@@ -35,10 +33,8 @@ import ss.martin.platform.entity.CalendarEvent;
  */
 public class CalendarSearchRequest {
     /** Date from. */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATE_FORMAT)
     private Date from;
     /** Date to. */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATE_FORMAT)
     private Date to;
     /** Event classes. */
     private Set<Class<? extends CalendarEvent>> classes;

@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TYPES, VALIDATORS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT } from '../../service/DataTypeService';
+import { TYPES, VALIDATORS, SERVER_DATE_FORMAT, CLIENT_DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT } from '../../service/DataTypeService';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -100,10 +100,10 @@ function FormField (props) {
             );
         } else if (fieldConfig.type === TYPES.DATE) {
             //moment.locale(i18n.language);
-            let value = fieldValue ? moment(fieldValue, DATE_FORMAT) : null;
+            let value = fieldValue ? moment(fieldValue, SERVER_DATE_FORMAT) : null;
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
-                        <KeyboardDatePicker disableToolbar variant="inline" format={DATE_FORMAT} margin="normal" required={isRequired}
+                        <KeyboardDatePicker disableToolbar variant="inline" format={CLIENT_DATE_FORMAT} margin="normal" required={isRequired}
                             label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
                             fullWidth={true} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
                     </MuiPickersUtilsProvider>

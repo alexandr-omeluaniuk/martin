@@ -23,14 +23,9 @@
  */
 package ss.martin.platform.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,14 +56,12 @@ public class Subscription extends DataModel implements Undeletable {
     @FormField
     private String organizationName;
     /** Started. */
-    @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
     @FormField
     private Date started;
     /** Expiration date. */
-    @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)
@@ -81,12 +74,8 @@ public class Subscription extends DataModel implements Undeletable {
     @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
     @Column(name = "admin_email", length = AppConstants.SIMPLE_TEXT_SIZE, nullable = false, updatable = false)
     private String subscriptionAdminEmail;
-    /** Application modules. */
-    @FormField
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
-    @JoinTable(name = "subscription_module")
-    private Set<String> modules;
     /** Active. */
+    @FormField
     @Column(name = "active", nullable = false)
     private boolean active;
     // =========================================== SET & GET ==========================================================
@@ -137,18 +126,6 @@ public class Subscription extends DataModel implements Undeletable {
      */
     public void setSubscriptionAdminEmail(String subscriptionAdminEmail) {
         this.subscriptionAdminEmail = subscriptionAdminEmail;
-    }
-    /**
-     * @return the modules
-     */
-    public Set<String> getModules() {
-        return modules;
-    }
-    /**
-     * @param modules the modules to set
-     */
-    public void setModules(Set<String> modules) {
-        this.modules = modules;
     }
     /**
      * @return the active

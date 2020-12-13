@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 
-export const DATE_FORMAT = 'DD.MM.YYYY';
+export const CLIENT_DATE_FORMAT = 'DD.MM.YYYY';
+export const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'HH:mm';
 export const DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
 // eslint-disable-next-line no-useless-escape
@@ -96,11 +97,11 @@ export class DataTypeService {
         return invalidFields;
     }
     static convertUIValueToServerFormat = (field, value) => {
-        if (value && field.type === TYPES.DATE) {
-            return value.format(DATE_FORMAT);
-        } else if (value && field.type === TYPES.DATETIME) {
+        if (value && value.format && field.type === TYPES.DATE) {
+            return value.format(SERVER_DATE_FORMAT);
+        } else if (value && value.format && field.type === TYPES.DATETIME) {
             return value.format(DATETIME_FORMAT);
-        } else if (value && field.type === TYPES.TIME) {
+        } else if (value && value.format && field.type === TYPES.TIME) {
             return value.format(TIME_FORMAT);
         }
         return value;

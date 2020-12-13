@@ -28,10 +28,6 @@ package ss.martin.platform.constants;
  * @author ss
  */
 public final class AppConstants {
-    /** Default date format. */
-    public static final String DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
-    /** Default datetime format. */
-    public static final String DEFAULT_DATETIME_FORMAT = "dd.MM.yyyy HH:mm";
     /** Simple text size. */
     public static final int SIMPLE_TEXT_SIZE = 255;
     /** Long text size. */

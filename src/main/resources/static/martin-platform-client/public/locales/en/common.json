@@ -8,8 +8,11 @@
             "new": "New record",
             "refresh": "Refresh",
             "edit": "Edit record",
-            "delete": "Delete",
-            "dense_padding": "Dense padding"
+            "delete": "Delete record",
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "dense_padding": "Dense padding",
+            "confirm_delete_message": "Do you really want to delete this record?"
         },
         "menu": {
             "close": "Close",

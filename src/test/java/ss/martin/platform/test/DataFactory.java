@@ -24,7 +24,6 @@
 package ss.martin.platform.test;
 
 import java.util.Date;
-import java.util.HashSet;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.entity.DataModel;
@@ -48,7 +47,6 @@ public class DataFactory {
         model.setStarted(new Date());
         model.setOrganizationName("Test subscription");
         model.setSubscriptionAdminEmail("test@test.com");
-        model.setModules(new HashSet<>());
         return model;
     }
     

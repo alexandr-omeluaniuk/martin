@@ -23,7 +23,6 @@
  */
 package ss.martin.platform.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -32,7 +31,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import ss.martin.platform.anno.security.FormField;
-import ss.martin.platform.constants.AppConstants;
 
 /**
  * Calendar event.
@@ -43,7 +41,6 @@ public abstract class CalendarEvent extends EntityAudit {
 // ============================================ FIELDS ================================================================
     /** Event start datetime. */
     @FormField()
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     @Column(name = "event_start", nullable = false)
@@ -51,7 +48,6 @@ public abstract class CalendarEvent extends EntityAudit {
     /** Event start datetime. */
     @FormField()
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConstants.DEFAULT_DATETIME_FORMAT)
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_end", nullable = false)
     private Date end;

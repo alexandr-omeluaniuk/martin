@@ -159,9 +159,9 @@ function DataTable(props) {
             <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
                 <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record}/>
             </FormDialog>
-            <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('common.confirmDeleteTitle')}
-                contentText={t('common.confirmDeleteMessage')} acceptBtnLabel={t('common.confirmDeletion')}
-                declineBtnLabel={t('common.cancel')} declineBtnOnClick={() => setConfirmDialogOpen(false)}
+            <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('common:component.datatable.delete')}
+                contentText={t('common:component.datatable.confirm_delete_message')} acceptBtnLabel={t('common:component.datatable.confirm')}
+                declineBtnLabel={t('common:component.datatable.cancel')} declineBtnOnClick={() => setConfirmDialogOpen(false)}
                 acceptBtnOnClick={doDeleteRecord}/>
         </div>
     );
