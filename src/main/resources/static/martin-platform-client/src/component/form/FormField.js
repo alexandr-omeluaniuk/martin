@@ -97,9 +97,8 @@ function FormField (props) {
                 </MuiPickersUtilsProvider>
             );
         } else if (fieldConfig.type === TYPES.DATE) {
-            console.log(fieldValue);
+            //moment.locale(i18n.language);
             let value = fieldValue ? moment(fieldValue, DATE_FORMAT) : null;
-            console.log(value);
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <KeyboardDatePicker disableToolbar variant="inline" format={DATE_FORMAT} margin="normal"
