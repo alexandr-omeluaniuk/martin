@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import { TYPES, VALIDATORS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT } from '../../service/DataTypeService';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import NumberField from './input/NumberField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
@@ -119,6 +121,11 @@ function FormField (props) {
             return <MultipleSelect label={label} options={attributes.options ? attributes.options : []} name={name}
                         value={fieldValue ? fieldValue : []} fullWidth={true} onChangeFieldValue={onChangeFieldValue}
                         required={isRequired} helperText={invalidFields.get(name)}/>;
+        } else if (fieldConfig.type === TYPES.BOOLEAN) {
+            return <FormControlLabel label={label} control={(
+                        <Checkbox checked={fieldValue ? true : false} onChange={(e) => onChangeFieldValue(name, e.target.checked)} 
+                            name={name} color="secondary"/>
+                    )}/>;
         } else if (fieldConfig.type === TYPES.CUSTOM) {
             return fieldConfig.render(name, fieldValue, onChangeFieldValue);
         }

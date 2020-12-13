@@ -56,7 +56,6 @@ function DataTable(props) {
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         dataService.get(`${tableConfig.apiUrl}?page=${page + 1}&page_size=${rowsPerPage}`).then(resp => {
-            console.log(resp.data);
             setData(resp.data);
             setTotal(resp.total);
         });
@@ -94,12 +93,12 @@ function DataTable(props) {
     const onFormSubmitAction = (data) => {
         let id = DataTypeService.getIdValue(tableConfig.formConfig, data);
         if (id) {
-            dataService.put(tableConfig.apiUrl).then(data => {
+            dataService.put(tableConfig.apiUrl, data).then(() => {
                 setFormOpen(false);
                 setLoad(!load);
             });
         } else {
-            dataService.post(tableConfig.apiUrl).then(data => {
+            dataService.post(tableConfig.apiUrl, data).then(() => {
                 setFormOpen(false);
                 setLoad(!load);
             });

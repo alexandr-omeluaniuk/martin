@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-import moment from 'moment';
-
 export const DATE_FORMAT = 'DD.MM.YYYY';
 export const TIME_FORMAT = 'HH:mm';
 export const DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
+// eslint-disable-next-line no-useless-escape
+const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 export let TYPES = {
     TEXTFIELD: 'TEXTFIELD',
@@ -21,6 +21,7 @@ export let TYPES = {
     PASSWORD: 'PASSWORD',
     TIME: 'TIME',
     DATE: 'DATE',
+    BOOLEAN: 'BOOLEAN',
     CUSTOM: 'CUSTOM'
 };
 
@@ -31,6 +32,7 @@ export let VALIDATORS = {
     MIN: 'MIN',
     MAX: 'MAX',
     EXTENSION: 'EXTENSION',
+    EMAIL: 'EMAIL',
     CUSTOM: 'CUSTOM'
 };
 
@@ -78,6 +80,11 @@ export class DataTypeService {
                         invalidFields.set(fieldName, t('common:validation.extension', {extensions: extensions.join(',')}));
                     }
                 }
+                if (v.type === VALIDATORS.EMAIL && value) {
+                    if (!EMAIL_REGEX.test(value)) {
+                        invalidFields.set(fieldName, t('common:validation.email'));
+                    }
+                }
             });
         }
         if (field.type === TYPES.TIME && value !== null) {
@@ -89,6 +96,13 @@ export class DataTypeService {
         return invalidFields;
     }
     static convertUIValueToServerFormat = (field, value) => {
+        if (value && field.type === TYPES.DATE) {
+            return value.format(DATE_FORMAT);
+        } else if (value && field.type === TYPES.DATETIME) {
+            return value.format(DATETIME_FORMAT);
+        } else if (value && field.type === TYPES.TIME) {
+            return value.format(TIME_FORMAT);
+        }
         return value;
     }
 }

@@ -24,7 +24,8 @@
         }
     },
     "validation": {
-        "required": "Required",
+        "required": "Required field",
+        "email": "Wrong email address",
         "min_length": "Min {{length}} characters",
         "max_length": "Max {{length}} characters"
     }
