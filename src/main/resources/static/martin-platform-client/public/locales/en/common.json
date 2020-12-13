@@ -7,9 +7,20 @@
         "datatable": {
             "new": "New record",
             "refresh": "Refresh",
-            "edit": "Edit",
+            "edit": "Edit record",
             "delete": "Delete",
             "dense_padding": "Dense padding"
+        },
+        "menu": {
+            "close": "Close",
+            "open": "Open"
+        },
+        "form": {
+            "save": "Save",
+            "cancel": "Cancel",
+            "clear": "Clear",
+            "none": "None",
+            "today": "Today"
         }
     }
 }

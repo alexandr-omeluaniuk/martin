@@ -142,7 +142,7 @@ function Form (props) {
                     <Button variant={submit.variant ? submit.variant : 'outlined'} color={submit.color ? submit.color : "inherit"}
                             className={submit.color ? null : classes.saveButton} disabled={invalidFields.size > 0} onClick={saveChanges}>
                         <Icon className={classes.submitIcon}>
-                            {submit.icon ? submit.icon : 'check_circle_outline'}</Icon> {submit.label ? submit.label : t('common.save')}
+                            {submit.icon ? submit.icon : 'check_circle_outline'}</Icon> {submit.label ? submit.label : t('common:component.form.save')}
                     </Button>
                 </Grid>
             </Grid>

@@ -37,3 +37,19 @@ export class FormConfig {
         this.formFields = formFields;
     }
 }
+
+export class FormField {
+    constructor(name, type, label) {
+        this.name = name;
+        this.label = label;
+        this.type = type;
+    }
+    hide() {
+        this.hidden = true;
+        return this;
+    }
+    setGrid(grid) {
+        this.grid = grid;
+        return this;
+    }
+}

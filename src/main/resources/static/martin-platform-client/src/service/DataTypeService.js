@@ -6,6 +6,10 @@
 
 import moment from 'moment';
 
+export const DATE_FORMAT = 'DD.MM.YYYY';
+export const TIME_FORMAT = 'HH:mm';
+export const DATETIME_FORMAT = 'DD.MM.YYYY HH:mm';
+
 export let TYPES = {
     TEXTFIELD: 'TEXTFIELD',
     ID: 'ID',
@@ -13,10 +17,10 @@ export let TYPES = {
     INTEGER_NUMBER: 'INTEGER_NUMBER',
     SELECT: 'SELECT',
     MULTIPLESELECT: 'MULTIPLESELECT',
-    SELECT_NEW_OPTION: 'SELECT_NEW_OPTION',
     FILE: 'FILE',
     PASSWORD: 'PASSWORD',
     TIME: 'TIME',
+    DATE: 'DATE',
     CUSTOM: 'CUSTOM'
 };
 
@@ -101,38 +105,6 @@ export class DataTypeService {
         return invalidFields;
     }
     static convertUIValueToServerFormat = (field, value) => {
-        if (field.type === TYPES.ID) {
-            return value;
-        } else if (field.type === TYPES.TEXTFIELD) {
-            return value === null ? '' : value;
-        } else if (field.type === TYPES.TIME) {
-            if (value !== null) {
-                let parts = value.split(':');
-                return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-            } else {
-                return '';
-            } 
-        } else if (field.type === TYPES.SUMMERNOTE_EDITOR) {
-            return value === null ? '' : value;
-        } else if (field.type === TYPES.MULTIPLESELECT) {
-            return value === null ? '' : value;
-        } else {
-            return value;
-        }
-    }
-    
-    static formatServerDateToMomentJsDate = (serverDate) => {
-        serverDate = serverDate + '';
-        let year = serverDate.substring(0, 4);
-        let month = serverDate.substring(4, 6);
-        let day = serverDate.substring(6, 8);
-        let dateStr = `${year}-${month}-${day}`;
-        return moment(dateStr);
-    }
-    
-    static formatServerTimeToUserFriendlyFormat = (serverTime) => {
-        let hour = Math.trunc(serverTime / 60);
-        let minutes = serverTime % 60;
-        return `${hour >= 10 ? hour : `0${hour}`}:${minutes >= 10 ? minutes : `0${minutes}`}`;
+        return value;
     }
 }

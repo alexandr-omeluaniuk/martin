@@ -134,7 +134,7 @@ function DesktopToolbar(props) {
     
     const menuButtonDesktop = () => {
         return (
-                <Tooltip title={open ? t('component.menu.close') : t('component.menu.open')}>
+                <Tooltip title={open ? t('common:component.menu.close') : t('common:component.menu.open')}>
                     <IconButton edge="start" color="inherit" className={classes.menuButton} onClick={() => {
                         let nValue = !open;
                         setOpen(nValue);

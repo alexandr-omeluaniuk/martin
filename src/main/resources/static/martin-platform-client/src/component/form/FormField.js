@@ -6,20 +6,19 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TYPES, VALIDATORS } from '../../service/DataTypeService';
+import { TYPES, VALIDATORS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT } from '../../service/DataTypeService';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import NumberField from './input/NumberField';
 import Dropdown from './input/Dropdown';
-import NewOptionDropdown from './input/NewOptionDropdown';
 import FileUpload from './input/FileUpload';
 import MultipleSelect from './input/MultipleSelect';
 import TextFieldWithTranslations from './input/TextFieldWithTranslations';
 import PasswordField from './input/PasswordField';
-import { MuiPickersUtilsProvider, KeyboardTimePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
-import "moment/locale/de";
+//import "moment/locale/de";
 
 function FormField (props) {
     const { t, i18n } = useTranslation();
@@ -70,14 +69,6 @@ function FormField (props) {
                             }} fullWidth={true}
                             helperText={invalidFields.get(name)} options={attributes.options ? attributes.options : []}
                             allowEmpty={attributes.allowEmpty ? true : false}/>;
-        } else if (fieldConfig.type === TYPES.SELECT_NEW_OPTION) {
-            return <NewOptionDropdown label={label} value={fieldValue ? fieldValue : ''} required={isRequired}
-                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
-                            helperText={invalidFields.get(name)} options={attributes.options ? attributes.options : []}
-                            allowEmpty={attributes.allowEmpty ? true : false}
-                            formConfig={attributes.formConfig ? attributes.formConfig : {}}
-                            onNewOptionSubmit={attributes.onNewOptionSubmit}
-                            onNewOptionDelete={attributes.onNewOptionDelete ? attributes.onNewOptionDelete : null}/>;
         } else if (fieldConfig.type === TYPES.FILE) {
             return <FileUpload label={label} onChange={onChangeFieldValue} fullWidth={true} value={fieldValue ? fieldValue : ''} 
                             helperText={invalidFields.get(name)} name={name} required={isRequired} avatar={attributes.avatar}
@@ -90,7 +81,7 @@ function FormField (props) {
         } else if (fieldConfig.type === TYPES.TIME) {
             let value = fieldValue;
             if (value) {
-                value = moment(value, 'HH:mm');
+                value = moment(value, TIME_FORMAT);
             } else {
                 value = null;
             }
@@ -98,12 +89,32 @@ function FormField (props) {
                 <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                     <KeyboardTimePicker label={label} fullWidth={true} required={isRequired} clearable ampm={false} mask="__:__"
                         onChange={(date) => {
-                            onChangeFieldValue(name, date !== null ? date.format('HH:mm') : null);
+                            onChangeFieldValue(name, date !== null ? date.format(TIME_FORMAT) : null);
                         }} value={value} name={name} error={invalidFields.has(name)} 
                         helperText={invalidFields.get(name)}
-                        cancelLabel={t('common.cancel')} clearLabel={t('common.clear')}
+                        cancelLabel={t('common:component.form.cancel')} clearLabel={t('common:component.form.clear')}
                         keyboardIcon={(<Icon>access_time</Icon>)}/>
                 </MuiPickersUtilsProvider>
+            );
+        } else if (fieldConfig.type === TYPES.DATE) {
+            console.log(fieldValue);
+            let value = fieldValue ? moment(fieldValue, DATE_FORMAT) : null;
+            console.log(value);
+            return (
+                    <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
+                        <KeyboardDatePicker disableToolbar variant="inline" format={DATE_FORMAT} margin="normal"
+                            label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
+                            fullWidth={true} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
+                    </MuiPickersUtilsProvider>
+            );
+        } else if (fieldConfig.type === TYPES.DATETIME) {
+            return (
+                    <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
+                        <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
+                            autoOk={true} label={label} ampm={false} showTodayButton={true} fullWidth={true}
+                            format={DATETIME_FORMAT} clearLabel={t('common:component.form.clear')}
+                            cancelLabel={t('common:component.form.cancel')} todayLabel={t('common:component.form.today')}/>
+                    </MuiPickersUtilsProvider>
             );
         } else if (fieldConfig.type === TYPES.MULTIPLESELECT) {
             return <MultipleSelect label={label} options={attributes.options ? attributes.options : []} name={name}

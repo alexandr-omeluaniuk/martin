@@ -73,12 +73,12 @@ function DataTable(props) {
     // ============================================================ METHODS ===============================================================
     const onNewRecord = () => {
         setRecord(null);
-        setFormTitle(t('common.newRecord'));
+        setFormTitle(t('common:component.datatable.new'));
         setFormOpen(true);
     };
     const onEditRecord = (rowData) => {
         setRecord(rowData);
-        setFormTitle(t('common.edit'));
+        setFormTitle(t('common:component.datatable.edit'));
         setFormOpen(true);
     };
     const onDeleteRecord = (rowData) => {
