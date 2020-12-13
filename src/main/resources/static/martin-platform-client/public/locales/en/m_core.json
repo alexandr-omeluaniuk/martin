@@ -6,5 +6,6 @@
     },
     "organization_name": "Organization name",
     "subscription_start_date": "Started",
-    "subscription_expiration_date": "Expiration date"
+    "subscription_expiration_date": "Expiration date",
+    "subscription_active": "Active"
 }

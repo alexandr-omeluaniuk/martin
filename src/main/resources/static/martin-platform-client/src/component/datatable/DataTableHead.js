@@ -49,8 +49,9 @@ function DataTableHead(props) {
                         if (column.width) {
                             colStyle['width'] = column.width;
                         }
+                        let align = column.align ? column.align : 'left';
                         return (
-                                <TableCell key={idx} style={colStyle}>
+                                <TableCell key={idx} style={colStyle} align={align}>
                                     {column.sortable !== false ? (
                                         <TableSortLabel active={orderBy === column.name} direction={orderBy === column.name ? order : 'asc'}
                                             onClick={createSortHandler(column.name)}>

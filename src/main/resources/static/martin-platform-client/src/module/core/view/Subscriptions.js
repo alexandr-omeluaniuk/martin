@@ -7,14 +7,29 @@
 import React from 'react';
 import DataTable from '../../../component/datatable/DataTable';
 import { useTranslation } from 'react-i18next';
-import { TableConfig, TableColumn, FormConfig } from '../../../util/model/TableConfig';
+import { makeStyles } from '@material-ui/core/styles';
+import { TableConfig, TableColumn, FormConfig, ALIGN_RIGHT } from '../../../util/model/TableConfig';
+import Icon from '@material-ui/core/Icon';
+
+const useStyles = makeStyles(theme => ({
+    active: {
+        color: theme.palette.success.main
+    },
+    inactive: {
+        color: theme.palette.grey.main
+    }
+}));
 
 function Subscriptions() {
+    const classes = useStyles();
     const { t } = useTranslation();
     const config = new TableConfig(t('m_core:core.subscriptions'), '/entity/Subscription', [
         new TableColumn('organizationName', t('m_core:organization_name')),
-        new TableColumn('started', t('m_core:subscription_start_date')),
-        new TableColumn('expirationDate', t('m_core:subscription_expiration_date'))
+        new TableColumn('started', t('m_core:subscription_start_date')).width('150px').alignment(ALIGN_RIGHT),
+        new TableColumn('expirationDate', t('m_core:subscription_expiration_date')).width('170px').alignment(ALIGN_RIGHT),
+        new TableColumn('active', t('m_core:subscription_active'), (row) => {
+            return <Icon className={row.active ? classes.active : classes.inactive}>check_circle</Icon>;
+        }).width('40px').alignment(ALIGN_RIGHT)
     ], new FormConfig([]));
     return (
         <DataTable tableConfig={config}/>
