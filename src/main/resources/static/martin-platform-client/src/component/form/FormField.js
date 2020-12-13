@@ -101,7 +101,7 @@ function FormField (props) {
             let value = fieldValue ? moment(fieldValue, DATE_FORMAT) : null;
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
-                        <KeyboardDatePicker disableToolbar variant="inline" format={DATE_FORMAT} margin="normal"
+                        <KeyboardDatePicker disableToolbar variant="inline" format={DATE_FORMAT} margin="normal" required={isRequired}
                             label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
                             fullWidth={true} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
                     </MuiPickersUtilsProvider>
@@ -111,7 +111,7 @@ function FormField (props) {
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
                             autoOk={true} label={label} ampm={false} showTodayButton={true} fullWidth={true}
-                            format={DATETIME_FORMAT} clearLabel={t('common:component.form.clear')}
+                            format={DATETIME_FORMAT} clearLabel={t('common:component.form.clear')} required={isRequired}
                             cancelLabel={t('common:component.form.cancel')} todayLabel={t('common:component.form.today')}/>
                     </MuiPickersUtilsProvider>
             );

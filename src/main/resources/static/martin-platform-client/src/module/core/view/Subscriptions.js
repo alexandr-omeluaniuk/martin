@@ -8,9 +8,9 @@ import React from 'react';
 import DataTable from '../../../component/datatable/DataTable';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { TableConfig, TableColumn, FormConfig, FormField, ALIGN_RIGHT } from '../../../util/model/TableConfig';
+import { TableConfig, TableColumn, FormConfig, FormField, Validator, ALIGN_RIGHT } from '../../../util/model/TableConfig';
 import Icon from '@material-ui/core/Icon';
-import { TYPES } from '../../../service/DataTypeService';
+import { TYPES, VALIDATORS } from '../../../service/DataTypeService';
 
 const useStyles = makeStyles(theme => ({
     active: {
@@ -33,9 +33,16 @@ function Subscriptions() {
         }).width('40px').alignment(ALIGN_RIGHT)
     ], new FormConfig([
         new FormField('id', TYPES.ID).hide(),
-        new FormField('organizationName', TYPES.TEXTFIELD, t('m_core:organization_name')).setGrid({xs: 12}),
-        new FormField('started', TYPES.DATE, t('m_core:subscription_start_date')).setGrid({xs: 6}),
-        new FormField('expirationDate', TYPES.DATE, t('m_core:subscription_expiration_date')).setGrid({xs: 6})
+        new FormField('organizationName', TYPES.TEXTFIELD, t('m_core:organization_name')).setGrid({xs: 12}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+        ]),
+        new FormField('started', TYPES.DATE, t('m_core:subscription_start_date')).setGrid({xs: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED)
+        ]),
+        new FormField('expirationDate', TYPES.DATE, t('m_core:subscription_expiration_date')).setGrid({xs: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED)
+        ])
     ]));
     return (
         <DataTable tableConfig={config}/>

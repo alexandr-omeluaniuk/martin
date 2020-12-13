@@ -22,5 +22,10 @@
             "none": "None",
             "today": "Today"
         }
+    },
+    "validation": {
+        "required": "Required",
+        "min_length": "Min {{length}} characters",
+        "max_length": "Max {{length}} characters"
     }
 }

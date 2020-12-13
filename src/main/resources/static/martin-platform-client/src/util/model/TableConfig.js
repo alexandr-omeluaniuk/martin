@@ -52,4 +52,15 @@ export class FormField {
         this.grid = grid;
         return this;
     }
+    validation(validators) {
+        this.validators = validators;
+        return this;
+    }
+}
+
+export class Validator {
+    constructor(type, attributes) {
+        this.type = type;
+        this.attr = attributes;
+    }
 }
