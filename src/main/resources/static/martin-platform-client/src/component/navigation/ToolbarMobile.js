@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 
 function ToolbarMobile(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, setAnchorElAccount } = props;
+    const { title, icon, setOpen, setAnchorElAccount, currentModule } = props;
     const { t } = useTranslation();
     // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     return (
@@ -89,9 +89,11 @@ function ToolbarMobile(props) {
                             <Icon>account_circle</Icon>
                         </IconButton>
                     </Tooltip>
-                    <IconButton color="inherit" onClick={() => {setOpen(true);}} className={classes.menuButton}>
-                        <Icon>menu</Icon>
-                    </IconButton>
+                    {currentModule ? (
+                        <IconButton color="inherit" onClick={() => {setOpen(true);}} className={classes.menuButton}>
+                            <Icon>menu</Icon>
+                        </IconButton>
+                    ) : null}
                 </Toolbar>
             </AppBar>
     );

@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
 
 function ToolbarDesktop(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, setAnchorElAccount } = props;
+    const { title, icon, open, setOpen, setAnchorElAccount, currentModule } = props;
     const { t } = useTranslation();
     // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     const desktopToolbarStyle = clsx({
@@ -82,15 +82,17 @@ function ToolbarDesktop(props) {
     return (
             <AppBar position="absolute" className={desktopToolbarStyle}>
                 <Toolbar className={classes.toolbar}>
-                    <Tooltip title={open ? t('common:component.menu.close') : t('common:component.menu.open')}>
-                        <IconButton edge="start" color="inherit" className={classes.menuButton} onClick={() => {
-                            let nValue = !open;
-                            setOpen(nValue);
-                            localStorage.setItem(DESKTOP_MENU_OPEN, nValue);
-                        }}>
-                            <Icon>{open ? 'menu_open' : 'menu'}</Icon>
-                        </IconButton>
-                    </Tooltip>
+                    {currentModule ? (
+                        <Tooltip title={open ? t('common:component.menu.close') : t('common:component.menu.open')}>
+                            <IconButton edge="start" color="inherit" className={classes.menuButton} onClick={() => {
+                                let nValue = !open;
+                                setOpen(nValue);
+                                localStorage.setItem(DESKTOP_MENU_OPEN, nValue);
+                            }}>
+                                <Icon>{open ? 'menu_open' : 'menu'}</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    ) : null}
                     <Icon className={classes.icon}>{icon}</Icon>
                     <Typography variant="h6" className={classes.title}>
                         {title}
