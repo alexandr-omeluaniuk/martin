@@ -23,21 +23,9 @@
  */
 
 import React from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { drawerWidth } from '../../conf/theme';
-import { useTranslation } from 'react-i18next';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Hidden from "@material-ui/core/Hidden";
-import Typography from '@material-ui/core/Typography';
 import AccountMenu from './AccountMenu';
 import Popover from '@material-ui/core/Popover';
-import { DESKTOP_MENU_OPEN } from '../../conf/local-storage-keys';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import ToolbarDesktop from './ToolbarDesktop';
@@ -51,11 +39,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function DesktopToolbar(props) {
+function AppToolbar(props) {
     const classes = useStyles();
     const { title, icon, open, setOpen,currentModule } = props;
     const [anchorElAccount, setAnchorElAccount] = React.useState(null);
-    const { t } = useTranslation();
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
     const accountSettings = () => {
@@ -76,11 +63,12 @@ function DesktopToolbar(props) {
     
     return (
             <React.Fragment>
-                {isMobile ? <ToolbarMobile title={title} icon={icon} open={open} setOpen={setOpen} currentModule={currentModule}/>
-                    : <ToolbarDesktop title={title} icon={icon} open={open} setOpen={setOpen} currentModule={currentModule}/>}
+                {isMobile ? 
+                    <ToolbarMobile title={title} icon={icon} open={open} setOpen={setOpen} setAnchorElAccount={setAnchorElAccount}/>
+                    : <ToolbarDesktop title={title} icon={icon} open={open} setOpen={setOpen} setAnchorElAccount={setAnchorElAccount}/>}
                 {accountSettings()}
             </React.Fragment>
     );
 }
 
-export default DesktopToolbar;
+export default AppToolbar;

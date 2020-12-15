@@ -3,7 +3,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { history } from '../index';
 import { Router } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import DesktopToolbar from '../component/navigation/DesktopToolbar';
+import AppToolbar from '../component/navigation/AppToolbar';
 import SideNavBar from '../component/navigation/SideNavBar';
 import MainContent from '../component/navigation/MainContent';
 import SessionService from '../service/SessionService';
@@ -36,7 +36,7 @@ function App() {
             <Router history={history}>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <DesktopToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}/>
+                    <AppToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}/>
                     <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
                         setTitle(label);
                         setIcon(icon);

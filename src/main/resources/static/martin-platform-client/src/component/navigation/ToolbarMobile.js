@@ -23,21 +23,15 @@
  */
 
 import React from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { drawerWidth } from '../../conf/theme';
 import { useTranslation } from 'react-i18next';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
-import Hidden from "@material-ui/core/Hidden";
 import Typography from '@material-ui/core/Typography';
-import AccountMenu from './AccountMenu';
-import Popover from '@material-ui/core/Popover';
-import { DESKTOP_MENU_OPEN } from '../../conf/local-storage-keys';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -80,8 +74,7 @@ const useStyles = makeStyles(theme => ({
 
 function ToolbarMobile(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, currentModule } = props;
-    const [anchorElAccount, setAnchorElAccount] = React.useState(null);
+    const { title, icon, open, setOpen, setAnchorElAccount } = props;
     const { t } = useTranslation();
     // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     return (

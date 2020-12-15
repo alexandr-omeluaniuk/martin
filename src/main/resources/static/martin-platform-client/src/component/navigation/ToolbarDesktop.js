@@ -33,11 +33,8 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
-import Hidden from "@material-ui/core/Hidden";
 import Typography from '@material-ui/core/Typography';
-import AccountMenu from './AccountMenu';
-import Popover from '@material-ui/core/Popover';
-import { DESKTOP_MENU_OPEN } from '../../conf/local-storage-keys';
+import { DESKTOP_MENU_OPEN } from '../../conf/local-storage-keys'; 
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -75,8 +72,7 @@ const useStyles = makeStyles(theme => ({
 
 function ToolbarDesktop(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, currentModule } = props;
-    const [anchorElAccount, setAnchorElAccount] = React.useState(null);
+    const { title, icon, open, setOpen, setAnchorElAccount } = props;
     const { t } = useTranslation();
     // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     const desktopToolbarStyle = clsx({
