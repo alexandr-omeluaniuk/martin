@@ -43,7 +43,7 @@ function Applications(props) {
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         if (!applications) {
-            setApplications(modules);
+            setApplications(modules().filter(m => m.isVisible()));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [applications]);
@@ -53,7 +53,6 @@ function Applications(props) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log(applications);
     // ============================================================ RENDERING =============================================================
     if (!applications) {
         return null;
@@ -75,10 +74,11 @@ function Applications(props) {
                             <Grid item xs={12} md={4} lg={4} key={idx}>
                                 <Card raised={true} onClick={() => openApplication(app)}>
                                     <CardActionArea>
-                                        <CardMedia className={classes.media} image={app.logo} title={t('module.' + app.id)}/>
+                                        <CardMedia className={classes.media} image={process.env.PUBLIC_URL + `/images/module/${app.id}.jpg`}
+                                            title={t('module.' + app.id)}/>
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                {t('module.' + app.id)}
+                                                {t(`m_${app.id}:title`)}
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
