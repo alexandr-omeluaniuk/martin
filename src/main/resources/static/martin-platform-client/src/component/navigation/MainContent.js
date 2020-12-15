@@ -32,7 +32,6 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { drawerWidth } from '../../conf/theme';
 import ErrorBoundary from '../util/ErrorBoundary';
-import SessionService from '../../service/SessionService';
 import AppURLs from '../../conf/app-urls';
 import { Route, Redirect } from "react-router-dom";
 
@@ -88,11 +87,10 @@ const useStyles = makeStyles(theme => ({
 
 function MainContent(props) {
     const classes = useStyles();
-    const { routes, open } = props;
+    const { routes, open, currentModule } = props;
     if (!routes) {
         return null;
     }
-    const currentModule = SessionService.currentModule();
     const contentStyle = clsx({
         [classes.content]: true,
         [classes.fullWidthContent]: !(currentModule && open)

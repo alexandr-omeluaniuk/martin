@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 import React from 'react';
-import SessionService from '../../service/SessionService';
 import { useTranslation } from 'react-i18next';
 import NavItem from './NavItem';
 import AppURLs from '../../conf/app-urls';
@@ -32,11 +31,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
 export default function SideNavBar(props) {
-    const { open, setOpen, onItemSelected } = props;
+    const { open, setOpen, onItemSelected, currentModule } = props;
     const { t } = useTranslation();
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     // module data
-    let currentModule = SessionService.currentModule();
     let moduleItems = [];
     let moduleId = null;
     let modulePath = '';
@@ -75,6 +73,7 @@ export default function SideNavBar(props) {
         );
     };
     const navItems = createSideBarNavigation(moduleItems, modulePath, moduleId, 0);
-    return isMobile ? <SideNavBarMobile open={open} setOpen={setOpen} navItems={navItems}/> 
-                : <SideNavBarDesktop open={open} moduleId={moduleId} navItems={navItems}/>;
+    const isOpen = open && currentModule;
+    return isMobile ? <SideNavBarMobile open={isOpen} setOpen={setOpen} navItems={navItems}/> 
+                : <SideNavBarDesktop open={isOpen} moduleId={moduleId} navItems={navItems}/>;
 }

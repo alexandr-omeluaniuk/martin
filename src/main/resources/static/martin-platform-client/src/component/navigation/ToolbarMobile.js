@@ -38,49 +38,70 @@ import Typography from '@material-ui/core/Typography';
 import AccountMenu from './AccountMenu';
 import Popover from '@material-ui/core/Popover';
 import { DESKTOP_MENU_OPEN } from '../../conf/local-storage-keys';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
-import ToolbarDesktop from './ToolbarDesktop';
-import ToolbarMobile from './ToolbarMobile';
 
 const useStyles = makeStyles(theme => ({
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        })
+    },
+    appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen
+        })
+    },
+    menuButton: {
+        marginRight: theme.spacing(0)
+    },
+    toolbar: {
+        borderRadius: 0
+    },
+    title: {
+        flexGrow: 1
+    },
+    icon: {
+        minWidth: '34px'
+    },
     popover: {
         [theme.breakpoints.up("md")]: {
             minWidth: '400px'
         }
+    },
+    accountText: {
+        fontWeight: 'bold',
+        textTransform: 'none'
     }
 }));
 
-function DesktopToolbar(props) {
+function ToolbarMobile(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen,currentModule } = props;
+    const { title, icon, open, setOpen, currentModule } = props;
     const [anchorElAccount, setAnchorElAccount] = React.useState(null);
     const { t } = useTranslation();
-    const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
-    // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
-    const accountSettings = () => {
-        const open = Boolean(anchorElAccount);
-        return (
-                <Popover open={open} anchorEl={anchorElAccount} onClose={() => { setAnchorElAccount(null); }} anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left'
-                }} classes={{
-                    paper: classes.popover
-                }}>
-                    <AccountMenu onItemClick={(e) => {
-                        setAnchorElAccount(null);
-                    }}/>
-                </Popover>
-        );
-    };
-    
+    // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     return (
-            <React.Fragment>
-                {isMobile ? <ToolbarMobile title={title} icon={icon} open={open} setOpen={setOpen} currentModule={currentModule}/>
-                    : <ToolbarDesktop title={title} icon={icon} open={open} setOpen={setOpen} currentModule={currentModule}/>}
-                {accountSettings()}
-            </React.Fragment>
+            <AppBar position="absolute" className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <Icon className={classes.icon}>{icon}</Icon>
+                    <Typography variant="h6" className={classes.title}>
+                        {title}
+                    </Typography>
+                    <Tooltip title={t('component.account.title')}>
+                        <IconButton color="inherit" onClick={(e) => {setAnchorElAccount(e.currentTarget);}}>
+                            <Icon>account_circle</Icon>
+                        </IconButton>
+                    </Tooltip>
+                    <IconButton color="inherit" onClick={() => {setOpen(true);}} className={classes.menuButton}>
+                        <Icon>menu</Icon>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
     );
 }
 
-export default DesktopToolbar;
+export default ToolbarMobile;

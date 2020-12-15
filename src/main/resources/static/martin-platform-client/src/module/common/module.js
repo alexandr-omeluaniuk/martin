@@ -10,5 +10,5 @@ import { ModuleView } from '../../util/model/ModuleView';
 
 export const common = new Module('common', '/common', [
     new ModuleView('applications', '/applications', 'widgets', Applications)
-]);
+]).setInvisible();
 

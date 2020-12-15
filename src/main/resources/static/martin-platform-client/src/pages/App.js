@@ -22,9 +22,13 @@ function App() {
     const [open, setOpen] = React.useState(isMenuOpen === 'true' ? true : false);
     const [icon, setIcon] = React.useState(null);
     const [routes, setRoutes] = React.useState(null);
+    const [currentModule, setCurrentModule] = React.useState(null);
     useEffect(() => {
         if (routes === null) {
             setRoutes(SessionService.getAllRoutes());
+            history.listen(location => {
+                setCurrentModule(SessionService.getCurrentModule());
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routes]);
@@ -32,14 +36,14 @@ function App() {
             <Router history={history}>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <DesktopToolbar title={title} open={open} setOpen={setOpen} icon={icon}/>
-                    <SideNavBar open={open} setOpen={setOpen} onItemSelected={(label, icon) => {
+                    <DesktopToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}/>
+                    <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
                         setTitle(label);
                         setIcon(icon);
                         //setOpen(false);
                         document.title = 'Martin | ' + label;
                     }}/>
-                    {routes ? <MainContent routes={routes} open={open}/> : null}
+                    {routes ? <MainContent routes={routes} open={open} currentModule={currentModule}/> : null}
                 </div>
             </Router>
     );

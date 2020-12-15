@@ -14,8 +14,8 @@ class SessionService {
      * Get current module.
      * @returns {applicationModules|currentModule}
      */
-    static currentModule = () => {
-        const apps = modules();
+    static getCurrentModule = () => {
+        const apps = modules().filter(m => m.isVisible());
         let currentModule = null;
         let internalAppUrl = window.location.pathname.replace(AppURLs.context, '');
         if (internalAppUrl) {
@@ -23,9 +23,6 @@ class SessionService {
             currentModule = apps.filter(m => {
                 return m.path === moduleUrl;
             })[0];
-            if (!currentModule) {
-                currentModule = apps[0];
-            }
         }
         return currentModule;
     }

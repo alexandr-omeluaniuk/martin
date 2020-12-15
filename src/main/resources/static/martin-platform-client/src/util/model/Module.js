@@ -10,6 +10,7 @@ export class Module {
         this.id = id;
         this.path = path;
         this.items = items;
+        this.visible = true;
     }
     
     getId() {
@@ -18,5 +19,14 @@ export class Module {
     
     getItems() {
         return this.items;
+    }
+    
+    isVisible() {
+        return this.visible;
+    }
+    
+    setInvisible() {
+        this.visible = false;
+        return this;
     }
 }
