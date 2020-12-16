@@ -49,11 +49,15 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permissions]);
     // ------------------------------------------------------------ RENDERING -------------------------------------------------------------
+    if (!permissions) {
+        return null;
+    }
     return (
             <Router history={history}>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <AppToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}/>
+                    <AppToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}
+                        permissions={permissions}/>
                     <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
                         setTitle(label);
                         setIcon(icon);

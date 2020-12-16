@@ -97,10 +97,9 @@ function ToolbarDesktop(props) {
                     <Typography variant="h6" className={classes.title}>
                         {title}
                     </Typography>
-                    <Button color="inherit" onClick={(e) => {setAnchorElAccount(e.currentTarget);}}>
+                    <IconButton color="inherit" onClick={(e) => {setAnchorElAccount(e.currentTarget);}}>
                         <Icon className={classes.icon}>account_circle</Icon>
-                        <Typography variant="caption" className={classes.accountText}>TODO</Typography>
-                    </Button>
+                    </IconButton>
                 </Toolbar>
             </AppBar>
     );

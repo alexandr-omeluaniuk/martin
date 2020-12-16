@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 function AccountMenu (props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { onItemClick } = props;
+    const { onItemClick, permissions } = props;
     const [applications, setApplications] = React.useState(null);
     // ===================================================== HOOKS ========================================================================
     useEffect(() => {
@@ -58,7 +58,7 @@ function AccountMenu (props) {
     );
     return (
             <Card>
-                <CardHeader title={'TODO'} subheader={'TODO'} avatar={avatar}/>
+                <CardHeader title={permissions.fullname} subheader={''} avatar={avatar}/>
                 <CardContent className={classes.content}>
                     <List component="nav">
                         <Divider variant="middle" className={classes.divider}/>

@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 function AppToolbar(props) {
     const classes = useStyles();
-    const { title, icon, open, setOpen, currentModule } = props;
+    const { title, icon, open, setOpen, currentModule, permissions } = props;
     const [anchorElAccount, setAnchorElAccount] = React.useState(null);
     const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
@@ -54,7 +54,7 @@ function AppToolbar(props) {
                 }} classes={{
                     paper: classes.popover
                 }}>
-                    <AccountMenu onItemClick={(e) => {
+                    <AccountMenu permissions={permissions} onItemClick={(e) => {
                         setAnchorElAccount(null);
                     }}/>
                 </Popover>

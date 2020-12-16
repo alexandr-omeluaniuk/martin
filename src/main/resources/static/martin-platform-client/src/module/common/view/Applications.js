@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
-import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -25,14 +24,18 @@ const dataService = new DataService();
 
 const useStyles = makeStyles(theme => ({
     media: {
-        height: 0,
-        paddingTop: '36%'
+        height: `260px`
     },
     paper: {
         padding: theme.spacing(3)
     },
     content: {
-        display: 'flex'
+        display: 'flex',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: `#ffffffd1`
     },
     title: {
         flex: 1
@@ -70,15 +73,6 @@ function Applications(props) {
     return (
             <Container>
                 <Grid container spacing={2}>
-                    {applications.length === 0 ? (
-                            <Grid item xs={12}>
-                                <Paper elevation={1} className={classes.paper}>
-                                    <Typography variant="h6" align="center" color="error">
-                                        {t('error.noAvailableApplications')}
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                    ) : null}
                     {applications.map((app, idx) => {
                         return (
                             <Grid item xs={12} md={4} lg={4} key={idx}>
