@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Icon from '@material-ui/core/Icon';
 import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -29,6 +30,15 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         padding: theme.spacing(3)
+    },
+    content: {
+        display: 'flex'
+    },
+    title: {
+        flex: 1
+    },
+    icon: {
+        fontSize: '2rem'
     }
 }));
 
@@ -75,11 +85,12 @@ function Applications(props) {
                                 <Card raised={true} onClick={() => openApplication(app)}>
                                     <CardActionArea>
                                         <CardMedia className={classes.media} image={process.env.PUBLIC_URL + `/images/module/${app.id}.jpg`}
-                                            title={t('module.' + app.id)}/>
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="h2">
+                                            title={t(`m_${app.id}:title`)}/>
+                                        <CardContent className={classes.content}>
+                                            <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
                                                 {t(`m_${app.id}:title`)}
                                             </Typography>
+                                            {app.getIcon() ? <Icon className={classes.icon}>{app.getIcon()}</Icon> : null}
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>

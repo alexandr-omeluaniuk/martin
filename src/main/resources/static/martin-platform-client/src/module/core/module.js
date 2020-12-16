@@ -10,4 +10,4 @@ import { ModuleView } from '../../util/model/ModuleView';
 
 export const core = new Module('core', '/core', [
     new ModuleView('subscriptions', '/subscriptions', 'api', Subscriptions)
-]);
+]).setIcon('security');

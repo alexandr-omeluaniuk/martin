@@ -73,7 +73,7 @@ export default function SideNavBar(props) {
         );
     };
     const navItems = createSideBarNavigation(moduleItems, modulePath, moduleId, 0);
-    const isOpen = open && currentModule;
+    const isOpen = open && currentModule ? true : false;
     return isMobile ? <SideNavBarMobile open={isOpen} setOpen={setOpen} navItems={navItems}/> 
                 : <SideNavBarDesktop open={isOpen} moduleId={moduleId} navItems={navItems}/>;
 }

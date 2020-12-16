@@ -56,16 +56,16 @@ function DataTable(props) {
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
         dataService.get(`${tableConfig.apiUrl}?page=${page + 1}&page_size=${rowsPerPage}`).then(resp => {
-            setData(resp.data);
-            setTotal(resp.total);
+            if (resp) {
+                setData(resp.data);
+                setTotal(resp.total);
+            }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load]);
     useEffect(() => {
         return () => {
-            if (tableConfig.abort !== false) {
-                dataService.abort();
-            }
+            dataService.abort();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

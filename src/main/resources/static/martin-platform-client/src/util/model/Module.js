@@ -13,6 +13,10 @@ export class Module {
         this.visible = true;
     }
     
+    getIcon() {
+        return this.icon;
+    }
+    
     getId() {
         return this.id;
     }
@@ -27,6 +31,11 @@ export class Module {
     
     setInvisible() {
         this.visible = false;
+        return this;
+    }
+    
+    setIcon(icon) {
+        this.icon = icon;
         return this;
     }
 }
