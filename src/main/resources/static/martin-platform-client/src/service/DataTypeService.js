@@ -59,31 +59,31 @@ export class DataTypeService {
                     }
                 }
                 if (v.type === VALIDATORS.REQUIRED && (value === null || value === undefined || value.length === 0)) {
-                    invalidFields.set(fieldName, t('common:validation.required'));
+                    invalidFields.set(fieldName, t('validation.required'));
                 }
                 if (v.type === VALIDATORS.MIN_LENGTH && (value !== null && value.length < v.length)) {
-                    invalidFields.set(fieldName, t('common:validation.min_length', {length: v.length}));
+                    invalidFields.set(fieldName, t('validation.min_length', {length: v.length}));
                 }
                 if (v.type === VALIDATORS.MAX_LENGTH && (value !== null && value.length > v.length)) {
-                    invalidFields.set(fieldName, t('common:validation.max_length', {length: v.length}));
+                    invalidFields.set(fieldName, t('validation.max_length', {length: v.length}));
                 }
                 if (v.type === VALIDATORS.MIN && (value !== null && parseInt(value) < v.size)) {
-                    invalidFields.set(fieldName, t('common:validation.min', {size: v.size}));
+                    invalidFields.set(fieldName, t('validation.min', {size: v.size}));
                 }
                 if (v.type === VALIDATORS.MAX && (value !== null && parseInt(value) > v.size)) {
-                    invalidFields.set(fieldName, t('common:validation.max', {size: v.size}));
+                    invalidFields.set(fieldName, t('validation.max', {size: v.size}));
                 }
                 if (field.type === TYPES.FILE && v.type === VALIDATORS.EXTENSION && value && value.name) {
                     let extensions = v.extensions;
                     let parts = value.name.split('.');
                     let fileExtension = parts[parts.length - 1].toLowerCase();
                     if (!extensions.includes(fileExtension)) {
-                        invalidFields.set(fieldName, t('common:validation.extension', {extensions: extensions.join(',')}));
+                        invalidFields.set(fieldName, t('validation.extension', {extensions: extensions.join(',')}));
                     }
                 }
                 if (v.type === VALIDATORS.EMAIL && value) {
                     if (!EMAIL_REGEX.test(value)) {
-                        invalidFields.set(fieldName, t('common:validation.email'));
+                        invalidFields.set(fieldName, t('validation.email'));
                     }
                 }
             });
@@ -91,7 +91,7 @@ export class DataTypeService {
         if (field.type === TYPES.TIME && value !== null) {
             const timeRegexp = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
             if (!timeRegexp.test(value)) {
-                invalidFields.set(fieldName, t('common:validation.invalid_time_format'));
+                invalidFields.set(fieldName, t('validation.invalid_time_format'));
             }
         }
         return invalidFields;

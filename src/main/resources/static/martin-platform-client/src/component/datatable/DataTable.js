@@ -72,12 +72,12 @@ function DataTable(props) {
     // ============================================================ METHODS ===============================================================
     const onNewRecord = () => {
         setRecord(null);
-        setFormTitle(t('common:component.datatable.new'));
+        setFormTitle(t('component.datatable.new'));
         setFormOpen(true);
     };
     const onEditRecord = (rowData) => {
         setRecord(rowData);
-        setFormTitle(t('common:component.datatable.edit'));
+        setFormTitle(t('component.datatable.edit'));
         setFormOpen(true);
     };
     const onDeleteRecord = (rowData) => {
@@ -154,14 +154,14 @@ function DataTable(props) {
                 {pagination()}
             </Paper>
             {isMobile ? null : (
-                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('common:component.datatable.dense_padding')} />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('component.datatable.dense_padding')} />
             )}
             <FormDialog title={formTitle} open={formOpen} handleClose={() => setFormOpen(false)}>
                 <Form formConfig={actualFormConfig} onSubmitAction={onFormSubmitAction} record={record}/>
             </FormDialog>
-            <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('common:component.datatable.delete')}
-                contentText={t('common:component.datatable.confirm_delete_message')} acceptBtnLabel={t('common:component.datatable.confirm')}
-                declineBtnLabel={t('common:component.datatable.cancel')} declineBtnOnClick={() => setConfirmDialogOpen(false)}
+            <ConfirmDialog open={confirmDialogOpen} handleClose={() => setConfirmDialogOpen(false)} title={t('component.datatable.delete')}
+                contentText={t('component.datatable.confirm_delete_message')} acceptBtnLabel={t('component.datatable.confirm')}
+                declineBtnLabel={t('component.datatable.cancel')} declineBtnOnClick={() => setConfirmDialogOpen(false)}
                 acceptBtnOnClick={doDeleteRecord}/>
         </div>
     );

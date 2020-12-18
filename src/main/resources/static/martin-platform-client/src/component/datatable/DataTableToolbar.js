@@ -75,7 +75,7 @@ function DataTableToolbar(props) {
                         <Grid item xs={6} container justify="flex-end">
                             {toolbarActionsBefore}
                             {onNewRecord ? (
-                                <Tooltip title={t('common:component.datatable.new')}>
+                                <Tooltip title={t('component.datatable.new')}>
                                     <IconButton aria-label="new record" onClick={() => onNewRecord()}>
                                         <Icon className={classes.greenButton}>add</Icon>
                                     </IconButton>
@@ -88,7 +88,7 @@ function DataTableToolbar(props) {
                                     </IconButton>
                                 </Tooltip>) : null 
                             }
-                            <Tooltip title={t('common:component.datatable.refresh')}>
+                            <Tooltip title={t('component.datatable.refresh')}>
                                 <IconButton aria-label="refresh" onClick={onRefresh}>
                                     <Icon color="secondary">loop</Icon>
                                 </IconButton>

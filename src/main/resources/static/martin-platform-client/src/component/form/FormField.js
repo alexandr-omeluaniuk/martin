@@ -94,7 +94,7 @@ function FormField (props) {
                             onChangeFieldValue(name, date !== null ? date.format(TIME_FORMAT) : null);
                         }} value={value} name={name} error={invalidFields.has(name)} 
                         helperText={invalidFields.get(name)}
-                        cancelLabel={t('common:component.form.cancel')} clearLabel={t('common:component.form.clear')}
+                        cancelLabel={t('component.form.cancel')} clearLabel={t('component.form.clear')}
                         keyboardIcon={(<Icon>access_time</Icon>)}/>
                 </MuiPickersUtilsProvider>
             );
@@ -113,8 +113,8 @@ function FormField (props) {
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
                             autoOk={true} label={label} ampm={false} showTodayButton={true} fullWidth={true}
-                            format={DATETIME_FORMAT} clearLabel={t('common:component.form.clear')} required={isRequired}
-                            cancelLabel={t('common:component.form.cancel')} todayLabel={t('common:component.form.today')}/>
+                            format={DATETIME_FORMAT} clearLabel={t('component.form.clear')} required={isRequired}
+                            cancelLabel={t('component.form.cancel')} todayLabel={t('component.form.today')}/>
                     </MuiPickersUtilsProvider>
             );
         } else if (fieldConfig.type === TYPES.MULTIPLESELECT) {

@@ -22,7 +22,7 @@ function Dropdown (props) {
             <Select value={value} onChange={onChange} label={label}>
                 {allowEmpty ? (
                     <MenuItem value="">
-                        <em>{t('common:component.form.none')}</em>
+                        <em>{t('component.form.none')}</em>
                     </MenuItem>
                 ) : null}
                 {options.map((opt, idx) => {

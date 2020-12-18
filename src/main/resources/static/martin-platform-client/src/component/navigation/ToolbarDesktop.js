@@ -30,7 +30,6 @@ import { useTranslation } from 'react-i18next';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -61,9 +60,6 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1
     },
-    icon: {
-        minWidth: '34px'
-    },
     accountText: {
         fontWeight: 'bold',
         textTransform: 'none'
@@ -83,7 +79,7 @@ function ToolbarDesktop(props) {
             <AppBar position="absolute" className={desktopToolbarStyle}>
                 <Toolbar className={classes.toolbar}>
                     {currentModule ? (
-                        <Tooltip title={open ? t('common:component.menu.close') : t('common:component.menu.open')}>
+                        <Tooltip title={open ? t('component.menu.close') : t('component.menu.open')}>
                             <IconButton edge="start" color="inherit" className={classes.menuButton} onClick={() => {
                                 let nValue = !open;
                                 setOpen(nValue);
@@ -97,9 +93,12 @@ function ToolbarDesktop(props) {
                     <Typography variant="h6" className={classes.title}>
                         {title}
                     </Typography>
-                    <IconButton color="inherit" onClick={(e) => {setAnchorElAccount(e.currentTarget);}}>
-                        <Icon className={classes.icon}>account_circle</Icon>
-                    </IconButton>
+                    <Tooltip title={t('component.toolbar.account')}>
+                        <IconButton color="inherit" onClick={(e) => {setAnchorElAccount(e.currentTarget);}}>
+                            <Icon>account_circle</Icon>
+                        </IconButton>
+                    </Tooltip>
+                    
                 </Toolbar>
             </AppBar>
     );

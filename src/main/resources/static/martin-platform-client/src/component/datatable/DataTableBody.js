@@ -92,7 +92,7 @@ function DataTableBody (props) {
                 })}
                 {onEditRecord ? (
                     <TableCell className={classes.actionCell}>
-                        <Tooltip title={t('common:component.datatable.edit')}>
+                        <Tooltip title={t('component.datatable.edit')}>
                             <IconButton aria-label="edit record" className={classes.editButton} onClick={() => onEditRecord(rowData)}>
                                 <Icon>edit</Icon>
                             </IconButton>
@@ -101,7 +101,7 @@ function DataTableBody (props) {
                 ) : null}
                 {onDeleteRecord ? (
                     <TableCell className={classes.actionCell}>
-                        <Tooltip title={t('common:component.datatable.delete')}>
+                        <Tooltip title={t('component.datatable.delete')}>
                             <IconButton aria-label="delete record" className={classes.deleteButton}
                                     onClick={() => onDeleteRecord(rowData)}>
                                 <Icon>delete</Icon>
