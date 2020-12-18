@@ -70,7 +70,7 @@ export default function Welcome() {
     
     let loginFormConfig = {
         submit: {
-            label: t('sign_in'),
+            label: t('component.welcome.sign_in'),
             icon: 'login',
             variant: 'outlined',
             color: "primary"
@@ -78,7 +78,7 @@ export default function Welcome() {
         formFields: [{
                 type: TYPES.TEXTFIELD,
                 name: 'username',
-                label: t('username'),
+                label: t('component.welcome.username'),
                 grid: {
                     xs: 12
                 },
@@ -88,7 +88,7 @@ export default function Welcome() {
             }, {
                 type: TYPES.PASSWORD,
                 name: 'password',
-                label: t('password'),
+                label: t('component.welcome.password'),
                 grid: {
                     xs: 12
                 },
@@ -103,7 +103,7 @@ export default function Welcome() {
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Card raised>
-                        <CardHeader title={(<Typography variant="h5" align="center">{t('title')}</Typography>)}/>
+                        <CardHeader title={(<Typography variant="h5" align="center">{t('component.welcome.title')}</Typography>)}/>
                         <CardContent>
                             <Form onSubmitAction={doLogin} formConfig={loginFormConfig}/>
                         </CardContent>

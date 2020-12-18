@@ -13,6 +13,7 @@ import './conf/i18next-config';
 
 import App from './pages/App';
 import Welcome from './pages/Welcome';
+import FinishRegistration from './pages/FinishRegistration';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'fontsource-roboto';
@@ -24,6 +25,9 @@ export var changeTheme;
 const indexRoutes = [{
         path: AppURLs.welcome,
         component: Welcome
+    }, {
+        path: AppURLs.registration,
+        component: FinishRegistration
     }, {
         path: AppURLs.context,
         component: App

@@ -10,7 +10,8 @@ const AppURLs = {
     context: context,
     api: context + '/api',
     welcome: context + '/welcome',
-    app: context + '/platform'
+    app: context + '/platform',
+    registration: context + '/finish-registration/:validationString'
 };
 
 export default AppURLs;

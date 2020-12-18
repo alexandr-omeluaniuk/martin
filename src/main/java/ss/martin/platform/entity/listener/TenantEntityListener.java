@@ -26,6 +26,8 @@ package ss.martin.platform.entity.listener;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.entity.TenantEntity;
@@ -45,12 +47,20 @@ public class TenantEntityListener {
     @PrePersist
     @PreUpdate
     protected void prePersistAndUpdate(TenantEntity entity) throws Exception {
-        if (entity instanceof SystemUser
-                && StandardRole.ROLE_SUPER_ADMIN.equals(((SystemUser) entity).getStandardRole())) {
-            return;
+        if (entity instanceof SystemUser) {
+            StandardRole role = ((SystemUser) entity).getStandardRole();
+            // super admin always ignore subscriptions
+            if (StandardRole.ROLE_SUPER_ADMIN.equals(role)) {
+                return;
+            }
+            // user try to finish registration
+            Object auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth instanceof AnonymousAuthenticationToken) {
+                return;
+            }
         }
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        if (reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
+        if (entity != null && reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
             TenantEntity tenantEntity = (TenantEntity) entity;
             tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
         }
