@@ -117,7 +117,7 @@ function Form (props) {
     };
     // ========================================================= RENDERING ================================================================
     return (
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
                 {formConfig.formFields.filter(f => {
                     return !(id && f.editable === false); 
                 }).map((field, idx) => {

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 import { history } from '../index';
 import { Router } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,6 +21,7 @@ const dataService = new DataService();
 
 function App() {
     const classes = useStyles();
+    const { t } = useTranslation();
     let isMenuOpen = localStorage.getItem(DESKTOP_MENU_OPEN);
     const [title, setTitle] = React.useState('');
     const [open, setOpen] = React.useState(isMenuOpen === 'true' ? true : false);
@@ -31,12 +33,22 @@ function App() {
     useEffect(() => {
         if (routes === null) {
             setRoutes(SessionService.getAllRoutes());
+            setCurrentModule(SessionService.getCurrentModule());
             history.listen(location => {
                 setCurrentModule(SessionService.getCurrentModule());
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routes]);
+    useEffect(() => {
+        if (currentModule) {
+            const item = currentModule.getCurrentItem();
+            if (item) {
+                setItemAttributes(t(currentModule.getLabelKey(item)), item.getIcon());
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentModule]);
     useEffect(() => {
         if (permissions === null) {
             dataService.get(`/security/permissions`).then(permissions => {
@@ -48,6 +60,13 @@ function App() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [permissions]);
+    // ------------------------------------------------------------ METHODS ---------------------------------------------------------------
+    const setItemAttributes = (label, icon) => {
+        setTitle(label);
+        setIcon(icon);
+        //setOpen(false);
+        document.title = 'Martin | ' + label;
+    };
     // ------------------------------------------------------------ RENDERING -------------------------------------------------------------
     if (!permissions) {
         return null;
@@ -59,10 +78,7 @@ function App() {
                     <AppToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}
                         permissions={permissions}/>
                     <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
-                        setTitle(label);
-                        setIcon(icon);
-                        //setOpen(false);
-                        document.title = 'Martin | ' + label;
+                        setItemAttributes(label, icon);
                     }}/>
                     {routes ? <MainContent routes={routes} open={open} currentModule={currentModule}/> : null}
                 </div>

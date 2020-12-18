@@ -12,4 +12,8 @@ export class ModuleView {
         this.icon = icon;
         this.component = component;
     }
+    
+    getIcon() {
+        return this.icon;
+    }
 }

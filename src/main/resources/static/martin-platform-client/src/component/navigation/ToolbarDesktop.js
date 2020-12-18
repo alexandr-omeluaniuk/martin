@@ -63,6 +63,9 @@ const useStyles = makeStyles(theme => ({
     accountText: {
         fontWeight: 'bold',
         textTransform: 'none'
+    },
+    icon: {
+        marginRight: theme.spacing(1)
     }
 }));
 
