@@ -59,6 +59,7 @@ class SecurityServiceImpl implements SecurityService {
         permissions.setSubscription(securityContext.subscription());
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());
+        permissions.setStandardRole(currentUser.getStandardRole());
         return permissions;
     }
     @Override

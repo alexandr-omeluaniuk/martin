@@ -24,6 +24,7 @@
 package ss.martin.platform.wrapper;
 
 import ss.martin.platform.entity.Subscription;
+import ss.martin.platform.security.StandardRole;
 
 /**
  * User permissions for UI.
@@ -38,6 +39,8 @@ public class UserPermissions {
     private boolean hasAvatar;
     /** User ID. */
     private Long userId;
+    /** STandard role. */
+    private StandardRole standardRole;
     /**
      * @return the fullname
      */
@@ -85,5 +88,17 @@ public class UserPermissions {
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+    /**
+     * @return the standardRole
+     */
+    public StandardRole getStandardRole() {
+        return standardRole;
+    }
+    /**
+     * @param standardRole the standardRole to set
+     */
+    public void setStandardRole(StandardRole standardRole) {
+        this.standardRole = standardRole;
     }
 }

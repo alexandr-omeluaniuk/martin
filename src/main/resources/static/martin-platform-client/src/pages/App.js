@@ -9,6 +9,7 @@ import SideNavBar from '../component/navigation/SideNavBar';
 import MainContent from '../component/navigation/MainContent';
 import SessionService from '../service/SessionService';
 import DataService from '../service/DataService';
+import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
 
 const useStyles = makeStyles(theme => ({
@@ -31,16 +32,6 @@ function App() {
     const [permissions, setPermissions] = React.useState(null);
     // --------------------------------------------------------- HOOKS --------------------------------------------------------------------
     useEffect(() => {
-        if (routes === null) {
-            setRoutes(SessionService.getAllRoutes());
-            setCurrentModule(SessionService.getCurrentModule());
-            history.listen(location => {
-                setCurrentModule(SessionService.getCurrentModule());
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [routes]);
-    useEffect(() => {
         if (currentModule) {
             const item = currentModule.getCurrentItem();
             if (item) {
@@ -53,6 +44,12 @@ function App() {
         if (permissions === null) {
             dataService.get(`/security/permissions`).then(permissions => {
                 setPermissions(permissions);
+                SharedDataService.permissions = permissions;
+                setRoutes(SessionService.getAllRoutes());
+                setCurrentModule(SessionService.getCurrentModule());
+                history.listen(location => {
+                    setCurrentModule(SessionService.getCurrentModule());
+                });
             });
         }
         return () => {

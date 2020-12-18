@@ -6,6 +6,8 @@
 
 import { common } from '../module/common/module';
 import { core } from '../module/core/module';
+import { SharedDataService } from '../service/SharedDataService';
+import { ROLE_SUPER_ADMIN } from '../conf/standard-roles';
 
 /**
  * Modules metadata.
@@ -13,7 +15,12 @@ import { core } from '../module/core/module';
  * @type Array
  */
 export const modules = function () {
-    return [
-        common, core
-    ];
+    const modules = [common, core];
+    const permissions = SharedDataService.permissions;
+    return modules.filter(m => {
+        if (m.getId() === 'core' && permissions.standardRole !== ROLE_SUPER_ADMIN) {
+            return false;
+        }
+        return true;
+    });
 };
