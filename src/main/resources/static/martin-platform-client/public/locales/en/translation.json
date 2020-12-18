@@ -33,6 +33,11 @@
             "sign_in": "Sign in",
             "username": "Email",
             "password": "Password"
+        },
+        "account_menu": {
+            "user_profile": "My profile",
+            "settings": "Settings",
+            "logout": "Logout"
         }
     },
     "validation": {

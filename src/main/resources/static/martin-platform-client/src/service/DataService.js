@@ -42,7 +42,7 @@ class DataService {
         return this._request('POST', '/login', data);
     }
     logout() {
-        // TODO: logout
+        return this._request('POST', '/logout');
     }
     _request = (method, url, payload) => {
         let signal = this.abortController.signal;

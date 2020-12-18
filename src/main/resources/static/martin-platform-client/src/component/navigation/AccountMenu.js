@@ -58,7 +58,7 @@ function AccountMenu (props) {
     );
     return (
             <Card>
-                <CardHeader title={permissions.fullname} subheader={''} avatar={avatar}/>
+                <CardHeader title={permissions.fullname} subheader={'TODO: Role'} avatar={avatar}/>
                 <CardContent className={classes.content}>
                     <List component="nav">
                         <Divider variant="middle" className={classes.divider}/>
@@ -67,7 +67,7 @@ function AccountMenu (props) {
                                 <ListItemIcon>
                                     <Icon>person</Icon>
                                 </ListItemIcon>
-                                <ListItemText primary={t('COMMON.profileTitle')}/>
+                                <ListItemText primary={t('component.account_menu.user_profile')}/>
                             </ListItem>
                         </NavLink>
                         <NavLink to={AppURLs.context + '/settings'} className={classes.navLink} onClick={(e) => onItemClick(e)}>
@@ -75,17 +75,19 @@ function AccountMenu (props) {
                                 <ListItemIcon>
                                     <Icon>settings</Icon>
                                 </ListItemIcon>
-                                <ListItemText primary={t('COMMON.settingsTitle')}/>
+                                <ListItemText primary={t('component.account_menu.settings')}/>
                             </ListItem>
                         </NavLink>
                         <Divider variant="middle" className={classes.divider}/>
                         <ListItem button onClick={(e) => {
-                            dataService.logout();
+                            dataService.logout().then(() => {
+                                window.location.href = AppURLs.welcome;
+                            });
                         }}>
                             <ListItemIcon>
                                 <Icon>power_settings_new</Icon>
                             </ListItemIcon>
-                            <ListItemText primary={t('component.account.logout')}/>
+                            <ListItemText primary={t('component.account_menu.logout')}/>
                         </ListItem>
                     </List>
                 </CardContent>
