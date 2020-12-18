@@ -25,10 +25,10 @@ function Subscriptions() {
     const classes = useStyles();
     const { t } = useTranslation();
     const config = new TableConfig(t('m_core:core.subscriptions'), '/entity/Subscription', [
-        new TableColumn('organizationName', t('m_core:organization_name')),
-        new TableColumn('subscriptionAdminEmail', t('m_core:subscription_admin_email')),
-        new TableColumn('started', t('m_core:subscription_start_date')).width('150px').alignment(ALIGN_RIGHT),
-        new TableColumn('expirationDate', t('m_core:subscription_expiration_date')).width('170px').alignment(ALIGN_RIGHT),
+        new TableColumn('organizationName', t('m_core:organization_name')).setSortable(),
+        new TableColumn('subscriptionAdminEmail', t('m_core:subscription_admin_email')).setSortable(),
+        new TableColumn('started', t('m_core:subscription_start_date')).width('150px').alignment(ALIGN_RIGHT).setSortable(),
+        new TableColumn('expirationDate', t('m_core:subscription_expiration_date')).width('170px').alignment(ALIGN_RIGHT).setSortable(),
         new TableColumn('active', t('m_core:subscription_active'), (row) => {
             return <Icon className={row.active ? classes.active : classes.inactive}>check_circle</Icon>;
         }).width('40px').alignment(ALIGN_RIGHT)

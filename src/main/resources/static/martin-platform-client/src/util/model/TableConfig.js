@@ -7,6 +7,9 @@
 export const ALIGN_LEFT = 'left';
 export const ALIGN_RIGHT = 'right';
 
+export const SORT_ASC = 'asc';
+export const SORT_DESC = 'desc';
+
 export class TableConfig {
     constructor(title, apiUrl, columns, formConfig) {
         this.title = title;
@@ -21,6 +24,9 @@ export class TableColumn {
         this.name = name;
         this.label = label;
         this.renderer = renderer;
+        this.sortable = false;
+        this.align = ALIGN_LEFT;
+        this._sort_direction = null;
     }
     width(width) {
         this.width = width;
@@ -29,6 +35,23 @@ export class TableColumn {
     alignment(align) {
         this.align = align;
         return this;
+    }
+    setSortable() {
+        this.sortable = true;
+        return this;
+    }
+    
+    _toggleSortDirection() {
+        if (this._sort_direction === null) {
+            this._sort_direction = SORT_ASC;
+        } else {
+            if (this._sort_direction === SORT_ASC) {
+                this._sort_direction = SORT_DESC;
+            } else {
+                this._sort_direction = SORT_ASC;
+            }
+        }
+        return this._sort_direction;
     }
 }
 

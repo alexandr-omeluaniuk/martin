@@ -11,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import { SORT_ASC } from '../../util/model/TableConfig';
 
 const useStyles = makeStyles(theme => ({
     visuallyHidden: {
@@ -32,10 +33,7 @@ const useStyles = makeStyles(theme => ({
 function DataTableHead(props) {
     const { t } = useTranslation();
     const classes = useStyles();
-    const { tableConfig, order, orderBy } = props;
-    const createSortHandler = property => event => {
-        console.log('TODO: sort');
-    };
+    const { tableConfig, orderBy, onSort } = props;
     let actionColumns = 2;
     let actionColumnsUI = [];
     for (let i = 0; i < actionColumns; i++) {
@@ -50,11 +48,11 @@ function DataTableHead(props) {
                             colStyle['width'] = column.width;
                         }
                         let align = column.align ? column.align : 'left';
+                        const order = column._sort_direction ? column._sort_direction : SORT_ASC;
                         return (
                                 <TableCell key={idx} style={colStyle} align={align}>
-                                    {column.sortable !== false ? (
-                                        <TableSortLabel active={orderBy === column.name} direction={orderBy === column.name ? order : 'asc'}
-                                            onClick={createSortHandler(column.name)}>
+                                    {column.sortable === true ? (
+                                        <TableSortLabel active={orderBy === column.name} direction={order} onClick={() => onSort(column)}>
                                             {t(column.label)}
                                             {orderBy === column.name ? (
                                                 <span className={classes.visuallyHidden}>

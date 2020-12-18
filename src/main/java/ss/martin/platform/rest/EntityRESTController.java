@@ -56,6 +56,8 @@ public class EntityRESTController {
      * @param entityName entity name.
      * @param page page number.
      * @param pageSize page size.
+     * @param order sort order.
+     * @param orderBy order by field.
      * @return search response.
      * @throws Exception error.
      */
@@ -63,10 +65,15 @@ public class EntityRESTController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse list(@PathVariable("entity") String entityName,
             @RequestParam("page") Integer page,
-            @RequestParam("page_size") Integer pageSize) throws Exception {
+            @RequestParam("page_size") Integer pageSize,
+            @RequestParam(required = false, value = "order") String order,
+            @RequestParam(required = false, value = "order_by") String orderBy
+    ) throws Exception {
         EntitySearchRequest searchRequest = new EntitySearchRequest();
         searchRequest.setPage(page);
         searchRequest.setPageSize(pageSize);
+        searchRequest.setOrder(order);
+        searchRequest.setOrderBy(orderBy);
         Class entityClass = getEntityClass(entityName);
         return entityService.list(entityClass, searchRequest);
     }

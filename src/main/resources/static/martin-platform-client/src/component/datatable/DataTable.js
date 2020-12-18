@@ -55,7 +55,11 @@ function DataTable(props) {
             localStorage.getItem(ITEMS_PER_PAGE) ? parseInt(localStorage.getItem(ITEMS_PER_PAGE)) : 5);
     // ============================================================ HOOKS =================================================================
     useEffect(() => {
-        dataService.get(`${tableConfig.apiUrl}?page=${page + 1}&page_size=${rowsPerPage}`).then(resp => {
+        let params = `?page=${page + 1}&page_size=${rowsPerPage}`;
+        if (order && orderBy) {
+            params += `&order=${order}&order_by=${orderBy}`;
+        }
+        dataService.get(`${tableConfig.apiUrl}${params}`).then(resp => {
             if (resp) {
                 setData(resp.data);
                 setTotal(resp.total);
@@ -70,6 +74,12 @@ function DataTable(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // ============================================================ METHODS ===============================================================
+    const onSort = (column) => {
+        console.log(column);
+        setOrder(column._toggleSortDirection());
+        setOrderBy(column.name);
+        setLoad(!load);
+    };
     const onNewRecord = () => {
         setRecord(null);
         setFormTitle(t('component.datatable.new'));
@@ -146,7 +156,7 @@ function DataTable(props) {
                 ) : (
                     <TableContainer>
                         <Table size={dense ? 'small' : 'medium'}>
-                            <DataTableHead tableConfig={tableConfig} order={order} orderBy={orderBy} />
+                            <DataTableHead tableConfig={tableConfig} onSort={onSort} orderBy={orderBy} />
                             <DataTableBody tableConfig={tableConfig} data={data} onEditRecord={onEditRecord} onDeleteRecord={onDeleteRecord}/>
                         </Table>
                     </TableContainer>

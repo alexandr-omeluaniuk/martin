@@ -65,7 +65,7 @@ function App() {
         setTitle(label);
         setIcon(icon);
         //setOpen(false);
-        document.title = 'Martin | ' + label;
+        document.title = t('app_name') + ' | ' + label;
     };
     // ------------------------------------------------------------ RENDERING -------------------------------------------------------------
     if (!permissions) {
