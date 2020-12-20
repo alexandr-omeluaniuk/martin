@@ -7,7 +7,8 @@
 import Subscriptions from './view/Subscriptions';
 import { Module } from '../../util/model/Module';
 import { ModuleView } from '../../util/model/ModuleView';
+import { ROLE_SUPER_ADMIN } from '../../conf/standard-roles';
 
 export const core = new Module('core', '/core', [
     new ModuleView('subscriptions', '/subscriptions', 'api', Subscriptions)
-]).setIcon('security');
+]).setIcon('security').permitForRoles([ROLE_SUPER_ADMIN]);

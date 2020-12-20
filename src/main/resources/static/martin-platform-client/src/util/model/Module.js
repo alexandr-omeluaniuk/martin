@@ -13,6 +13,7 @@ export class Module {
         this.path = path;
         this.items = items;
         this.visible = true;
+        this.roles = null;
     }
     
     getIcon() {
@@ -44,6 +45,15 @@ export class Module {
     getCurrentItem() {
         let path = window.location.pathname.replace(AppURLs.context, '');
         return this._visitItem(this, path, '');
+    }
+    
+    permitForRoles(roles) {
+        this.roles = roles;
+        return this;
+    }
+    
+    isPermitted(role) {
+        return this.roles === null || this.roles.includes(role);
     }
     
     getLabelKey(item) {
