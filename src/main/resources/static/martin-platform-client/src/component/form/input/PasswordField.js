@@ -30,7 +30,7 @@ function PasswordField (props) {
     const fromVariant = () => {
         if (variant === 'outlined') {
             return <OutlinedInput type={showPassword ? 'text' : 'password'} value={value} onChange={onChange}
-                    endAdornment={button()} autoComplete="new-password"/>;
+                    endAdornment={button()} autoComplete="new-password" labelWidth={80}/>;
         } else {
             return <Input type={showPassword ? 'text' : 'password'} value={value} onChange={onChange}
                     endAdornment={button()} autoComplete="new-password"/>;

@@ -60,6 +60,7 @@ export class FormConfig {
         this.formFields = formFields;
         this.spacing = 1;
         this.variant = '';
+        this.submit = new FormSubmit();
     }
     setVariant(variant) {
         this.variant = variant;
@@ -96,6 +97,10 @@ export class FormField {
 }
 
 export class FormSubmit {
+    constructor() {
+        this.variant = 'outlined';
+        this.color = 'inherit';
+    }
     setLabel(label) {
         this.label = label;
         return this;
