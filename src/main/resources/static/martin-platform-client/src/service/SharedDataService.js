@@ -7,4 +7,6 @@
 export class SharedDataService {
     /** User permissions. */
     static permissions;
+    /** Show notification function. */
+    static showNotification;
 }

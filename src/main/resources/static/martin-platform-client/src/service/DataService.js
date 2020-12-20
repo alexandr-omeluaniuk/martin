@@ -16,6 +16,7 @@
  */
 
 import AppURLs from '../conf/app-urls';
+import { SharedDataService } from './SharedDataService';
 
 class DataService {
     
@@ -61,9 +62,9 @@ class DataService {
                 window.location.href = AppURLs.welcome;
             } else {
                 response.json().then(errJson => {
-//                    if (_showNotification) {
-//                        _showNotification(errJson.message, errJson.details, 'error');
-//                    }
+                    if (SharedDataService.showNotification) {
+                        SharedDataService.showNotification(errJson.message, errJson.details, 'error');
+                    }
                 });
             }
         }).catch(error => {

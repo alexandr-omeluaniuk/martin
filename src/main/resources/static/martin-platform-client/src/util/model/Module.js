@@ -16,6 +16,15 @@ export class Module {
         this.roles = null;
     }
     
+    setBackgroundImage(img) {
+        this.background = img;
+        return this;
+    }
+    
+    getBackgroundImage() {
+        return this.background;
+    }
+    
     getIcon() {
         return this.icon;
     }

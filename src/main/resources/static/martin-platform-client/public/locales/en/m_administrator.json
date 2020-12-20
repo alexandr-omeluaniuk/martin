@@ -1,3 +1,6 @@
 {
-    "title": "Administration"
+    "title": "Administration",
+    "administrator": {
+        "users": "Users"
+    }
 }

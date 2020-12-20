@@ -9,6 +9,7 @@ import Spinner from './component/util/Spinner';
 import ErrorBoundary from './component/util/ErrorBoundary';
 import Notification from './component/util/Notification';
 import { createTheme } from './conf/theme';
+import { SharedDataService } from './service/SharedDataService';
 import './conf/i18next-config';
 
 import App from './pages/App';
@@ -48,10 +49,10 @@ function Application() {
         setOpenNotification(true);
         setNotificationDuration(duration ? duration : 6000);
     };
-    //DataService.setNotification(showNotification);
-
+    
     useEffect(() => {
         if (!theme) {
+            SharedDataService.showNotification = showNotification;
             setTheme(createTheme());
             changeTheme = (newtheme) => {
                 setTheme(newtheme);

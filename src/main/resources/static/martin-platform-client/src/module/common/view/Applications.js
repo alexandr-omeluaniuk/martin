@@ -78,7 +78,7 @@ function Applications(props) {
                             <Grid item xs={12} md={4} lg={4} key={idx}>
                                 <Card raised={true} onClick={() => openApplication(app)}>
                                     <CardActionArea>
-                                        <CardMedia className={classes.media} image={process.env.PUBLIC_URL + `/images/module/${app.id}.jpg`}
+                                        <CardMedia className={classes.media} image={app.getBackgroundImage()}
                                             title={t(`m_${app.id}:title`)}/>
                                         <CardContent className={classes.content}>
                                             <Typography gutterBottom variant="h5" component="h2" className={classes.title}>

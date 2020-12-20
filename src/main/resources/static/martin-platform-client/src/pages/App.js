@@ -62,7 +62,7 @@ function App() {
         setTitle(label);
         setIcon(icon);
         //setOpen(false);
-        document.title = t('app_name') + ' | ' + label;
+        document.title = t(`m_${currentModule.getId()}:title`) + ' | ' + label;
     };
     // ------------------------------------------------------------ RENDERING -------------------------------------------------------------
     if (!permissions) {
