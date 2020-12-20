@@ -35,7 +35,30 @@ function Users() {
         new TableColumn('active', t('m_administrator:users.active'), (row) => {
             return <Icon className={row.active ? classes.active : classes.inactive}>check_circle</Icon>;
         }).width('40px').alignment(ALIGN_RIGHT)
-    ], new FormConfig());
+    ], new FormConfig([
+        new FormField('id', TYPES.ID).hide(),
+        new FormField('firstname', TYPES.TEXTFIELD, t('m_administrator:users.firstname')).setGrid({xs: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+        ]),
+        new FormField('lastname', TYPES.TEXTFIELD, t('m_administrator:users.lastname')).setGrid({xs: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+        ]),
+        new FormField('email', TYPES.TEXTFIELD, t('m_administrator:users.email')).setGrid({xs: 12}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.EMAIL),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+        ]),
+        new FormField('password', TYPES.PASSWORD, t('m_administrator:users.password')).setGrid({xs: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+        ]),
+        new FormField('password-repeat', TYPES.PASSWORD, t('m_administrator:users.password_repeat')).setGrid({xs: 6}).validation([
+            new Validator(VALIDATORS.REQUIRED),
+            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
+        ])
+    ]));
     return (
         <DataTable tableConfig={config}/>
     );

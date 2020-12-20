@@ -39,6 +39,7 @@ import DataService from '../service/DataService';
 import { history } from '../index';
 import AppURLs from '../conf/app-urls';
 import { FormField, FormConfig, Validator, FormSubmit } from '../util/model/TableConfig';
+import background from '../assets/images/login-background.jpg';
 
 let dataService = new DataService();
 
@@ -51,7 +52,8 @@ const useStyles = makeStyles(theme => ({
         bottom: 0,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundImage: `url(${background})`
     }
 }));
 
@@ -73,7 +75,7 @@ export default function Welcome() {
                 .setGrid({xs: 12}).validation([new Validator(VALIDATORS.REQUIRED)]),
         new FormField('password', TYPES.PASSWORD, t('component.welcome.password'))
                 .setGrid({xs: 12}).validation([new Validator(VALIDATORS.REQUIRED)])
-    ]).setSubmit(new FormSubmit().setLabel(t('component.welcome.sign_in')).setIcon('login').setVariant('outlined').setColor('primary'))
+    ]).setSubmit(new FormSubmit().setLabel(t('component.welcome.sign_in')).setIcon('login').setColor('primary'))
             .setVariant('outlined').setSpacing(2);
     return (
             <div className={classes.background}>
