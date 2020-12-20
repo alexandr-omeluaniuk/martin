@@ -117,7 +117,7 @@ function Form (props) {
     };
     // ========================================================= RENDERING ================================================================
     return (
-            <Grid container spacing={1}>
+            <Grid container spacing={formConfig.spacing}>
                 {formConfig.formFields.filter(f => {
                     return !(id && f.editable === false); 
                 }).map((field, idx) => {
@@ -133,8 +133,9 @@ function Form (props) {
                     }
                     return (
                             <Grid item key={idx} {...gridProps} style={style}>
-                                <FormField fieldConfig={field} onChangeFieldValue={onChangeFieldValue} entryId={id}
-                                        invalidFields={invalidFields} fieldValue={formData.get(field.name)} formData={formData}/>
+                                <FormField fieldConfig={field} onChangeFieldValue={onChangeFieldValue} entryId={id} 
+                                        variant={formConfig.variant}
+                                        invalidFields={invalidFields} fieldValue={formData.get(field.name)}/>
                             </Grid>
                     );
                 })}

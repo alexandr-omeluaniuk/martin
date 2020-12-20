@@ -38,6 +38,7 @@ import { TYPES, VALIDATORS } from '../service/DataTypeService'
 import DataService from '../service/DataService';
 import { history } from '../index';
 import AppURLs from '../conf/app-urls';
+import { FormField, FormConfig, Validator, FormSubmit } from '../util/model/TableConfig';
 
 let dataService = new DataService();
 
@@ -67,37 +68,13 @@ export default function Welcome() {
             history.push(AppURLs.context);
         });
     };
-    
-    let loginFormConfig = {
-        submit: {
-            label: t('component.welcome.sign_in'),
-            icon: 'login',
-            variant: 'outlined',
-            color: "primary"
-        },
-        formFields: [{
-                type: TYPES.TEXTFIELD,
-                name: 'username',
-                label: t('component.welcome.username'),
-                grid: {
-                    xs: 12
-                },
-                validators: [{
-                        type: VALIDATORS.REQUIRED
-                    }]
-            }, {
-                type: TYPES.PASSWORD,
-                name: 'password',
-                label: t('component.welcome.password'),
-                grid: {
-                    xs: 12
-                },
-                validators: [{
-                    type: VALIDATORS.REQUIRED
-                }]
-            }]
-    };
-    
+    let formConfig = new FormConfig([
+        new FormField('username', TYPES.TEXTFIELD, t('component.welcome.sign_in'))
+                .setGrid({xs: 12}).validation([new Validator(VALIDATORS.REQUIRED)]),
+        new FormField('password', TYPES.PASSWORD, t('component.welcome.password'))
+                .setGrid({xs: 12}).validation([new Validator(VALIDATORS.REQUIRED)])
+    ]).setSubmit(new FormSubmit().setLabel(t('component.welcome.sign_in')).setIcon('login').setVariant('outlined').setColor('primary'))
+            .setVariant('outlined').setSpacing(2);
     return (
             <div className={classes.background}>
                 <Container component="main" maxWidth="xs">
@@ -105,7 +82,7 @@ export default function Welcome() {
                     <Card raised>
                         <CardHeader title={(<Typography variant="h5" align="center">{t('component.welcome.title')}</Typography>)}/>
                         <CardContent>
-                            <Form onSubmitAction={doLogin} formConfig={loginFormConfig}/>
+                            <Form onSubmitAction={doLogin} formConfig={formConfig}/>
                         </CardContent>
                     </Card>
                     <Box mt={8}>

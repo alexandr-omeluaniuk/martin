@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import Input from '@material-ui/core/Input';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
@@ -13,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 function PasswordField (props) {
-    const { label, value, name, onChange, helperText, align, ...other } = props;
+    const { label, value, name, onChange, helperText, align, variant,  ...other } = props;
     const [showPassword, setShowPassword] = React.useState(false);
     const button = () => {
         return (
@@ -26,11 +27,19 @@ function PasswordField (props) {
                 </InputAdornment>
         );
     };
+    const fromVariant = () => {
+        if (variant === 'outlined') {
+            return <OutlinedInput type={showPassword ? 'text' : 'password'} value={value} onChange={onChange}
+                    endAdornment={button()} autoComplete="new-password"/>;
+        } else {
+            return <Input type={showPassword ? 'text' : 'password'} value={value} onChange={onChange}
+                    endAdornment={button()} autoComplete="new-password"/>;
+        }
+    };
     return (
-            <FormControl error={helperText ? true : false} {...other}>
+            <FormControl error={helperText ? true : false} variant={variant} {...other}>
                 <InputLabel>{label}</InputLabel>
-                <Input type={showPassword ? 'text' : 'password'} value={value} onChange={onChange}
-                    endAdornment={button()} autoComplete="new-password"/>
+                {fromVariant()}
                 <FormHelperText error={helperText ? true : false}>{helperText ? helperText : ''}</FormHelperText>
             </FormControl>
     );

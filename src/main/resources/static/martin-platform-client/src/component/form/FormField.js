@@ -15,7 +15,6 @@ import NumberField from './input/NumberField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
 import MultipleSelect from './input/MultipleSelect';
-import TextFieldWithTranslations from './input/TextFieldWithTranslations';
 import PasswordField from './input/PasswordField';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -24,7 +23,7 @@ import moment from 'moment';
 
 function FormField (props) {
     const { t, i18n } = useTranslation();
-    const { fieldConfig, invalidFields, fieldValue, onChangeFieldValue, formData, entryId } = props;
+    const { fieldConfig, invalidFields, fieldValue, onChangeFieldValue, entryId, variant } = props;
     // ==================================================== RENDERING =====================================================================
     const renderFormField = () => {
         let name = fieldConfig.name;
@@ -40,29 +39,21 @@ function FormField (props) {
             if (attributes.readOnly !== undefined) {
                 inputProps.readOnly = attributes.readOnly;
             }
-            if (attributes.translationsName) {
-                const tFieldValue = formData.get(attributes.translationsName);
-                return <TextFieldWithTranslations label={label} fullWidth={true} required={isRequired}
-                            onChange={onChangeFieldValue} name={name} value={fieldValue ? fieldValue : ''}
-                            error={invalidFields.has(name)} helperText={invalidFields.get(name)}
-                            translationsname={attributes.translationsName} translationvalue={tFieldValue ? tFieldValue : ''}/>;
-            } else {
-                return <TextField label={label} fullWidth={true} required={isRequired}
+            return <TextField label={label} fullWidth={true} required={isRequired} variant={variant}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)}
                             value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} 
                             helperText={invalidFields.get(name)} InputProps={inputProps}/>;
-            }
         } else if (fieldConfig.type === TYPES.TEXTAREA) {
             return <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                                 value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)}
-                                helperText={invalidFields.get(name)} multiline
+                                helperText={invalidFields.get(name)} multiline variant={variant}
                                 rows={attributes.rows ? attributes.rows : 3} required={isRequired}/>;
         } else if (fieldConfig.type === TYPES.INTEGER_NUMBER) {
-            return <NumberField label={label} value={fieldValue ? fieldValue : ''}
+            return <NumberField label={label} value={fieldValue ? fieldValue : ''} variant={variant}
                             onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
                             helperText={invalidFields.get(name)} required={isRequired}/>;
         } else if (fieldConfig.type === TYPES.SELECT) {
-            return <Dropdown label={label} value={fieldValue ? fieldValue : ''} required={isRequired}
+            return <Dropdown label={label} value={fieldValue ? fieldValue : ''} required={isRequired} variant={variant}
                             onChange={(e) => {
                                 onChangeFieldValue(name, e.target.value);
                                 if (attributes.onChange) {
@@ -74,12 +65,12 @@ function FormField (props) {
         } else if (fieldConfig.type === TYPES.FILE) {
             return <FileUpload label={label} onChange={onChangeFieldValue} fullWidth={true} value={fieldValue ? fieldValue : ''} 
                             helperText={invalidFields.get(name)} name={name} required={isRequired} avatar={attributes.avatar}
-                            entryId={entryId}/>;
+                            entryId={entryId} variant={variant}/>;
         } else if (fieldConfig.type === TYPES.PASSWORD) {
             return <PasswordField label={label} fullWidth={true} required={isRequired} type="password"
                             onChange={(e) => onChangeFieldValue(name, e.target.value)}
                             value={fieldValue ? fieldValue : ''} name={name} error={invalidFields.has(name)} 
-                            helperText={invalidFields.get(name)}/>;
+                            helperText={invalidFields.get(name)} variant={variant}/>;
         } else if (fieldConfig.type === TYPES.TIME) {
             let value = fieldValue;
             if (value) {
@@ -93,7 +84,7 @@ function FormField (props) {
                         onChange={(date) => {
                             onChangeFieldValue(name, date !== null ? date.format(TIME_FORMAT) : null);
                         }} value={value} name={name} error={invalidFields.has(name)} 
-                        helperText={invalidFields.get(name)}
+                        helperText={invalidFields.get(name)} variant={variant}
                         cancelLabel={t('component.form.cancel')} clearLabel={t('component.form.clear')}
                         keyboardIcon={(<Icon>access_time</Icon>)}/>
                 </MuiPickersUtilsProvider>
@@ -103,9 +94,9 @@ function FormField (props) {
             let value = fieldValue ? moment(fieldValue, SERVER_DATE_FORMAT) : null;
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
-                        <KeyboardDatePicker disableToolbar variant="inline" format={CLIENT_DATE_FORMAT} margin="normal" required={isRequired}
+                        <KeyboardDatePicker disableToolbar format={CLIENT_DATE_FORMAT} margin="normal" required={isRequired}
                             label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
-                            fullWidth={true} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
+                            fullWidth={true} error={invalidFields.has(name)} helperText={invalidFields.get(name)} variant={variant}/>
                     </MuiPickersUtilsProvider>
             );
         } else if (fieldConfig.type === TYPES.DATETIME) {
@@ -114,15 +105,15 @@ function FormField (props) {
                         <DateTimePicker value={fieldValue ? fieldValue : null} onChange={(date) => onChangeFieldValue(name, date)}
                             autoOk={true} label={label} ampm={false} showTodayButton={true} fullWidth={true}
                             format={DATETIME_FORMAT} clearLabel={t('component.form.clear')} required={isRequired}
-                            cancelLabel={t('component.form.cancel')} todayLabel={t('component.form.today')}/>
+                            cancelLabel={t('component.form.cancel')} todayLabel={t('component.form.today')} variant={variant}/>
                     </MuiPickersUtilsProvider>
             );
         } else if (fieldConfig.type === TYPES.MULTIPLESELECT) {
             return <MultipleSelect label={label} options={attributes.options ? attributes.options : []} name={name}
                         value={fieldValue ? fieldValue : []} fullWidth={true} onChangeFieldValue={onChangeFieldValue}
-                        required={isRequired} helperText={invalidFields.get(name)}/>;
+                        required={isRequired} helperText={invalidFields.get(name)} variant={variant}/>;
         } else if (fieldConfig.type === TYPES.BOOLEAN) {
-            return <FormControlLabel label={label} control={(
+            return <FormControlLabel label={label} variant={variant} control={(
                         <Checkbox checked={fieldValue ? true : false} onChange={(e) => onChangeFieldValue(name, e.target.checked)} 
                             name={name} color="secondary"/>
                     )}/>;

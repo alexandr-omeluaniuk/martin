@@ -58,6 +58,20 @@ export class TableColumn {
 export class FormConfig {
     constructor(formFields) {
         this.formFields = formFields;
+        this.spacing = 1;
+        this.variant = '';
+    }
+    setVariant(variant) {
+        this.variant = variant;
+        return this;
+    }
+    setSubmit(submit) {
+        this.submit = submit;
+        return this;
+    }
+    setSpacing(spacing) {
+        this.spacing = spacing;
+        return this;
     }
 }
 
@@ -77,6 +91,25 @@ export class FormField {
     }
     validation(validators) {
         this.validators = validators;
+        return this;
+    }
+}
+
+export class FormSubmit {
+    setLabel(label) {
+        this.label = label;
+        return this;
+    }
+    setIcon(icon) {
+        this.icon = icon;
+        return this;
+    }
+    setVariant(variant) {
+        this.variant = variant;
+        return this;
+    }
+    setColor(color) {
+        this.color = color;
         return this;
     }
 }
