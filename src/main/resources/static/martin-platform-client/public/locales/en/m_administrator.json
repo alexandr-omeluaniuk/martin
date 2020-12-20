@@ -2,5 +2,11 @@
     "title": "Administration",
     "administrator": {
         "users": "Users"
+    },
+    "users": {
+        "fullname": "Full name",
+        "email": "Email",
+        "status": "Status",
+        "active": "Active"
     }
 }

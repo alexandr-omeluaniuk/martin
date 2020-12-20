@@ -16,7 +16,7 @@ import { SharedDataService } from '../service/SharedDataService';
  */
 export const modules = function () {
     const modules = [common, core, administrator];
-    const permissions = SharedDataService.permissions;
+    const permissions = SharedDataService.getPermissions();
     return modules.filter(m => {
         return m.isPermitted(permissions.standardRole);
     });

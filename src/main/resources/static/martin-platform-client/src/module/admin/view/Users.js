@@ -30,7 +30,7 @@ function Users() {
         }).setSortable().width('300px'),
         new TableColumn('email', t('m_administrator:users.email')).setSortable(),
         new TableColumn('status', t('m_administrator:users.status')).setSortable().width('150px'),
-        new TableColumn('active', t('m_core:subscription_active'), (row) => {
+        new TableColumn('active', t('m_administrator:users.active'), (row) => {
             return <Icon className={row.active ? classes.active : classes.inactive}>check_circle</Icon>;
         }).width('40px').alignment(ALIGN_RIGHT)
     ], new FormConfig());

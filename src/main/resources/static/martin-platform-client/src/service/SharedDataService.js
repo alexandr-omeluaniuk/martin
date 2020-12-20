@@ -4,9 +4,19 @@
  * and open the template in the editor.
  */
 
+import AppURLs from '../conf/app-urls';
+
 export class SharedDataService {
     /** User permissions. */
     static permissions;
     /** Show notification function. */
     static showNotification;
+    
+    static getPermissions() {
+        if (!SharedDataService.permissions) {
+            window.location.href = AppURLs.welcome;
+        } else {
+            return SharedDataService.permissions;
+        }
+    }
 }
