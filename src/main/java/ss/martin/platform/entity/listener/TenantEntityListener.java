@@ -47,18 +47,24 @@ public class TenantEntityListener {
     @PrePersist
     @PreUpdate
     protected void prePersistAndUpdate(TenantEntity entity) throws Exception {
+        // exceptions for system user entity
         if (entity instanceof SystemUser) {
             StandardRole role = ((SystemUser) entity).getStandardRole();
-            // super admin always ignore subscriptions
+            // case 1: allows ignore subscription during super admin creation process.
             if (StandardRole.ROLE_SUPER_ADMIN.equals(role)) {
                 return;
             }
-            // user try to finish registration
+            // case 2: user try to finish registration
             Object auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth instanceof AnonymousAuthenticationToken) {
                 return;
             }
+            // case 3: super admin creates new subscription and subscription administrator
+            if (StandardRole.ROLE_SUPER_ADMIN.equals(securityContext.currentUser().getStandardRole())) {
+                return;
+            }
         }
+        // save current subscription for every tenant entity.
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         if (entity != null && reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
             TenantEntity tenantEntity = (TenantEntity) entity;

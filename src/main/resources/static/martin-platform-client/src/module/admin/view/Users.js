@@ -29,7 +29,9 @@ function Users() {
             return `${row.firstname ? `${row.firstname} ` : ''}${row.lastname}`;
         }).setSortable().width('300px'),
         new TableColumn('email', t('m_administrator:users.email')).setSortable(),
-        new TableColumn('status', t('m_administrator:users.status')).setSortable().width('150px'),
+        new TableColumn('status', t('m_administrator:users.status'), (row) => {
+            return t(`m_administrator:users.status_const.${row.status}`);
+        }).setSortable().width('150px'),
         new TableColumn('active', t('m_administrator:users.active'), (row) => {
             return <Icon className={row.active ? classes.active : classes.inactive}>check_circle</Icon>;
         }).width('40px').alignment(ALIGN_RIGHT)

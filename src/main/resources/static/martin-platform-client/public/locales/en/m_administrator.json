@@ -7,6 +7,11 @@
         "fullname": "Full name",
         "email": "Email",
         "status": "Status",
-        "active": "Active"
+        "active": "Active",
+        "status_const": {
+            "ACTIVE": "Active",
+            "INACTIVE": "Inactive",
+            "REGISTRATION": "Registration"
+        }
     }
 }
