@@ -29,6 +29,10 @@ export class Module {
         return this.icon;
     }
     
+    getPath() {
+        return this.path;
+    }
+    
     getId() {
         return this.id;
     }
