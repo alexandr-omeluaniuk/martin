@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { NavLink } from "react-router-dom";
 import AppURLs from '../../conf/app-urls';
+import { common } from '../../module/common/module';
 
 let dataService = new DataService();
 
@@ -62,22 +63,20 @@ function AccountMenu (props) {
                 <CardContent className={classes.content}>
                     <List component="nav">
                         <Divider variant="middle" className={classes.divider}/>
-                        <NavLink to={AppURLs.context + '/profile'} className={classes.navLink} onClick={(e) => onItemClick(e)}>
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <Icon>person</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={t('component.account_menu.user_profile')}/>
-                            </ListItem>
-                        </NavLink>
-                        <NavLink to={AppURLs.context + '/settings'} className={classes.navLink} onClick={(e) => onItemClick(e)}>
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <Icon>settings</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={t('component.account_menu.settings')}/>
-                            </ListItem>
-                        </NavLink>
+                        {common.getItems().map((item, idx) => {
+                            const label = t(`component.account_menu.${item.getId()}`);
+                            return (
+                                <NavLink to={AppURLs.context + common.getId() + item.getPath()} className={classes.navLink} key={idx}
+                                    onClick={(e) => onItemClick(label, item.getIcon())}>
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <Icon>{item.getIcon()}</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText primary={label}/>
+                                    </ListItem>
+                                </NavLink>
+                            );
+                        })}
                         <Divider variant="middle" className={classes.divider}/>
                         <ListItem button onClick={(e) => {
                             dataService.logout().then(() => {

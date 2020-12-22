@@ -5,10 +5,14 @@
  */
 
 import Applications from './view/Applications';
+import Settings from './view/Settings';
+import UserProfile from './view/UserProfile';
 import { Module } from '../../util/model/Module';
 import { ModuleView } from '../../util/model/ModuleView';
 
 export const common = new Module('common', '/common', [
-    new ModuleView('applications', '/applications', 'widgets', Applications)
+    new ModuleView('applications', '/applications', 'widgets', Applications),
+    new ModuleView('settings', '/settings', 'settings', Settings),
+    new ModuleView('profile', '/profile', 'account_circle', UserProfile)
 ]).setInvisible();
 

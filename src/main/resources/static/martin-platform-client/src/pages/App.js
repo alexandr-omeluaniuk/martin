@@ -62,7 +62,9 @@ function App() {
         setTitle(label);
         setIcon(icon);
         //setOpen(false);
-        document.title = t(`m_${currentModule.getId()}:title`) + ' | ' + label;
+        if (currentModule) {
+            document.title = t(`m_${currentModule.getId()}:title`) + ' | ' + label;
+        }
     };
     // ------------------------------------------------------------ RENDERING -------------------------------------------------------------
     if (!permissions) {
@@ -73,7 +75,7 @@ function App() {
                 <div className={classes.root}>
                     <CssBaseline />
                     <AppToolbar title={title} open={open} setOpen={setOpen} icon={icon} currentModule={currentModule}
-                        permissions={permissions}/>
+                        permissions={permissions} setItemAttributes={setItemAttributes}/>
                     <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
                         setItemAttributes(label, icon);
                     }}/>

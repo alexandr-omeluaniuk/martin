@@ -36,8 +36,9 @@
             "password": "Password"
         },
         "account_menu": {
-            "user_profile": "My profile",
+            "profile": "My profile",
             "settings": "Settings",
+            "applications": "Applications",
             "logout": "Logout"
         },
         "finish_registration": {

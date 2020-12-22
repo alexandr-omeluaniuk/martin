@@ -16,4 +16,12 @@ export class ModuleView {
     getIcon() {
         return this.icon;
     }
+    
+    getPath() {
+        return this.path;
+    }
+    
+    getId() {
+        return this.id;
+    }
 }

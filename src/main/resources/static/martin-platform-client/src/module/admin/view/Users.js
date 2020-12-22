@@ -49,14 +49,6 @@ function Users() {
             new Validator(VALIDATORS.REQUIRED),
             new Validator(VALIDATORS.EMAIL),
             new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-        ]),
-        new FormField('password', TYPES.PASSWORD, t('m_administrator:users.password')).setGrid({xs: 6}).validation([
-            new Validator(VALIDATORS.REQUIRED),
-            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
-        ]),
-        new FormField('password-repeat', TYPES.PASSWORD, t('m_administrator:users.password_repeat')).setGrid({xs: 6}).validation([
-            new Validator(VALIDATORS.REQUIRED),
-            new Validator(VALIDATORS.MAX_LENGTH, {length: 255})
         ])
     ]));
     return (

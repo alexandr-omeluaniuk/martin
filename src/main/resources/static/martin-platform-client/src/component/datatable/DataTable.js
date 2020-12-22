@@ -67,12 +67,12 @@ function DataTable(props) {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [load]);
-    useEffect(() => {
-        return () => {
-            dataService.abort();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+//    useEffect(() => {
+//        return () => {
+//            dataService.abort();
+//        };
+//        // eslint-disable-next-line react-hooks/exhaustive-deps
+//    }, []);
     // ============================================================ METHODS ===============================================================
     const onSort = (column) => {
         console.log(column);
