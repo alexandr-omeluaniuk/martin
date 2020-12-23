@@ -25,10 +25,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(AppURLs.APP_CRM_LOGIN_PAGE)
-                .addResourceLocations("classpath:/static/crm/build/");
+                .addResourceLocations("classpath:/static/martin-platform-client/build/");
         registry.addResourceHandler(AppURLs.APP_CRM_FINISH_REGISTRATION)
-                .addResourceLocations("classpath:/static/crm/build/");
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/crm/build/");     
+                .addResourceLocations("classpath:/static/martin-platform-client/build/");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/martin-platform-client/build/");     
     }
     /**
      * Forward some URLs to index page.

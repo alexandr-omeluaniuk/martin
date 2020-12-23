@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.0</version>
+        <version>2.4.1</version>
     </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -87,21 +87,16 @@
         <profile>
             <id>development-profile</id>
             <build>
-                <resources>
+                <!--resources>
                     <resource>
                         <filtering>true</filtering>
                         <directory>src/main/resources</directory>
-                        <excludes>
-                            <exclude>**/node_modules/**</exclude>
-                            <exclude>**/crm/src/**</exclude>
-                            <exclude>**/crm/nbproject/**</exclude>
-                            <exclude>**/crm/public/**</exclude>
-                            <exclude>**/martin-platform-client/src/**</exclude>
-                            <exclude>**/martin-platform-client/nbproject/**</exclude>
-                            <exclude>**/martin-platform-client/public/**</exclude>
-                        </excludes>
+                        <includes>
+                            <include>**/martin-platform-client/build/**</include>
+                            <include>application.yml</include>
+                        </includes>
                     </resource>
-                </resources>
+                </resources-->
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -122,9 +117,6 @@
                         <directory>src/main/resources</directory>
                         <excludes>
                             <exclude>**/node_modules/**</exclude>
-                            <exclude>**/crm/src/**</exclude>
-                            <exclude>**/crm/nbproject/**</exclude>
-                            <exclude>**/crm/public/**</exclude>
                             <exclude>**/martin-platform-client/src/**</exclude>
                             <exclude>**/martin-platform-client/nbproject/**</exclude>
                             <exclude>**/martin-platform-client/public/**</exclude>
@@ -221,15 +213,35 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>ss.martin.platform.app.Main</mainClass>
-                        </manifest>
-                    </archive>
+                    <resources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/resources</directory>
+                            <includes>
+                                <include>**/martin-platform-client/build/**</include>
+                                <include>application.yml</include>
+                            </includes>
+                        </resource>
+                    </resources>
+                    <nonFilteredFileExtensions>                            
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
                 </configuration>
             </plugin>
         </plugins>
