@@ -30,7 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import ss.martin.platform.entity.listener.TenantEntityListener;
+import ss.martin.platform.util.TenantEntityListener;
 
 /**
  * Tenant entity.

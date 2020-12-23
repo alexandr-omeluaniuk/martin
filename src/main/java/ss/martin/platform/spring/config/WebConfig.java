@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/crm/build/");
         registry.addResourceHandler(AppURLs.APP_CRM_FINISH_REGISTRATION)
                 .addResourceLocations("classpath:/static/crm/build/");
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/crm/build/");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/crm/build/");     
     }
     /**
      * Forward some URLs to index page.

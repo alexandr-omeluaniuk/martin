@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.constants.EntityFileType;
-import ss.martin.platform.jackson.ByteArrayDeserializer;
+import ss.martin.platform.util.ByteArrayDeserializer;
 
 /**
  * Entity file.

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity.listener;
+package ss.martin.platform.util;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
