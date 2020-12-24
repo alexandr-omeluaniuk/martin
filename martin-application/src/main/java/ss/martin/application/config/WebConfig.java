@@ -24,9 +24,9 @@ import ss.martin.platform.constants.AppURLs;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(AppURLs.APP_CRM_LOGIN_PAGE)
+        registry.addResourceHandler(AppURLs.APP_ADMIN_LOGIN_PAGE)
                 .addResourceLocations("classpath:/static/martin-platform-client/build/");
-        registry.addResourceHandler(AppURLs.APP_CRM_FINISH_REGISTRATION)
+        registry.addResourceHandler(AppURLs.APP_ADMIN_FINISH_REGISTRATION)
                 .addResourceLocations("classpath:/static/martin-platform-client/build/");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/martin-platform-client/build/");     
     }
@@ -42,9 +42,9 @@ public class WebConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry) {
                 final String forward = "forward:/index.html";
                 registry.addViewController("/").setViewName(forward);
-                registry.addViewController(AppURLs.APP_CRM_LOGIN_PAGE).setViewName(forward);
-                registry.addViewController(AppURLs.APP_CRM_FINISH_REGISTRATION + "/**").setViewName(forward);
-                registry.addViewController(AppURLs.APP_CRM_VIEWS + "/**").setViewName(forward);
+                registry.addViewController(AppURLs.APP_ADMIN_LOGIN_PAGE).setViewName(forward);
+                registry.addViewController(AppURLs.APP_ADMIN_FINISH_REGISTRATION + "/**").setViewName(forward);
+                registry.addViewController(AppURLs.APP_ADMIN_VIEWS + "/**").setViewName(forward);
             }
         };
     }

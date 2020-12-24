@@ -47,7 +47,7 @@ class AuthEntryPoint implements AuthenticationEntryPoint {
         if (contentType != null && contentType.contains("application/json")) {  // Ajax request detected
             hsr1.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
-            hsr1.sendRedirect(AppURLs.APP_CRM_LOGIN_PAGE);
+            hsr1.sendRedirect(AppURLs.APP_ADMIN_LOGIN_PAGE);
         }
     }
 }

@@ -46,7 +46,7 @@ import ss.martin.platform.wrapper.RESTResponse;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_CRM_REST_API + "/entity")
+@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/entity")
 public class EntityRESTController {
     /** Entity service. */
     @Autowired

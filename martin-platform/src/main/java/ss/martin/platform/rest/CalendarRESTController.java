@@ -40,7 +40,7 @@ import ss.martin.platform.wrapper.CalendarSearchRequest;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_CRM_REST_API + "/calendar")
+@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/calendar")
 public class CalendarRESTController {
     /** Calendar service. */
     @Autowired

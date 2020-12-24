@@ -42,7 +42,7 @@ import ss.martin.platform.wrapper.RESTResponse;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_CRM_PUBLIC_REST_API)
+@RequestMapping(AppURLs.APP_ADMIN_PUBLIC_REST_API)
 public class PublicRESTController {
     /** System user service. */
     @Autowired

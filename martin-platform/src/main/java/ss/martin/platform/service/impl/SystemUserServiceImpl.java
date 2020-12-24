@@ -107,7 +107,7 @@ class SystemUserServiceImpl implements SystemUserService {
         });
         emailRequest.setSubject("Регистрация нового пользователя");
         emailRequest.setMessage("Пройдите по ссылке: " + config.getServerDomain()
-                + AppURLs.APP_CRM_FINISH_REGISTRATION + "/" + validationString);
+                + AppURLs.APP_ADMIN_FINISH_REGISTRATION + "/" + validationString);
         emailService.sendEmail(emailRequest);
     }
     @Override

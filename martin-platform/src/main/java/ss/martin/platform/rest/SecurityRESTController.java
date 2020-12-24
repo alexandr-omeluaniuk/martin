@@ -37,7 +37,7 @@ import ss.martin.platform.wrapper.UserPermissions;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_CRM_REST_API + "/security")
+@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/security")
 public class SecurityRESTController {
     /** Security service. */
     @Autowired
