@@ -12,7 +12,7 @@ import { ModuleView } from '../../util/model/ModuleView';
 
 export const common = new Module('common', '/common', [
     new ModuleView('applications', '/applications', 'widgets', Applications),
-    new ModuleView('settings', '/settings', 'settings', Settings),
-    new ModuleView('profile', '/profile', 'account_box', UserProfile)
+    new ModuleView('profile', '/profile', 'account_box', UserProfile),
+    new ModuleView('settings', '/settings', 'settings', Settings)
 ]).setInvisible();
 

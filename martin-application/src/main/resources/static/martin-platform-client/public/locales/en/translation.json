@@ -4,6 +4,10 @@
     "vendor_site": "https://material-ui.com",
     "author": "Alex Omelyaniuk",
     
+    "language": {
+        "en": "English"
+    },
+    
     "component": {
         "datatable": {
             "new": "New record",
