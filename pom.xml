@@ -17,6 +17,7 @@
     </parent>
     <modules>
         <module>martin-platform</module>
+        <module>martin-application</module>
     </modules>
     
     <profiles>
