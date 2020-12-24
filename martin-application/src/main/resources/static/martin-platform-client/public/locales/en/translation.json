@@ -38,6 +38,11 @@
         "account_menu": {
             "profile": "My profile",
             "settings": "Settings",
+            "t_settings": {
+                "tabs": {
+                    "interface": "Look and feel"
+                }
+            },
             "applications": "Applications",
             "logout": "Logout"
         },

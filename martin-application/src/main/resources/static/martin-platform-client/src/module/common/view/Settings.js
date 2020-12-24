@@ -5,10 +5,22 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import ResponsiveTab from '../../../component/card/ResponsiveTab';
+import UserInterface from './component/UserInterface';
 
 function Settings(props) {
+    const { t } = useTranslation();
+    const tabNames = [{
+            label: t('component.account_menu.t_settings.tabs.interface'),
+            icon: 'palette',
+            value: 0
+    }];
+    const tabs = [
+        <UserInterface />
+    ];
     return (
-            <div>TODO: Settings</div>
+            <ResponsiveTab tabNames={tabNames} tabs={tabs} />
     );
 }
 
