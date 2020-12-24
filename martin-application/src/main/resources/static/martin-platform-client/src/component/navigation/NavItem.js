@@ -56,7 +56,7 @@ function NavItem(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(isOpenDefault);
-    let shiftMultiplier = path.split('/').length - AppURLs.context.split('/').length - 1;
+    let shiftMultiplier = path.split('/').length - AppURLs.app.split('/').length - 1;
     const isSelected = window.location.pathname === path;
     const expandButton = children ?
             <Icon fontSize="small" style={{

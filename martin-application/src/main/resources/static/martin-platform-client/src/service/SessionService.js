@@ -17,7 +17,7 @@ class SessionService {
     static getCurrentModule = () => {
         const apps = modules().filter(m => m.isVisible());
         let currentModule = null;
-        let internalAppUrl = window.location.pathname.replace(AppURLs.context, '');
+        let internalAppUrl = window.location.pathname.replace(AppURLs.app, '');
         if (internalAppUrl) {
             let moduleUrl = '/' + internalAppUrl.split('/')[1];
             currentModule = apps.filter(m => {
@@ -29,7 +29,7 @@ class SessionService {
     
     static getAllRoutes() {
         let routes = [];
-        let rootURL = AppURLs.context;
+        let rootURL = AppURLs.app;
         modules().forEach(module => {
             this._visitItemRoutes(module, routes, rootURL);
         });
@@ -66,7 +66,7 @@ class SessionService {
      */
     static currentItem = (authData) => {
         let module = this.currentModule(authData);
-        let path = window.location.pathname.replace(AppURLs.context, '');
+        let path = window.location.pathname.replace(AppURLs.app, '');
         if (module) {
             let currentItem = this._visitItem(module, path, '');
             if (currentItem && currentItem.visible) {
@@ -78,7 +78,7 @@ class SessionService {
                 }
             }
         } else {
-            history.push(AppURLs.context + '/queue_management');    // redirect from context URL
+            history.push(AppURLs.app);    // redirect from context URL
         }
     }
     /**

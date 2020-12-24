@@ -66,7 +66,7 @@ function AccountMenu (props) {
                         {common.getItems().map((item, idx) => {
                             const label = t(`component.account_menu.${item.getId()}`);
                             return (
-                                <NavLink to={AppURLs.context + common.getPath() + item.getPath()} className={classes.navLink} key={idx}
+                                <NavLink to={AppURLs.app + common.getPath() + item.getPath()} className={classes.navLink} key={idx}
                                     onClick={(e) => onItemClick(label, item.getIcon())}>
                                     <ListItem button>
                                         <ListItemIcon>

@@ -102,8 +102,8 @@ function MainContent(props) {
                 <ErrorBoundary>
                     <Switch>
                         {routes}
-                        <Route exact path={AppURLs.context} key={'root'}>
-                            <Redirect to={'/common/applications'}/>
+                        <Route exact path={AppURLs.app} key={'root'}>
+                            <Redirect to={AppURLs.app + '/common/applications'}/>
                         </Route>
                     </Switch>
                 </ErrorBoundary>

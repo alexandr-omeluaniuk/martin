@@ -10,7 +10,7 @@ const AppURLs = {
     context: context,
     api: context + '/api',
     welcome: context + '/welcome',
-    app: context + '/platform',
+    app: context + '/view',
     registration: context + '/finish-registration/:validationString'
 };
 

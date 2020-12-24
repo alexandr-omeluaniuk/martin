@@ -51,7 +51,7 @@ function Applications(props) {
     const [applications, setApplications] = React.useState(null);
     // ============================================================ METHODS ===============================================================
     const openApplication = (app) => {
-        history.push(AppURLs.context + app.path);
+        history.push(AppURLs.app + app.path);
     };
     // ============================================================ HOOKS =================================================================
     useEffect(() => {

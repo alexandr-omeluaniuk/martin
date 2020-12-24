@@ -30,7 +30,7 @@ class ErrorBoundary extends Component {
         this.setState({ hasError: true, stackTrace: error.stack });
     }
     closeError() {
-        window.location.href = AppURLs.context;
+        window.location.href = AppURLs.app;
     }
     render() {
         const { classes } = this.props;

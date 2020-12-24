@@ -40,11 +40,11 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController("/").setViewName("forward:/index.html");
-                registry.addViewController(AppURLs.APP_CRM_LOGIN_PAGE).setViewName("forward:/index.html");
-                registry.addViewController(AppURLs.APP_CRM_FINISH_REGISTRATION + "/**")
-                        .setViewName("forward:/index.html");
-                registry.addViewController("/view/**").setViewName("forward:/index.html");
+                final String forward = "forward:/index.html";
+                registry.addViewController("/").setViewName(forward);
+                registry.addViewController(AppURLs.APP_CRM_LOGIN_PAGE).setViewName(forward);
+                registry.addViewController(AppURLs.APP_CRM_FINISH_REGISTRATION + "/**").setViewName(forward);
+                registry.addViewController(AppURLs.APP_CRM_VIEWS + "/**").setViewName(forward);
             }
         };
     }

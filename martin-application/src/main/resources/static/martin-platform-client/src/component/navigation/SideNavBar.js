@@ -41,7 +41,7 @@ export default function SideNavBar(props) {
     if (currentModule) {
         moduleItems = currentModule.getItems();
         moduleId = currentModule.getId();
-        modulePath = AppURLs.context + currentModule.path;
+        modulePath = AppURLs.app + currentModule.path;
     }
     // create sidebar navigation
     const createSideBarNavigation = (items, parentPath, parentId, level) => {

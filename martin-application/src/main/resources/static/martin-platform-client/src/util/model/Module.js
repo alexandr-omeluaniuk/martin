@@ -56,7 +56,7 @@ export class Module {
     }
     
     getCurrentItem() {
-        let path = window.location.pathname.replace(AppURLs.context, '');
+        let path = window.location.pathname.replace(AppURLs.app, '');
         return this._visitItem(this, path, '');
     }
     

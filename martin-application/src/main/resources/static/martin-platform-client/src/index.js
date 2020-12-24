@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import { createBrowserHistory } from "history";
 
@@ -30,7 +30,7 @@ const indexRoutes = [{
         path: AppURLs.registration,
         component: FinishRegistration
     }, {
-        path: AppURLs.context,
+        path: AppURLs.app,
         component: App
     }];
 
@@ -72,6 +72,9 @@ function Application() {
                                     {indexRoutes.map((prop, key) => {
                                         return <Route path={prop.path} component={prop.component} key={key} />;
                                     })}
+                                    <Route exact path={AppURLs.context} key={'index-root'}>
+                                        <Redirect to={AppURLs.app}/>
+                                    </Route>
                                 </Switch>
                             </Router>
                         </ErrorBoundary>
