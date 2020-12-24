@@ -41,6 +41,16 @@
             "t_settings": {
                 "tabs": {
                     "interface": "Look and feel"
+                },
+                "language": "Language",
+                "theme": "Theme",
+                "palette": "Palette",
+                "themes": {
+                    "STANDARD": "Material Theme"
+                },
+                "palette_colors": {
+                    "primary": "Primary",
+                    "secondary": "Secondary"
                 }
             },
             "applications": "Applications",

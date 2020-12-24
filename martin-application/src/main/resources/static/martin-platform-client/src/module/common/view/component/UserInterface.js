@@ -53,11 +53,11 @@ function UserInterface(props) {
     const openColorPicker = (type) => {
         let title, color, contrast;
         if ('PRIMARY' === type) {
-            title = t('component.theming.primary');
+            title = t('component.account_menu.t_settings.palette_colors.primary');
             color = getPrimaryColor();
             contrast = getPrimaryColorContrast();
         } else {
-            title = t('component.theming.secondary');
+            title = t('component.account_menu.t_settings.palette_colors.secondary');
             color = getSecondaryColor();
             contrast = getSecondaryColorContrast();
         }
@@ -91,7 +91,7 @@ function UserInterface(props) {
     let themeOptions = [];
     ALL_THEMES.forEach(th => {
         themeOptions.push({
-            label: t('component.theming.themeName.' + th.id),
+            label: t('component.account_menu.t_settings.themes.' + th.id),
             value: th.id
         });
     });
@@ -101,7 +101,7 @@ function UserInterface(props) {
     
                 <Grid container className={classes.row}>
                     <Grid item xs={12} md={4} className={classes.cell}>
-                        <Typography variant="subtitle1">{t('common.language')}</Typography>
+                        <Typography variant="subtitle1">{t('component.account_menu.t_settings.language')}</Typography>
                     </Grid>
                     <Grid item xs={12} md={8} className={classes.cell}>
                         <LanguageDropdown/>
@@ -110,11 +110,11 @@ function UserInterface(props) {
     
                 <Grid container className={classes.row}>
                     <Grid item xs={12} md={4} className={classes.cell}>
-                        <Typography variant="subtitle1">{t('component.theming.theme')}</Typography>
+                        <Typography variant="subtitle1">{t('component.account_menu.t_settings.theme')}</Typography>
                     </Grid>
                     <Grid item xs={12} md={8} className={classes.cell}>
-                        <Dropdown fullWidth={true} label={t('component.theming.theme')} variant="outlined" options={themeOptions}
-                                value={defTheme} onChange={(e) => {
+                        <Dropdown fullWidth={true} label={t('component.account_menu.t_settings.theme')} 
+                                variant="outlined" options={themeOptions} value={defTheme} onChange={(e) => {
                             let newTheme = e.target.value;
                             setDefaultTheme(newTheme);
                             setDefTheme(newTheme);
@@ -126,18 +126,18 @@ function UserInterface(props) {
                 {isStandardTheme ? (
                 <Grid container className={classes.row}>
                     <Grid item xs={12} md={4} className={classes.cell}>
-                        <Typography variant="subtitle1">{t('component.theming.palette')}</Typography>
+                        <Typography variant="subtitle1">{t('component.account_menu.t_settings.palette')}</Typography>
                     </Grid>
                     <Grid item xs={12} md={8} className={classes.cell}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
                                 <Button fullWidth variant="contained" color="primary" onClick={() => openColorPicker('PRIMARY')}>
-                                    {t('component.theming.primary')}
+                                    {t('component.account_menu.t_settings.palette_colors.primary')}
                                 </Button>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <Button fullWidth variant="contained" color="secondary" onClick={() => openColorPicker('SECONDARY')}>
-                                    {t('component.theming.secondary')}
+                                    {t('component.account_menu.t_settings.palette_colors.secondary')}
                                 </Button>
                             </Grid>
                         </Grid>

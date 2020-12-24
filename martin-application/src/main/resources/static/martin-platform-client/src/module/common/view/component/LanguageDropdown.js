@@ -25,7 +25,8 @@ function LanguageDropdown (props) {
     };
     
     return (
-            <Dropdown variant="outlined" label={t('common.language')} options={languageOptions} value={selectedLanguage}
+            <Dropdown variant="outlined" label={t('component.account_menu.t_settings.language')}
+                options={languageOptions} value={selectedLanguage}
                 fullWidth={true} onChange={(e) => changeLang(e.target.value)}/>
     );
 }
