@@ -33,11 +33,11 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(0)
     },
     itemIcon: {
-        minWidth: '40px'
+        minWidth: '30px'
     },
     itemIconSelected: {
         color: theme.palette.getContrastText(theme.palette.text.primary) + ' !important',
-        minWidth: '40px'
+        minWidth: '30px'
     },
     selected: {
         backgroundColor: fade(theme.palette.grey[50], 1) + ' !important',
@@ -83,9 +83,8 @@ function NavItem(props) {
                         localStorage.setItem('navItem_' + itemId, nValue);
                     }
                 }} style={{marginLeft: `${shiftMultiplier * theme.spacing(2)}px`}}>
-            {expandButton}
             <ListItemText primary={label}/>
-            {children ? null : listIcon}
+            {children ? expandButton : listIcon}
         </ListItem>
     );
     return (

@@ -6,11 +6,12 @@
 
 export class ModuleView {
     
-    constructor(id, path, icon, component) {
+    constructor(id, path, icon, component, items) {
         this.id = id;
         this.path = path;
         this.icon = icon;
         this.component = component;
+        this.items = items;
     }
     
     getIcon() {
@@ -23,5 +24,9 @@ export class ModuleView {
     
     getId() {
         return this.id;
+    }
+    
+    getItems() {
+        return this.items;
     }
 }

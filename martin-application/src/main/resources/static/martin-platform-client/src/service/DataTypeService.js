@@ -23,6 +23,7 @@ export let TYPES = {
     TIME: 'TIME',
     DATE: 'DATE',
     BOOLEAN: 'BOOLEAN',
+    HTML_EDITOR: 'HTML_EDITOR',
     CUSTOM: 'CUSTOM'
 };
 

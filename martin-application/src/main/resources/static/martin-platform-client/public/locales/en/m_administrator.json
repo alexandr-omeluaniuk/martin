@@ -2,7 +2,10 @@
     "title": "Administration",
     "administrator": {
         "users": "Users",
-        "emailtemplates": "Email templates"
+        "email_group": "Email settings",
+        "email": {
+            "emailtemplates": "Email templates"
+        }
     },
     "users": {
         "fullname": "Full name",
@@ -18,6 +21,7 @@
         }
     },
     "email_templates": {
-        "subject": "Email subject"
+        "subject": "Email subject",
+        "content": "Content"
     }
 }

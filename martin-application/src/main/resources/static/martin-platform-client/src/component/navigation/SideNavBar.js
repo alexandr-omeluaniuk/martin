@@ -47,14 +47,14 @@ export default function SideNavBar(props) {
     const createSideBarNavigation = (items, parentPath, parentId, level) => {
         let navItems = [];
         items.forEach(item => {
-            let childs = item.items ? createSideBarNavigation(item.items, parentPath + item.path, parentId + '.' + item.id) : null;
+            let childs = item.getItems() ? createSideBarNavigation(item.getItems(), parentPath + item.path, parentId + '.' + item.id) : null;
             if (!item.hidden) {
                 navItems.push(
                         createNavItem(
                             item.id,
                             parentPath + item.path,
                             item.icon,
-                            t(`m_${moduleId}:${parentId}.${item.id}`),
+                            t(`m_${moduleId}:${parentId}.${item.id}${item.getItems() ? '_group' : ''}`),
                             childs,
                             level
                         )
@@ -74,6 +74,6 @@ export default function SideNavBar(props) {
     };
     const navItems = createSideBarNavigation(moduleItems, modulePath, moduleId, 0);
     const isOpen = open && currentModule ? true : false;
-    return isMobile ? <SideNavBarMobile open={isOpen} setOpen={setOpen} navItems={navItems}/> 
+    return isMobile ? <SideNavBarMobile open={isOpen} setOpen={setOpen} navItems={navItems} moduleId={moduleId}/> 
                 : <SideNavBarDesktop open={isOpen} moduleId={moduleId} navItems={navItems}/>;
 }

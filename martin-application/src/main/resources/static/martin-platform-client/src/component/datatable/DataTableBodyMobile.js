@@ -33,7 +33,7 @@ function DataTableBodyMobile (props) {
     return (
             <div className={classes.pageContent}>
             {data.map((rowData, idx) => (
-                <DataTableCard tableConfig={tableConfig} rowData={rowData} idx={idx}/>
+                <DataTableCard tableConfig={tableConfig} rowData={rowData} idx={idx} key={idx}/>
             ))}
             </div>
     );

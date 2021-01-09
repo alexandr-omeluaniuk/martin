@@ -24,7 +24,7 @@ import orange from '@material-ui/core/colors/orange';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import { PRIMARY_COLOR, SECONDARY_COLOR, PRIMARY_CONTRAST, SECONDARY_CONTRAST, THEME } from '../conf/local-storage-keys';
 
-export const drawerWidth = 260;
+export const drawerWidth = 300;
 
 export const THEME_STANDARD = {
     id: "STANDARD",

@@ -94,11 +94,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function SideNavBarMobile(props) {
     const classes = useStyles();
-    const { open, setOpen, navItems } = props;
+    const { open, setOpen, navItems, moduleId } = props;
     const { t } = useTranslation();
     let moduleTitle = (
         <Typography className={classes.title} variant={'caption'}>
-            {t('module.TODO')}
+            {t(`m_${moduleId}:title`)}
         </Typography>
     );
     return (
@@ -109,7 +109,6 @@ export default function SideNavBarMobile(props) {
             keepMounted: true // Better open performance on mobile.
         }}>
             <div className={classes.brandContainer}>
-                <img alt="brand" src={/*brand*/''} className={classes.brand}/>
                 {moduleTitle}
             </div>
             <Divider />
