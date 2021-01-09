@@ -17,7 +17,8 @@
             "confirm": "Confirm",
             "cancel": "Cancel",
             "dense_padding": "Dense padding",
-            "confirm_delete_message": "Do you really want to delete this record?"
+            "confirm_delete_message": "Do you really want to delete this record?",
+            "no_data": "No data"
         },
         "menu": {
             "close": "Close",

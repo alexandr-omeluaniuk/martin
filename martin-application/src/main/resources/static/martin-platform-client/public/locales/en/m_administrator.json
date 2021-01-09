@@ -1,7 +1,8 @@
 {
     "title": "Administration",
     "administrator": {
-        "users": "Users"
+        "users": "Users",
+        "emailtemplates": "Email templates"
     },
     "users": {
         "fullname": "Full name",
@@ -15,5 +16,8 @@
             "INACTIVE": "Inactive",
             "REGISTRATION": "Registration"
         }
+    },
+    "email_templates": {
+        "subject": "Email subject"
     }
 }

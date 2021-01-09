@@ -50,7 +50,7 @@ public class EmailTemplate extends EntityAudit implements Undeletable {
     /** Email content. */
     @FormField()
     @NotNull
-    @Size(max = AppConstants.SIMPLE_TEXT_SIZE)
+    @Size(max = AppConstants.LONG_TEXT_SIZE)
     @Column(name = "content", nullable = false, length = AppConstants.LONG_TEXT_SIZE)
     private String content;
     /** Active. */

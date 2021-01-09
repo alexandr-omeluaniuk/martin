@@ -50,7 +50,7 @@ function DataTableBody (props) {
                 <TableBody>
                     <TableRow>
                         <TableCell colSpan={tableConfig.columns.length + actionColumns} align={'center'}>
-                            {t('common.noData')}
+                            {t('component.datatable.no_data')}
                         </TableCell>
                     </TableRow>
                 </TableBody>
