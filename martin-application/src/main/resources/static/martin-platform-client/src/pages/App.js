@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { history } from '../index';
 import { Router } from "react-router-dom";
@@ -11,6 +11,7 @@ import SessionService from '../service/SessionService';
 import DataService from '../service/DataService';
 import { SharedDataService } from '../service/SharedDataService';
 import { DESKTOP_MENU_OPEN } from '../conf/local-storage-keys';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,8 +25,9 @@ function App() {
     const classes = useStyles();
     const { t } = useTranslation();
     let isMenuOpen = localStorage.getItem(DESKTOP_MENU_OPEN);
+    const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
     const [title, setTitle] = React.useState('');
-    const [open, setOpen] = React.useState(isMenuOpen === 'true' ? true : false);
+    const [open, setOpen] = React.useState(false);
     const [icon, setIcon] = React.useState(null);
     const [routes, setRoutes] = React.useState(null);
     const [currentModule, setCurrentModule] = React.useState(null);
@@ -40,6 +42,14 @@ function App() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentModule]);
+    useEffect(() => {
+        if (isMobile) {
+            setOpen(false);
+        } else {
+            setOpen(isMenuOpen === 'true' ? true : false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isMobile]);
     useEffect(() => {
         if (permissions === null) {
             dataService.get(`/security/permissions`).then(permissions => {
@@ -78,6 +88,9 @@ function App() {
                         permissions={permissions} setItemAttributes={setItemAttributes}/>
                     <SideNavBar open={open} currentModule={currentModule} setOpen={setOpen} onItemSelected={(label, icon) => {
                         setItemAttributes(label, icon);
+                        if (isMobile) {
+                            setOpen(false);
+                        }
                     }}/>
                     {routes ? <MainContent routes={routes} open={open} currentModule={currentModule}/> : null}
                 </div>
