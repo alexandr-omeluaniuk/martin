@@ -25,6 +25,7 @@ package ss.martin.platform.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -51,6 +52,7 @@ public class EmailTemplate extends EntityAudit implements Undeletable {
     @FormField()
     @NotNull
     @Size(max = AppConstants.LONG_TEXT_SIZE)
+    @Lob
     @Column(name = "content", nullable = false, length = AppConstants.LONG_TEXT_SIZE)
     private String content;
     /** Active. */

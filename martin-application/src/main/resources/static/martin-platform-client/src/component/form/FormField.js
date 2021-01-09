@@ -15,6 +15,7 @@ import NumberField from './input/NumberField';
 import Dropdown from './input/Dropdown';
 import FileUpload from './input/FileUpload';
 import MultipleSelect from './input/MultipleSelect';
+import HTMLEditor from './input/HTMLEditor';
 import PasswordField from './input/PasswordField';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, DateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -117,6 +118,10 @@ function FormField (props) {
                         <Checkbox checked={fieldValue ? true : false} onChange={(e) => onChangeFieldValue(name, e.target.checked)} 
                             name={name} color="secondary"/>
                     )}/>;
+        } else if (fieldConfig.type === TYPES.HTML_EDITOR) {
+            return <HTMLEditor label={label} name={name} required={isRequired} helperText={invalidFields.get(name)}
+                        onChangeFieldValue={onChangeFieldValue} value={fieldValue} labelWidth={attributes.labelWidth}
+                        rows={attributes.rows}/>;
         } else if (fieldConfig.type === TYPES.CUSTOM) {
             return fieldConfig.render(name, fieldValue, onChangeFieldValue);
         }

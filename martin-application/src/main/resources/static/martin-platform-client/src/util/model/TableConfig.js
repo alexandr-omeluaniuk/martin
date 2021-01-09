@@ -94,6 +94,10 @@ export class FormField {
         this.validators = validators;
         return this;
     }
+    setAttributes(attr) {
+        this.attributes = attr;
+        return this;
+    }
 }
 
 export class FormSubmit {
