@@ -38,7 +38,7 @@ import ss.martin.platform.constants.AppConstants;
  */
 @Entity
 @Table(name = "email_template")
-public class EmailTemplate extends EntityAudit implements Undeletable {
+public class EmailTemplate extends EntityAudit implements SoftDeleted {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // =============================================== FIELDS =============================================================

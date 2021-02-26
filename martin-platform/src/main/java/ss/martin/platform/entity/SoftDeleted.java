@@ -21,22 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.service;
-
-import java.util.List;
-import ss.martin.platform.entity.CalendarEvent;
-import ss.martin.platform.wrapper.CalendarSearchRequest;
+package ss.martin.platform.entity;
 
 /**
- * Calendar service.
+ * Soft deleted entity.
  * @author ss
  */
-public interface CalendarService {
+public interface SoftDeleted {
     /**
-     * Search events.
-     * @param searchRequest
-     * @return
-     * @throws Exception 
+     * @return the active
      */
-    List<CalendarEvent> search(CalendarSearchRequest searchRequest) throws Exception;
+    public boolean isActive();
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active);
 }

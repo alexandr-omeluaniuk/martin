@@ -45,7 +45,7 @@ import ss.martin.platform.security.StandardRole;
 @Entity
 @Table(name = "subscription")
 @EntityAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
-public class Subscription extends DataModel implements Undeletable {
+public class Subscription extends DataModel implements SoftDeleted {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // =========================================== FIELDS =============================================================

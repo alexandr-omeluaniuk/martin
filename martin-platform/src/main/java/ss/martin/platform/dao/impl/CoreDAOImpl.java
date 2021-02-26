@@ -37,11 +37,11 @@ import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
-import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
+import ss.martin.platform.entity.SoftDeleted;
 
 /**
  * Core DAO implementation.
@@ -156,7 +156,7 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl) {
+    public <T extends DataModel & SoftDeleted> void deactivateEntities(Set<Long> ids, Class<T> cl) {
         if (!ids.isEmpty()) {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
@@ -169,7 +169,7 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl) {
+    public <T extends DataModel & SoftDeleted> void activateEntities(Set<Long> ids, Class<T> cl) {
         if (!ids.isEmpty()) {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaUpdate<T> criteria = cb.createCriteriaUpdate(cl);
@@ -189,7 +189,7 @@ class CoreDAOImpl implements CoreDAO {
             Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
             predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription), subscription));
         }
-        if (!searchRequest.isShowDeactivated() && Undeletable.class.isAssignableFrom(clazz)) {
+        if (!searchRequest.isShowDeactivated() && SoftDeleted.class.isAssignableFrom(clazz)) {
             predicates.add(cb.equal(c.get("active"), true));
         }
         Optional.ofNullable(searchRequest.getFilter()).ifPresent((filter) -> {

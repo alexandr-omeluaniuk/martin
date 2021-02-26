@@ -8,9 +8,9 @@ package ss.martin.platform.dao;
 import java.io.Serializable;
 import java.util.Set;
 import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
+import ss.martin.platform.entity.SoftDeleted;
 
 /**
  * Core DAO API.
@@ -71,12 +71,12 @@ public interface CoreDAO {
      * @param ids entity IDs.
      * @param cl entity class.
      */
-    <T extends DataModel & Undeletable> void deactivateEntities(Set<Long> ids, Class<T> cl);
+    <T extends DataModel & SoftDeleted> void deactivateEntities(Set<Long> ids, Class<T> cl);
     /**
      * Activate entities.
      * @param <T> entity type.
      * @param ids entity IDs.
      * @param cl entity class.
      */
-    <T extends DataModel & Undeletable> void activateEntities(Set<Long> ids, Class<T> cl);
+    <T extends DataModel & SoftDeleted> void activateEntities(Set<Long> ids, Class<T> cl);
 }

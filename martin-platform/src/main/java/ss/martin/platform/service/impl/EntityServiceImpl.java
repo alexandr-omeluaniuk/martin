@@ -36,7 +36,6 @@ import ss.martin.platform.dao.EntityFileDAO;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
-import ss.martin.platform.entity.Undeletable;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
@@ -45,6 +44,7 @@ import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
+import ss.martin.platform.entity.SoftDeleted;
 
 /**
  * Entity service implementation.
@@ -81,8 +81,8 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(entity.getClass()).contains(EntityPermission.CREATE)) {
             throw new PlatformSecurityException(EntityPermission.CREATE, entity.getClass());
         }
-        if (Undeletable.class.isAssignableFrom(entity.getClass())) {
-            ((Undeletable) entity).setActive(true);
+        if (SoftDeleted.class.isAssignableFrom(entity.getClass())) {
+            ((SoftDeleted) entity).setActive(true);
         }
         if (entity instanceof Subscription) {
             return (T) subscriptionService.createSubscription((Subscription) entity);
@@ -107,7 +107,7 @@ class EntityServiceImpl implements EntityService {
         if (!securityService.getEntityPermissions(cl).contains(EntityPermission.DELETE)) {
             throw new PlatformSecurityException(EntityPermission.DELETE, cl);
         }
-        if (Undeletable.class.isAssignableFrom(cl)) {
+        if (SoftDeleted.class.isAssignableFrom(cl)) {
             throw new PlatformException("Attempt to delete undeletable entity: " + cl.getName());
         }
         coreDAO.massDelete(ids, cl);

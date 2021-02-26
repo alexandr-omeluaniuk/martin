@@ -51,7 +51,7 @@ import ss.martin.platform.security.SystemUserStatus;
 @Entity
 @Table(name = "users")
 @EntityAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
-public class SystemUser extends TenantEntity implements HasAvatar, Undeletable {
+public class SystemUser extends TenantEntity implements HasAvatar, SoftDeleted {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
