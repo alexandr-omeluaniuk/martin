@@ -38,18 +38,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.RegistrationUserException;
-import ss.martin.platform.service.SystemUserService;
-import ss.martin.platform.spring.config.PlatformConfiguration;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SystemUserStatus;
 import ss.martin.platform.service.EmailService;
+import ss.martin.platform.service.SystemUserService;
+import ss.martin.platform.spring.config.PlatformConfiguration;
 import ss.martin.platform.wrapper.EmailRequest;
 
 /**
@@ -107,7 +106,7 @@ class SystemUserServiceImpl implements SystemUserService {
         });
         emailRequest.setSubject("Регистрация нового пользователя");
         emailRequest.setMessage("Пройдите по ссылке: " + config.getServerDomain()
-                + AppURLs.APP_ADMIN_FINISH_REGISTRATION + "/" + validationString);
+                + config.getNavigation().getRegistrationVerification() + "/" + validationString);
         emailService.sendEmail(emailRequest);
     }
     @Override

@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.service.SystemUserService;
@@ -42,7 +41,7 @@ import ss.martin.platform.wrapper.RESTResponse;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_ADMIN_PUBLIC_REST_API)
+@RequestMapping("/api/platform/public")
 public class PublicRESTController {
     /** System user service. */
     @Autowired

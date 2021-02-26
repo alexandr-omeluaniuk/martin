@@ -28,7 +28,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.wrapper.UserPermissions;
 
@@ -37,7 +36,7 @@ import ss.martin.platform.wrapper.UserPermissions;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/security")
+@RequestMapping("/api/platform/security")
 public class SecurityRESTController {
     /** Security service. */
     @Autowired

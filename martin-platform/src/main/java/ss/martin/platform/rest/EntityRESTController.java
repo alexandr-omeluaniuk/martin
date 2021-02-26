@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.service.EntityService;
 import ss.martin.platform.wrapper.EntitySearchRequest;
@@ -46,7 +45,7 @@ import ss.martin.platform.wrapper.RESTResponse;
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/entity")
+@RequestMapping("/api/platform/entity")
 public class EntityRESTController {
     /** Entity service. */
     @Autowired
@@ -127,8 +126,10 @@ public class EntityRESTController {
      * @return response.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse delete(@PathVariable("entity") String entityName, @PathVariable("id") Long id) throws Exception {
+    @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public RESTResponse delete(@PathVariable("entity") String entityName, @PathVariable("id") Long id)
+            throws Exception {
         entityService.delete(new HashSet(Arrays.asList(new Long[] {id})), getEntityClass(entityName));
         return new RESTResponse();
     }

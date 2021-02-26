@@ -22,10 +22,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import ss.martin.platform.constants.AppURLs;
+import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
  * Authentication entry point.
@@ -35,6 +36,9 @@ import ss.martin.platform.constants.AppURLs;
 class AuthEntryPoint implements AuthenticationEntryPoint {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(AuthEntryPoint.class);
+    /** Platform configuration. */
+    @Autowired
+    private PlatformConfiguration configuration;
     @Override
     public void commence(HttpServletRequest hsr, HttpServletResponse hsr1,
             AuthenticationException ae) throws IOException, ServletException {
@@ -47,7 +51,7 @@ class AuthEntryPoint implements AuthenticationEntryPoint {
         if (contentType != null && contentType.contains("application/json")) {  // Ajax request detected
             hsr1.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
-            hsr1.sendRedirect(AppURLs.APP_ADMIN_LOGIN_PAGE);
+            hsr1.sendRedirect(configuration.getNavigation().getLoginPage());
         }
     }
 }

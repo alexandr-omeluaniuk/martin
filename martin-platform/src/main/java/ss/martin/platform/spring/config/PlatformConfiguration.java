@@ -51,6 +51,8 @@ public class PlatformConfiguration {
     private String systemEmailContactName;
     /** Email contact email (for system emails). */
     private String systemEmailContactEmail;
+    /** Navigation configuration. */
+    private URLConfiguration navigation;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the systemEmailContactName
@@ -159,5 +161,17 @@ public class PlatformConfiguration {
      */
     public void setMailjetSecretKey(String mailjetSecretKey) {
         this.mailjetSecretKey = mailjetSecretKey;
+    }
+    /**
+     * @return the navigation
+     */
+    public URLConfiguration getNavigation() {
+        return navigation;
+    }
+    /**
+     * @param navigation the navigation to set
+     */
+    public void setNavigation(URLConfiguration navigation) {
+        this.navigation = navigation;
     }
 }

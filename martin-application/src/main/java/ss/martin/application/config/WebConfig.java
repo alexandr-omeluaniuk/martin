@@ -5,6 +5,7 @@
  */
 package ss.martin.application.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ss.martin.platform.constants.AppURLs;
+import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
  * Web application configuration.
@@ -22,11 +23,14 @@ import ss.martin.platform.constants.AppURLs;
 @EnableAutoConfiguration
 @ComponentScan("ss.martin")
 public class WebConfig implements WebMvcConfigurer {
+    /** Platform configuration. */
+    @Autowired
+    private PlatformConfiguration configuration;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(AppURLs.APP_ADMIN_LOGIN_PAGE)
+        registry.addResourceHandler(configuration.getNavigation().getLoginPage())
                 .addResourceLocations("classpath:/static/martin-platform-client/build/");
-        registry.addResourceHandler(AppURLs.APP_ADMIN_FINISH_REGISTRATION)
+        registry.addResourceHandler(configuration.getNavigation().getRegistrationVerification())
                 .addResourceLocations("classpath:/static/martin-platform-client/build/");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/martin-platform-client/build/");     
     }
@@ -42,9 +46,10 @@ public class WebConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry) {
                 final String forward = "forward:/index.html";
                 registry.addViewController("/").setViewName(forward);
-                registry.addViewController(AppURLs.APP_ADMIN_LOGIN_PAGE).setViewName(forward);
-                registry.addViewController(AppURLs.APP_ADMIN_FINISH_REGISTRATION + "/**").setViewName(forward);
-                registry.addViewController(AppURLs.APP_ADMIN_VIEWS + "/**").setViewName(forward);
+                registry.addViewController(configuration.getNavigation().getLoginPage()).setViewName(forward);
+                registry.addViewController(configuration.getNavigation().getRegistrationVerification() + "/**")
+                        .setViewName(forward);
+                registry.addViewController(configuration.getNavigation().getViews() + "/**").setViewName(forward);
             }
         };
     }

@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ss.martin.platform.constants.AppURLs;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.spring.security.AuthUsernamePasswordFilter;
 
@@ -50,14 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** System user service. */
     @Autowired
     private SystemUserService systemUserService;
+    /** Platform configuration. */
+    @Autowired
+    private PlatformConfiguration configuration;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_PUBLIC_REST_API + "/**").permitAll().and()
-                .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_REST_API + "/**").authenticated()
+                .authorizeRequests().mvcMatchers(
+                        configuration.getNavigation().getPublicRest() + "/**", "/api/platform/public").permitAll().and()
+                .authorizeRequests().mvcMatchers(configuration.getNavigation().getProtectedRest() + "/**",
+                        "/api/platform/security", "/api/platform/entity").authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin().loginPage(AppURLs.APP_ADMIN_LOGIN_PAGE).permitAll().and()
-                .logout().deleteCookies("JSESSIONID").logoutUrl(AppURLs.APP_ADMIN_LOGOUT)
+                .formLogin().loginPage(configuration.getNavigation().getLoginPage()).permitAll().and()
+                .logout().deleteCookies("JSESSIONID").logoutUrl(configuration.getNavigation().getLogout())
                 .logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
@@ -66,7 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/static/**", "/locales/**", "/*.json", "/*.js",
-                "/*.ico", "/*.html", "/", AppURLs.APP_ADMIN_VIEWS + "/**", AppURLs.APP_ADMIN_FINISH_REGISTRATION + "/**");
+                "/*.ico", "/*.html", "/", configuration.getNavigation().getViews() + "/**",
+                configuration.getNavigation().getRegistrationVerification() + "/**");
     }
     /**
      * Create custom authentication filter.
@@ -74,7 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private Filter authFilter() {
         AuthUsernamePasswordFilter filter = new AuthUsernamePasswordFilter();
-        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AppURLs.APP_ADMIN_LOGIN, "POST"));
+        filter.setRequiresAuthenticationRequestMatcher(
+                new AntPathRequestMatcher(configuration.getNavigation().getLogin(), "POST")
+        );
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
         filter.setAuthenticationManager(authManager);
