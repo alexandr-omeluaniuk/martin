@@ -39,4 +39,10 @@ public interface SecurityService {
      * @throws Exception error.
      */
     Set<EntityPermission> getEntityPermissions(Class<? extends DataModel> clazz) throws Exception;
+    /**
+     * Background authentication for user.
+     * @param username username.
+     * @param password password.
+     */
+    void backgroundAuthentication(String username, String password);
 }

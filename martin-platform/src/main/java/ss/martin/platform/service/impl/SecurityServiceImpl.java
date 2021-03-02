@@ -16,6 +16,7 @@
  */
 package ss.martin.platform.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
@@ -25,6 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.constants.EntityPermission;
@@ -33,6 +37,7 @@ import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.SecurityService;
+import ss.martin.platform.spring.security.UserPrincipal;
 import ss.martin.platform.wrapper.UserPermissions;
 
 /**
@@ -47,9 +52,9 @@ class SecurityServiceImpl implements SecurityService {
     /** Security context. */
     @Autowired
     private SecurityContext securityContext;
-//    /** Modules. */
-//    @Autowired
-//    private List<ApplicationModuleProvider> modules;
+    /** Authentication manager. */
+    @Autowired
+    private AuthenticationManager authManager;
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         SystemUser currentUser = securityContext.currentUser();
@@ -75,5 +80,10 @@ class SecurityServiceImpl implements SecurityService {
             permissions.addAll(Arrays.asList(EntityPermission.values()));
         });
         return permissions;
+    }
+    @Override
+    public void backgroundAuthentication(String username, String password) {
+        Authentication a = authManager.authenticate(new UserPrincipal(username, password, new ArrayList<>()));
+        SecurityContextHolder.getContext().setAuthentication(a);
     }
 }
