@@ -6,11 +6,12 @@
 package ss.martin.platform.dao;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.SoftDeleted;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
-import ss.martin.platform.entity.SoftDeleted;
 
 /**
  * Core DAO API.
@@ -56,6 +57,20 @@ public interface CoreDAO {
      */
     <T extends DataModel> void massDelete(Set<Long> ids, Class<T> cl);
     /**
+     * Mass create.
+     * @param <T> entity type.
+     * @param list list of entities.
+     * @throws Exception error.
+     */
+    <T extends DataModel> void massCreate(List<T> list) throws Exception;
+    /**
+     * Mass update.
+     * @param <T> entity type.
+     * @param list list of entities.
+     * @throws Exception error.
+     */
+    <T extends DataModel> void massUpdate(List<T> list) throws Exception;
+    /**
      * Search entities.
      * @param <T> entity type.
      * @param cl entity class.
@@ -79,4 +94,20 @@ public interface CoreDAO {
      * @param cl entity class.
      */
     <T extends DataModel & SoftDeleted> void activateEntities(Set<Long> ids, Class<T> cl);
+    /**
+     * Count.
+     * @param <T> entity type.
+     * @param cl entity class.
+     * @return count of entities.
+     * @throws Exception error.
+     */
+    <T extends DataModel> Long count(Class<T> cl) throws Exception;
+    /**
+     * Get all entities.
+     * @param <T> entity type.
+     * @param cl entity class.
+     * @return list of entities.
+     * @throws Exception error.
+     */
+    <T extends DataModel> List<T> getAll(Class<T> cl) throws Exception;
 }

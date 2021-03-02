@@ -5,27 +5,27 @@
  */
 package ss.martin.platform.dao.impl;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
@@ -34,6 +34,7 @@ import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.DataModel_;
 import ss.martin.platform.entity.EntityFile;
 import ss.martin.platform.entity.HasAvatar;
+import ss.martin.platform.entity.SoftDeleted;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
@@ -41,7 +42,6 @@ import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
-import ss.martin.platform.entity.SoftDeleted;
 
 /**
  * Core DAO implementation.
@@ -120,6 +120,22 @@ class CoreDAOImpl implements CoreDAO {
         }
     }
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T extends DataModel> void massCreate(List<T> list) throws Exception {
+        for (T entity : list) {
+            em.persist(entity);
+        }
+        em.flush();
+    }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T extends DataModel> void massUpdate(List<T> list) throws Exception {
+        for (T entity : list) {
+            em.merge(entity);
+        }
+        em.flush();
+    }
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest)
             throws Exception {
@@ -179,6 +195,38 @@ class CoreDAOImpl implements CoreDAO {
             );
             em.createQuery(criteria).executeUpdate();
         }
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public <T extends DataModel> Long count(Class<T> cl) throws Exception {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaCount = cb.createQuery(Long.class);
+        Root<T> c = criteriaCount.from(cl);
+        Expression<Long> sum = cb.count(c);
+        List<Predicate> predicates = new ArrayList<>();
+        if (reflectionUtils.hasSuperClass(cl, TenantEntity.class)) {
+            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
+            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription),
+                    securityContext.currentUser().getSubscription()));
+        }
+        criteriaCount.select(sum).where(predicates.toArray(new Predicate[0]));
+        List<Long> maxList = em.createQuery(criteriaCount).getResultList();
+        return maxList.iterator().next();
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public <T extends DataModel> List<T> getAll(Class<T> cl) throws Exception {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = cb.createQuery(cl);
+        Root<T> c = criteria.from(cl);
+        List<Predicate> predicates = new ArrayList<>();
+        if (reflectionUtils.hasSuperClass(cl, TenantEntity.class)) {
+            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
+            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription),
+                    securityContext.currentUser().getSubscription()));
+        }
+        criteria.select(c).where(predicates.toArray(new Predicate[0]));
+        return em.createQuery(criteria).getResultList();
     }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
