@@ -63,14 +63,14 @@ public class EntityRESTController {
     @RequestMapping(value = "/{entity}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse list(@PathVariable("entity") String entityName,
-            @RequestParam("page") Integer page,
-            @RequestParam("page_size") Integer pageSize,
-            @RequestParam(required = false, value = "order") String order,
-            @RequestParam(required = false, value = "order_by") String orderBy
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "page_size", required = false) Integer pageSize,
+            @RequestParam(value = "order", required = false) String order,
+            @RequestParam(value = "order_by", required = false) String orderBy
     ) throws Exception {
         EntitySearchRequest searchRequest = new EntitySearchRequest();
-        searchRequest.setPage(page);
-        searchRequest.setPageSize(pageSize);
+        searchRequest.setPage(page == null ? 1 : page);
+        searchRequest.setPageSize(pageSize == null ? Integer.MAX_VALUE : pageSize);
         searchRequest.setOrder(order);
         searchRequest.setOrderBy(orderBy);
         Class entityClass = getEntityClass(entityName);
@@ -134,7 +134,7 @@ public class EntityRESTController {
         return new RESTResponse();
     }
     
-    private Class getEntityClass(String name) throws Exception {
+    protected Class getEntityClass(String name) throws Exception {
         return Class.forName("ss.martin.platform.entity." + name);
     }
 }

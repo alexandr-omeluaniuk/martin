@@ -45,8 +45,12 @@ public class SecurityContext {
      */
     public SystemUser currentUser() {
         Object auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) auth;
-        return userPrincipal.getUser();
+        if (auth instanceof UserPrincipal) {
+            UserPrincipal userPrincipal = (UserPrincipal) auth;
+            return userPrincipal.getUser();
+        } else {
+            return null;
+        }
     }
     /**
      * Get current user subscription.

@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().mvcMatchers(
                         configuration.getNavigation().getPublicRest() + "/**", "/api/platform/public").permitAll().and()
                 .authorizeRequests().mvcMatchers(configuration.getNavigation().getProtectedRest() + "/**",
-                        "/api/platform/security", "/api/platform/entity").authenticated()
+                        "/api/platform/security/**", "/api/platform/entity/**").authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginPage(configuration.getNavigation().getLoginPage()).permitAll().and()
                 .logout().deleteCookies("JSESSIONID").logoutUrl(configuration.getNavigation().getLogout())

@@ -57,14 +57,16 @@ class SecurityServiceImpl implements SecurityService {
     private AuthenticationManager authManager;
     @Override
     public UserPermissions getUserPermissions() throws Exception {
-        SystemUser currentUser = securityContext.currentUser();
         UserPermissions permissions = new UserPermissions();
-        permissions.setHasAvatar(currentUser.isHasAvatar());
-        permissions.setUserId(currentUser.getId());
-        permissions.setSubscription(securityContext.subscription());
-        permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
-                + currentUser.getLastname());
-        permissions.setStandardRole(currentUser.getStandardRole());
+        SystemUser currentUser = securityContext.currentUser();
+        if (currentUser != null) {
+            permissions.setHasAvatar(currentUser.isHasAvatar());
+            permissions.setUserId(currentUser.getId());
+            permissions.setSubscription(securityContext.subscription());
+            permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
+                    + currentUser.getLastname());
+            permissions.setStandardRole(currentUser.getStandardRole());
+        }
         return permissions;
     }
     @Override
