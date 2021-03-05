@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -23,7 +22,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +31,6 @@ import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.DataModel_;
 import ss.martin.platform.entity.SoftDeleted;
-import ss.martin.platform.service.ReflectionUtils;
-import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -47,23 +43,10 @@ class CoreDAOImpl implements CoreDAO {
     /** DataModel manager. */
     @PersistenceContext
     private EntityManager em;
-    /** Reflection utils. */
-    @Autowired
-    private ReflectionUtils reflectionUtils;
-    /** Platform entity listeners. */
-    @Autowired
-    private List<PlatformEntityListener> entityListeners;
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T create(final T entity) throws Exception {
-        List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
-        for (PlatformEntityListener l : listeners) {
-            l.prePersist(entity);
-        }
         em.persist(entity);
-        for (PlatformEntityListener l : listeners) {
-            l.postPersist(entity);
-        }
         return entity;
     }
     @Override
@@ -254,19 +237,5 @@ class CoreDAOImpl implements CoreDAO {
         } else {
             throw new RuntimeException("Boolean operator for filter condition is required!");
         }
-    }
-    /**
-     * Get platform entity listener.
-     * @param cl entity class.
-     * @return list of listeners.
-     */
-    private List<PlatformEntityListener> getEntityListener(Class<? extends DataModel> cl) {
-        return entityListeners.stream().filter(l -> {
-            try {
-                return cl.equals(l.entity()) || reflectionUtils.hasSuperClass(cl, l.entity());
-            } catch (Exception ex) {
-                return false;
-            }
-        }).collect(Collectors.toList());
     }
 }

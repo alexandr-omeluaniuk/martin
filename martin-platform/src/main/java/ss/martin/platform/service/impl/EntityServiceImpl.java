@@ -24,7 +24,9 @@
 package ss.martin.platform.service.impl;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -39,9 +41,11 @@ import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
+import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.service.SystemUserService;
+import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -64,6 +68,12 @@ class EntityServiceImpl implements EntityService {
     /** Security service. */
     @Autowired
     private SecurityService securityService;
+    /** Platform entity listeners. */
+    @Autowired
+    private List<PlatformEntityListener> entityListeners;
+    /** Reflection utils. */
+    @Autowired
+    private ReflectionUtils reflectionUtils;
     @Override
     public EntitySearchResponse list(Class<? extends DataModel> clazz,
             EntitySearchRequest searchRequest) throws Exception {
@@ -85,7 +95,15 @@ class EntityServiceImpl implements EntityService {
         } else if (entity instanceof SystemUser) {
             return (T) systemUserService.createSystemUser((SystemUser) entity);
         } else {
-            return coreDAO.create(entity);
+            List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
+            for (PlatformEntityListener l : listeners) {
+                l.prePersist(entity);
+            }
+            entity = coreDAO.create(entity);
+            for (PlatformEntityListener l : listeners) {
+                l.postPersist(entity);
+            }
+            return entity;
         }
     }
     @Override
@@ -135,5 +153,19 @@ class EntityServiceImpl implements EntityService {
         if (entityClass.getSuperclass() != null) {
             setUpdatableFields(entityClass.getSuperclass(), fromDB, fromUser);
         }
+    }
+    /**
+     * Get platform entity listener.
+     * @param cl entity class.
+     * @return list of listeners.
+     */
+    private List<PlatformEntityListener> getEntityListener(Class<? extends DataModel> cl) {
+        return entityListeners.stream().filter(l -> {
+            try {
+                return cl.equals(l.entity()) || reflectionUtils.hasSuperClass(cl, l.entity());
+            } catch (Exception ex) {
+                return false;
+            }
+        }).collect(Collectors.toList());
     }
 }
