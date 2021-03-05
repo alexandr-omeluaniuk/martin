@@ -135,6 +135,11 @@ public class EntityRESTController {
     }
     
     protected Class getEntityClass(String name) throws Exception {
-        return Class.forName("ss.martin.platform.entity." + name);
+//        Set<EntityType<?>> types = em.getMetamodel().getEntities();
+//        for (EntityType<?> entityType : types) {
+//            String n = entityType.getJavaType().getName();
+//            System.out.println(n);
+//        }
+        return Class.forName(name);
     }
 }

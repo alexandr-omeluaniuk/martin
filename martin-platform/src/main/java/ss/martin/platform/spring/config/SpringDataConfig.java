@@ -29,7 +29,7 @@ import ss.martin.platform.entity.SystemUser;
  * @author Alexandr Omeluaniuk
  */
 @Configuration
-@EntityScan("ss.martin")
+@EntityScan("ss.martin.platform.entity")
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class SpringDataConfig {
     /** Auditor aware. */
