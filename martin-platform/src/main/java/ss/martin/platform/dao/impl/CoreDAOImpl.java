@@ -55,9 +55,15 @@ class CoreDAOImpl implements CoreDAO {
     private List<PlatformEntityListener> entityListeners;
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public <T extends DataModel> T create(final T entity) {
-        getEntityListener(entity.getClass()).stream().forEach(l -> l.prePersist(entity));
+    public <T extends DataModel> T create(final T entity) throws Exception {
+        List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
+        for (PlatformEntityListener l : listeners) {
+            l.prePersist(entity);
+        }
         em.persist(entity);
+        for (PlatformEntityListener l : listeners) {
+            l.postPersist(entity);
+        }
         return entity;
     }
     @Override

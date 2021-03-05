@@ -28,19 +28,26 @@ import ss.martin.platform.entity.DataModel;
 /**
  * Platform entity listener.
  * @author alex
+ * @param <E> entity type.
  */
-public interface PlatformEntityListener {
+public interface PlatformEntityListener<E extends DataModel> {
     /**
      * Get listener target entity class.
-     * @param <T> entity type.
      * @return entity class.
      */
-    <T extends DataModel> Class<T> entity();
+    Class<E> entity();
     /**
      * Invoked before persist action.
-     * @param <T> entity type.
      * @param entity entity.
+     * @throws Exception error.
      */
-    default <T extends DataModel> void prePersist(T entity) {
+    default void prePersist(E entity) throws Exception {
+    }
+    /**
+     * Invoked after persist action.
+     * @param entity entity.
+     * @throws Exception error.
+     */
+    default void postPersist(E entity) throws Exception {
     }
 }

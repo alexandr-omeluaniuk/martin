@@ -23,8 +23,9 @@ public interface CoreDAO {
      * @param <T> entity class.
      * @param entity entity.
      * @return created entity.
+     * @throws Exception error.
      */
-    <T extends DataModel> T create(T entity);
+    <T extends DataModel> T create(T entity) throws Exception;
     /**
      * Update entity (subscription will be assigned automatically).
      * @param <T> entity class.
