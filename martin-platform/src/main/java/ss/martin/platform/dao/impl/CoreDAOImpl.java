@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,20 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.martin.platform.constants.EntityFileType;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.DataModel_;
-import ss.martin.platform.entity.EntityFile;
-import ss.martin.platform.entity.HasAvatar;
 import ss.martin.platform.entity.SoftDeleted;
-import ss.martin.platform.entity.Subscription;
-import ss.martin.platform.entity.TenantEntity;
-import ss.martin.platform.entity.TenantEntity_;
-import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.service.ReflectionUtils;
+import ss.martin.platform.util.PlatformEntityListener;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
@@ -52,35 +47,22 @@ class CoreDAOImpl implements CoreDAO {
     /** DataModel manager. */
     @PersistenceContext
     private EntityManager em;
-    /** Security context. */
-    @Autowired
-    private SecurityContext securityContext;
-    /** Reflection utilities. */
+    /** Reflection utils. */
     @Autowired
     private ReflectionUtils reflectionUtils;
+    /** Platform entity listeners. */
+    @Autowired
+    private List<PlatformEntityListener> entityListeners;
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T create(final T entity) {
-        if (HasAvatar.class.isAssignableFrom(entity.getClass())) {
-            HasAvatar avatarEntity = (HasAvatar) entity;
-            EntityFile avatar = avatarEntity.getAvatar();
-            avatarEntity.setAvatar(null);
-            em.persist(avatarEntity);
-            if (avatar != null) {
-                avatarEntity.setAvatar(avatar);
-                update((DataModel) avatarEntity);
-            }
-        } else {
-            em.persist(entity);
-        }
+        getEntityListener(entity.getClass()).stream().forEach(l -> l.prePersist(entity));
+        em.persist(entity);
         return entity;
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T update(final T entity) {
-        if (HasAvatar.class.isAssignableFrom(entity.getClass())) {
-            persistAvatar((HasAvatar) entity);
-        }
         T updated = em.merge(entity);
         return updated;
     }
@@ -92,13 +74,8 @@ class CoreDAOImpl implements CoreDAO {
         Root<T> c = criteria.from(cl);
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.equal(c.get(DataModel_.id), id));
-        if (reflectionUtils.hasSuperClass(cl, TenantEntity.class)) {
-            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
-            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription),
-                    securityContext.currentUser().getSubscription()));
-        }
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
-        return em.find(cl, id);
+        return em.createQuery(criteria).getSingleResult();
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -204,11 +181,6 @@ class CoreDAOImpl implements CoreDAO {
         Root<T> c = criteriaCount.from(cl);
         Expression<Long> sum = cb.count(c);
         List<Predicate> predicates = new ArrayList<>();
-        if (reflectionUtils.hasSuperClass(cl, TenantEntity.class)) {
-            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
-            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription),
-                    securityContext.currentUser().getSubscription()));
-        }
         criteriaCount.select(sum).where(predicates.toArray(new Predicate[0]));
         List<Long> maxList = em.createQuery(criteriaCount).getResultList();
         return maxList.iterator().next();
@@ -220,23 +192,13 @@ class CoreDAOImpl implements CoreDAO {
         CriteriaQuery<T> criteria = cb.createQuery(cl);
         Root<T> c = criteria.from(cl);
         List<Predicate> predicates = new ArrayList<>();
-        if (reflectionUtils.hasSuperClass(cl, TenantEntity.class)) {
-            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
-            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription),
-                    securityContext.currentUser().getSubscription()));
-        }
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
         return em.createQuery(criteria).getResultList();
     }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
             EntitySearchRequest searchRequest) throws Exception {
-        Subscription subscription = securityContext.currentUser().getSubscription();
         List<Predicate> predicates = new ArrayList<>();
-        if (reflectionUtils.hasSuperClass(clazz, TenantEntity.class)) {
-            Root<TenantEntity> cTenant = (Root<TenantEntity>) c;
-            predicates.add(cb.equal(cTenant.get(TenantEntity_.subscription), subscription));
-        }
         if (!searchRequest.isShowDeactivated() && SoftDeleted.class.isAssignableFrom(clazz)) {
             predicates.add(cb.equal(c.get("active"), true));
         }
@@ -287,13 +249,18 @@ class CoreDAOImpl implements CoreDAO {
             throw new RuntimeException("Boolean operator for filter condition is required!");
         }
     }
-    
-    private void persistAvatar(HasAvatar entity) {
-        entity.setHasAvatar(entity.getAvatar() != null);
-        Optional.ofNullable(entity.getAvatar()).ifPresent((file) -> {
-            file.setOwnerId(((DataModel) entity).getId());
-            file.setType(EntityFileType.AVATAR);
-            file.setOwnerClass(entity.getClass().getName());
-        });
+    /**
+     * Get platform entity listener.
+     * @param cl entity class.
+     * @return list of listeners.
+     */
+    private List<PlatformEntityListener> getEntityListener(Class<? extends DataModel> cl) {
+        return entityListeners.stream().filter(l -> {
+            try {
+                return cl.equals(l.entity()) || reflectionUtils.hasSuperClass(cl, l.entity());
+            } catch (Exception ex) {
+                return false;
+            }
+        }).collect(Collectors.toList());
     }
 }

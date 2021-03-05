@@ -32,8 +32,8 @@ import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.dao.EntityFileDAO;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.SoftDeleted;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.PlatformException;
@@ -44,7 +44,6 @@ import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
-import ss.martin.platform.entity.SoftDeleted;
 
 /**
  * Entity service implementation.
@@ -56,9 +55,6 @@ class EntityServiceImpl implements EntityService {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
-    /** Entity file DAO. */
-    @Autowired
-    private EntityFileDAO entityFileDAO;
     /** Subscription service. */
     @Autowired
     private SubscriptionService subscriptionService;
