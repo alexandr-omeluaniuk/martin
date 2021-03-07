@@ -50,4 +50,18 @@ public interface PlatformEntityListener<E extends DataModel> {
      */
     default void postPersist(E entity) throws Exception {
     }
+    /**
+     * Invoked before update action.
+     * @param entity entity.
+     * @throws Exception error.
+     */
+    default void preUpdate(E entity) throws Exception {
+    }
+    /**
+     * Invoked after update action.
+     * @param entity entity.
+     * @throws Exception error.
+     */
+    default void postUpdate(E entity) throws Exception {
+    }
 }

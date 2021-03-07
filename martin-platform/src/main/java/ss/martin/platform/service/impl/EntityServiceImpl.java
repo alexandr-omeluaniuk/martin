@@ -114,7 +114,15 @@ class EntityServiceImpl implements EntityService {
         Class<T> entityClass = (Class<T>) entity.getClass();
         T fromDB = coreDAO.findById(entity.getId(), entityClass);
         setUpdatableFields(entityClass, fromDB, entity);
-        return coreDAO.update(fromDB);
+        List<PlatformEntityListener> listeners = getEntityListener(entity.getClass());
+        for (PlatformEntityListener l : listeners) {
+            l.preUpdate(entity);
+        }
+        entity = coreDAO.update(fromDB);
+        for (PlatformEntityListener l : listeners) {
+            l.postUpdate(entity);
+        }
+        return entity;
     }
     @Override
     public <T extends DataModel> void delete(Set<Long> ids, Class<T> cl) throws Exception {
