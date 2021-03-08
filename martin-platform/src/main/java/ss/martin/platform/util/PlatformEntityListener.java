@@ -23,6 +23,7 @@
  */
 package ss.martin.platform.util;
 
+import java.util.Set;
 import ss.martin.platform.entity.DataModel;
 
 /**
@@ -63,5 +64,19 @@ public interface PlatformEntityListener<E extends DataModel> {
      * @throws Exception error.
      */
     default void postUpdate(E entity) throws Exception {
+    }
+    /**
+     * Invoked before delete action.
+     * @param ids entity IDs.
+     * @throws Exception error.
+     */
+    default void preDelete(Set<Long> ids) throws Exception {
+    }
+    /**
+     * Invoked after delete action.
+     * @param ids entity IDs.
+     * @throws Exception error.
+     */
+    default void postDelete(Set<Long> ids) throws Exception {
     }
 }

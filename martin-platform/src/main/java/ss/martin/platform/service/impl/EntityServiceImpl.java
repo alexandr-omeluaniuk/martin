@@ -132,7 +132,14 @@ class EntityServiceImpl implements EntityService {
         if (SoftDeleted.class.isAssignableFrom(cl)) {
             throw new PlatformException("Attempt to delete undeletable entity: " + cl.getName());
         }
+        List<PlatformEntityListener> listeners = getEntityListener(cl);
+        for (PlatformEntityListener l : listeners) {
+            l.preDelete(ids);
+        }
         coreDAO.massDelete(ids, cl);
+        for (PlatformEntityListener l : listeners) {
+            l.postDelete(ids);
+        }
     }
     @Override
     public <T extends DataModel> T get(Long id, Class<T> cl) throws Exception {
