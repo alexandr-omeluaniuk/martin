@@ -64,7 +64,8 @@ class CoreDAOImpl implements CoreDAO {
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.equal(c.get(DataModel_.id), id));
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
-        return em.createQuery(criteria).getSingleResult();
+        List<T> result = em.createQuery(criteria).getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
