@@ -23,13 +23,8 @@
  */
 package ss.martin.platform.test.data;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -37,8 +32,6 @@ import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.entity.EntityAudit;
-import ss.martin.platform.entity.EntityFile;
-import ss.martin.platform.entity.HasAvatar;
 
 /**
  * Contact.
@@ -46,17 +39,10 @@ import ss.martin.platform.entity.HasAvatar;
  */
 @Entity
 @Table(name = "contact")
-public class Contact extends EntityAudit implements HasAvatar {
+public class Contact extends EntityAudit {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================== FIELDS ==================================================================
-    /** Contact avatar. */
-    /** Avatar. */
-    @FormField
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JoinColumn(name = "avatar")
-    private EntityFile avatar;
     /** Has avatar. */
     @Column(name = "has_avatar")
     private boolean hasAvatar;
@@ -129,33 +115,6 @@ public class Contact extends EntityAudit implements HasAvatar {
      */
     public void setPhoneMobile(String phoneMobile) {
         this.phoneMobile = phoneMobile;
-    }
-    /**
-     * @return the avatar
-     */
-    @Override
-    public EntityFile getAvatar() {
-        return avatar;
-    }
-    /**
-     * @param avatar the avatar to set
-     */
-    public void setAvatar(EntityFile avatar) {
-        this.avatar = avatar;
-    }
-    /**
-     * @return the hasAvatar
-     */
-    @Override
-    public boolean isHasAvatar() {
-        return hasAvatar;
-    }
-    /**
-     * @param hasAvatar the hasAvatar to set
-     */
-    @Override
-    public void setHasAvatar(boolean hasAvatar) {
-        this.hasAvatar = hasAvatar;
     }
 // ====================================================================================================================
     @Override

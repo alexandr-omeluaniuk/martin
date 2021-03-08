@@ -24,15 +24,10 @@
 package ss.martin.platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -51,16 +46,10 @@ import ss.martin.platform.security.SystemUserStatus;
 @Entity
 @Table(name = "users")
 @EntityAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
-public class SystemUser extends TenantEntity implements HasAvatar, SoftDeleted {
+public class SystemUser extends TenantEntity implements SoftDeleted {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
-    /** Avatar. */
-    @FormField
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JoinColumn(name = "avatar")
-    private EntityFile avatar;
     /** Has avatar. */
     @Column(name = "has_avatar")
     private boolean hasAvatar;
@@ -187,33 +176,6 @@ public class SystemUser extends TenantEntity implements HasAvatar, SoftDeleted {
      */
     public void setStatus(SystemUserStatus status) {
         this.status = status;
-    }
-    /**
-     * @return the avatar
-     */
-    @Override
-    public EntityFile getAvatar() {
-        return avatar;
-    }
-    /**
-     * @param avatar the avatar to set
-     */
-    public void setAvatar(EntityFile avatar) {
-        this.avatar = avatar;
-    }
-    /**
-     * @return the hasAvatar
-     */
-    @Override
-    public boolean isHasAvatar() {
-        return hasAvatar;
-    }
-    /**
-     * @param hasAvatar the hasAvatar to set
-     */
-    @Override
-    public void setHasAvatar(boolean hasAvatar) {
-        this.hasAvatar = hasAvatar;
     }
     /**
      * @return the active

@@ -60,7 +60,6 @@ class SecurityServiceImpl implements SecurityService {
         UserPermissions permissions = new UserPermissions();
         SystemUser currentUser = securityContext.currentUser();
         if (currentUser != null) {
-            permissions.setHasAvatar(currentUser.isHasAvatar());
             permissions.setUserId(currentUser.getId());
             permissions.setSubscription(securityContext.subscription());
             permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
