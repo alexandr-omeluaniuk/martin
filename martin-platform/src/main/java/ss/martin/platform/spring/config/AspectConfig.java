@@ -29,6 +29,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 /**
  * AOP configuration.
@@ -36,6 +37,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Aspect
 @Configuration
+@Order(0)
 public class AspectConfig {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(AspectConfig.class);
@@ -53,4 +55,12 @@ public class AspectConfig {
         LOG.info(joinPoint.getSignature() + " executed in [" + executionTime + "] ms");
         return proceed;
     }
+//    @Around("@annotation(org.springframework.beans.factory.annotation.Autowired)")
+//    public Object aotowired(ProceedingJoinPoint joinPoint) throws Throwable {
+//        long start = System.currentTimeMillis();
+//        Object proceed = joinPoint.proceed();
+//        long executionTime = System.currentTimeMillis() - start;
+//        LOG.info(joinPoint.getSignature() + " XXX executed in [" + executionTime + "] ms");
+//        return proceed;
+//    }
 }
