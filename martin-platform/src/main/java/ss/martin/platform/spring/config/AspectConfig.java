@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 ss.
+ * Copyright 2021 alex.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,34 @@
  */
 package ss.martin.platform.spring.config;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * JAR module configuration.
- * @author ss
+ * AOP configuration.
+ * @author alex
  */
+@Aspect
 @Configuration
-@EnableAutoConfiguration
-@EnableAspectJAutoProxy
-@ComponentScan({"ss.martin"})
-public class ModuleConfig {
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+public class AspectConfig {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(AspectConfig.class);
+    /**
+     * Log method execution time.
+     * @param joinPoint join point.
+     * @return result.
+     * @throws Throwable error.
+     */
+    @Around("@annotation(ss.martin.platform.anno.util.LogExecutionTime)")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object proceed = joinPoint.proceed();
+        long executionTime = System.currentTimeMillis() - start;
+        LOG.info(joinPoint.getSignature() + " executed in [" + executionTime + "] ms");
+        return proceed;
     }
 }

@@ -16,7 +16,6 @@
  */
 package ss.martin.platform.spring.security;
 
-import ss.martin.platform.security.SystemUserStatus;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +35,7 @@ import org.springframework.stereotype.Component;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
+import ss.martin.platform.security.SystemUserStatus;
 
 /**
  * Authentication provider.
@@ -43,6 +43,7 @@ import ss.martin.platform.exception.SubscriptionHasExpiredException;
  */
 @Component
 class AuthManager implements AuthenticationManager {
+    /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(AuthManager.class);
     /** Password encoder. */
     @Autowired

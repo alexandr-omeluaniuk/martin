@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 ss.
+ * Copyright 2021 alex.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.spring.config;
+package ss.martin.platform.anno.util;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * JAR module configuration.
- * @author ss
+ *
+ * @author alex
  */
-@Configuration
-@EnableAutoConfiguration
-@EnableAspectJAutoProxy
-@ComponentScan({"ss.martin"})
-public class ModuleConfig {
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
-    }
+@Target(value = {ElementType.METHOD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface LogExecutionTime {
+    
 }
