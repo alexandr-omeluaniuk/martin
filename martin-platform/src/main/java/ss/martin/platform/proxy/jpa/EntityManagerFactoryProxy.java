@@ -36,6 +36,7 @@ public class EntityManagerFactoryProxy extends AbstractProxy<EntityManagerFactor
     @Override
     public Object doInvoke(Object proxy, Method method, Object[] args) throws Throwable {
         if ("createEntityManager".equals(method.getName())) {
+            System.out.println("FIRE");
             EntityManager em = (EntityManager) method.invoke(origin, args);
             return new EntityManagerProxy().proxying(em, EntityManager.class);
         } else {

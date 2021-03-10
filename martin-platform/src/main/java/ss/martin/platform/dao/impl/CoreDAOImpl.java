@@ -25,12 +25,12 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.entity.martin.DataModel;
+import ss.entity.martin.DataModel_;
+import ss.entity.martin.SoftDeleted;
 import ss.martin.platform.constants.JPABoolConditionOperator;
 import ss.martin.platform.constants.JPAComparisonOperator;
 import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.DataModel_;
-import ss.martin.platform.entity.SoftDeleted;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 

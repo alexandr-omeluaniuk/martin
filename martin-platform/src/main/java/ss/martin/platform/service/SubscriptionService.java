@@ -23,7 +23,7 @@
  */
 package ss.martin.platform.service;
 
-import ss.martin.platform.entity.Subscription;
+import ss.entity.martin.Subscription;
 
 /**
  * Subscription service.

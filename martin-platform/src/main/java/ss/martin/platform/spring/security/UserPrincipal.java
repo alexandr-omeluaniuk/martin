@@ -19,7 +19,7 @@ package ss.martin.platform.spring.security;
 import java.util.Collection;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.SystemUser;
 
 /**
  * SystemUser principal.

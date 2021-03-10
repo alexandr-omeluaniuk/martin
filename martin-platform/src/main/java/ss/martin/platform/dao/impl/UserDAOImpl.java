@@ -25,9 +25,9 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.entity.martin.SystemUser;
+import ss.entity.martin.SystemUser_;
 import ss.martin.platform.dao.UserDAO;
-import ss.martin.platform.entity.SystemUser;
-import ss.martin.platform.entity.SystemUser_;
 import ss.martin.platform.security.StandardRole;
 
 /**

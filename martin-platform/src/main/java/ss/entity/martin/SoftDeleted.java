@@ -21,40 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import ss.martin.platform.util.TenantEntityListener;
+package ss.entity.martin;
 
 /**
- * Tenant entity.
+ * Soft deleted entity.
  * @author ss
  */
-@MappedSuperclass
-@EntityListeners(TenantEntityListener.class)
-public abstract class TenantEntity extends DataModel {
-    /** Subscription. */
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "subscription_id", nullable = false)
-    private Subscription subscription;
+public interface SoftDeleted {
     /**
-     * @return the subscription
+     * @return the active
      */
-    public Subscription getSubscription() {
-        return subscription;
-    }
+    public boolean isActive();
     /**
-     * @param subscription the subscription to set
+     * @param active the active to set
      */
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
+    public void setActive(boolean active);
 }

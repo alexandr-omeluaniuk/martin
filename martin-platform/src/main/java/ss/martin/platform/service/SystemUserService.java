@@ -23,7 +23,7 @@
  */
 package ss.martin.platform.service;
 
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.SystemUser;
 
 /**
  * System user service.

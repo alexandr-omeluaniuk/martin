@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ss.martin.platform.dao.UserDAO;
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.SystemUser;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.wrapper.RESTResponse;
 

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity;
+package ss.entity.martin;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -115,6 +115,6 @@ public class EmailTemplate extends EntityAudit implements SoftDeleted {
     }
     @Override
     public String toString() {
-        return "ss.martin.platform.entity.EmailTemplate[ id=" + getId() + " ]";
+        return "ss.entity.martin.EmailTemplate[ id=" + getId() + " ]";
     }
 }

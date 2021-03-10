@@ -63,8 +63,18 @@ public abstract class AbstractProxy<T> implements InvocationHandler, ProxyMethod
      */
     public T proxying(T origin, Class<T> cl) {
         this.origin = origin;
-        return (T) Proxy.newProxyInstance(cl.getClassLoader(),
-                new Class[] { cl, ProxyMethods.class }, this);
+        return (T) Proxy.newProxyInstance(cl.getClassLoader(), new Class[] { cl, ProxyMethods.class }, this);
+    }
+    /**
+     * Create proxy with class loader.
+     * @param origin origin object.
+     * @param cl proxy interface.
+     * @param classLoader class loader.
+     * @return proxy object.
+     */
+    public T proxying(T origin, Class<T> cl, ClassLoader classLoader) {
+        this.origin = origin;
+        return (T) Proxy.newProxyInstance(classLoader, new Class[] { cl, ProxyMethods.class }, this);
     }
     @Override
     public Object getOrigin() {

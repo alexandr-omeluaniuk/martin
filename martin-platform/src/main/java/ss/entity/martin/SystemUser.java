@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity;
+package ss.entity.martin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
@@ -209,6 +209,6 @@ public class SystemUser extends TenantEntity implements SoftDeleted {
     }
     @Override
     public String toString() {
-        return "ss.martin.platform.entity.SystemUser[ id=" + getId() + " ]";
+        return "ss.entity.martin.SystemUser[ id=" + getId() + " ]";
     }
 }

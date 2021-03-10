@@ -8,8 +8,8 @@ package ss.martin.platform.dao;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
-import ss.martin.platform.entity.DataModel;
-import ss.martin.platform.entity.SoftDeleted;
+import ss.entity.martin.DataModel;
+import ss.entity.martin.SoftDeleted;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 

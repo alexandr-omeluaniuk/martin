@@ -27,8 +27,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ss.martin.platform.entity.Subscription;
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.Subscription;
+import ss.entity.martin.SystemUser;
 import ss.martin.platform.spring.security.UserPrincipal;
 
 /**

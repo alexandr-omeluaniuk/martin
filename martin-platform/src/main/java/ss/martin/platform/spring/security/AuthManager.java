@@ -33,7 +33,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import ss.martin.platform.dao.UserDAO;
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.SystemUser;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
 import ss.martin.platform.security.SystemUserStatus;
 

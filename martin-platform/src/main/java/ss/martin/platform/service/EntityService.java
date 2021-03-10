@@ -24,7 +24,7 @@
 package ss.martin.platform.service;
 
 import java.util.Set;
-import ss.martin.platform.entity.DataModel;
+import ss.entity.martin.DataModel;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 

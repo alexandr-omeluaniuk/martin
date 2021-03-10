@@ -21,19 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity;
+package ss.entity.martin;
+
+import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 /**
- * Soft deleted entity.
+ * DataModel.
  * @author ss
  */
-public interface SoftDeleted {
+@MappedSuperclass
+public abstract class DataModel implements Serializable {
+    /** Primary key. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     /**
-     * @return the active
+     * @return the id
      */
-    public boolean isActive();
+    public Long getId() {
+        return id;
+    }
     /**
-     * @param active the active to set
+     * @param id the id to set
      */
-    public void setActive(boolean active);
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

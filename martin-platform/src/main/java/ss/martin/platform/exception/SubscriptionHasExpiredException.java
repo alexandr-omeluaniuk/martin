@@ -24,7 +24,7 @@
 package ss.martin.platform.exception;
 
 import org.springframework.security.core.AuthenticationException;
-import ss.martin.platform.entity.Subscription;
+import ss.entity.martin.Subscription;
 
 /**
  * Subscription has expired.

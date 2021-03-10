@@ -29,9 +29,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import ss.entity.martin.EntityAudit;
 import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.constants.AppConstants;
-import ss.martin.platform.entity.EntityAudit;
 
 /**
  * Contact.

@@ -16,7 +16,7 @@
  */
 package ss.martin.platform.dao;
 
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.SystemUser;
 
 /**
  * SystemUser DAO.

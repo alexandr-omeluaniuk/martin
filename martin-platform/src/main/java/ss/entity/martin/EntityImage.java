@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.entity;
+package ss.entity.martin;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.persistence.Column;
@@ -136,6 +136,6 @@ public class EntityImage extends EntityAudit {
     }
     @Override
     public String toString() {
-        return "ss.martin.platform.entity.EntityImage[ id=" + getId() + " ]";
+        return "ss.entity.martin.EntityImage[ id=" + getId() + " ]";
     }
 }

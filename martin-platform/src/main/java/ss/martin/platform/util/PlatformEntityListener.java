@@ -24,7 +24,7 @@
 package ss.martin.platform.util;
 
 import java.util.Set;
-import ss.martin.platform.entity.DataModel;
+import ss.entity.martin.DataModel;
 
 /**
  * Platform entity listener.

@@ -25,8 +25,8 @@ package ss.martin.platform.test;
 
 import java.util.Date;
 import org.springframework.stereotype.Service;
-import ss.martin.platform.entity.Subscription;
-import ss.martin.platform.entity.SystemUser;
+import ss.entity.martin.Subscription;
+import ss.entity.martin.SystemUser;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.security.SystemUserStatus;
 

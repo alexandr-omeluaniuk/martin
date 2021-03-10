@@ -24,7 +24,7 @@
 package ss.martin.platform.exception;
 
 import ss.martin.platform.constants.EntityPermission;
-import ss.martin.platform.entity.DataModel;
+import ss.entity.martin.DataModel;
 
 /**
  * Platform security exception.

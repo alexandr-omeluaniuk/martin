@@ -23,7 +23,7 @@
  */
 package ss.martin.platform.security;
 
-import ss.martin.platform.entity.DataModel;
+import ss.entity.martin.DataModel;
 
 /**
  * Application module provider.

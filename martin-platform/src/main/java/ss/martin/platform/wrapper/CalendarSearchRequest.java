@@ -25,7 +25,7 @@ package ss.martin.platform.wrapper;
 
 import java.util.Date;
 import java.util.Set;
-import ss.martin.platform.entity.CalendarEvent;
+import ss.entity.martin.CalendarEvent;
 
 /**
  * Search request wrapper for calendar.

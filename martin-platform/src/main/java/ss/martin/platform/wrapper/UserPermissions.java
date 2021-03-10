@@ -23,7 +23,7 @@
  */
 package ss.martin.platform.wrapper;
 
-import ss.martin.platform.entity.Subscription;
+import ss.entity.martin.Subscription;
 import ss.martin.platform.security.StandardRole;
 
 /**
