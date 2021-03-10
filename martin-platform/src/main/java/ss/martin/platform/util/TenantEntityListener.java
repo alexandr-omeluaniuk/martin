@@ -25,7 +25,6 @@ package ss.martin.platform.util;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -33,17 +32,13 @@ import ss.entity.martin.SystemUser;
 import ss.entity.martin.TenantEntity;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
-import ss.martin.platform.service.ReflectionUtils;
+import ss.martin.platform.service.impl.ReflectionUtils;
 
 /**
  * Tenant entity listener.
  * @author ss
  */
 public class TenantEntityListener {
-    @Autowired
-    private ReflectionUtils reflectionUtils;
-    @Autowired
-    private SecurityContext securityContext;
     @PrePersist
     @PreUpdate
     protected void prePersistAndUpdate(TenantEntity entity) throws Exception {
@@ -60,15 +55,15 @@ public class TenantEntityListener {
                 return;
             }
             // case 3: super admin creates new subscription and subscription administrator
-            if (StandardRole.ROLE_SUPER_ADMIN.equals(securityContext.currentUser().getStandardRole())) {
+            if (StandardRole.ROLE_SUPER_ADMIN.equals(SecurityContext.currentUser().getStandardRole())) {
                 return;
             }
         }
         // save current subscription for every tenant entity.
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        if (entity != null && reflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
+        if (entity != null && ReflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
             TenantEntity tenantEntity = (TenantEntity) entity;
-            tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
+            tenantEntity.setSubscription(SecurityContext.currentUser().getSubscription());
         }
     }
 }

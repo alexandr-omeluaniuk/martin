@@ -41,7 +41,6 @@ import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.exception.PlatformSecurityException;
 import ss.martin.platform.service.EntityService;
-import ss.martin.platform.service.ReflectionUtils;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.service.SystemUserService;
@@ -71,9 +70,6 @@ class EntityServiceImpl implements EntityService {
     /** Platform entity listeners. */
     @Autowired
     private List<PlatformEntityListener> entityListeners;
-    /** Reflection utils. */
-    @Autowired
-    private ReflectionUtils reflectionUtils;
     @Override
     public EntitySearchResponse list(Class<? extends DataModel> clazz,
             EntitySearchRequest searchRequest) throws Exception {
@@ -177,7 +173,7 @@ class EntityServiceImpl implements EntityService {
     private List<PlatformEntityListener> getEntityListener(Class<? extends DataModel> cl) {
         return entityListeners.stream().filter(l -> {
             try {
-                return cl.equals(l.entity()) || reflectionUtils.hasSuperClass(cl, l.entity());
+                return cl.equals(l.entity()) || ReflectionUtils.hasSuperClass(cl, l.entity());
             } catch (Exception ex) {
                 return false;
             }

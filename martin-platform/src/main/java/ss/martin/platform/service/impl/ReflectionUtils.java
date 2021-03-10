@@ -21,19 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.service;
+package ss.martin.platform.service.impl;
 
 /**
- * Reflection utilities.
+ * Reflection utilities implementation.
  * @author ss
  */
-public interface ReflectionUtils {
+public class ReflectionUtils {
     /**
-     * Is class has superclass.
-     * @param clazz current class.
+     * Check if class has superclass.
+     * @param clazz target class.
      * @param superClass super class.
      * @return true if has.
      * @throws Exception error.
      */
-    boolean hasSuperClass(Class clazz, Class superClass) throws Exception;
+    public static boolean hasSuperClass(Class clazz, Class superClass) throws Exception {
+        Class curClass = clazz;
+        while (curClass.getSuperclass() != null) {
+            if (curClass.getSuperclass().equals(superClass)) {
+                return true;
+            }
+            curClass = curClass.getSuperclass();
+        }
+        return false;
+    }
 }

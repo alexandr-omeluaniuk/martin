@@ -30,10 +30,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ss.martin.platform.anno.security.EntityAccess;
-import ss.martin.platform.constants.EntityPermission;
 import ss.entity.martin.DataModel;
 import ss.entity.martin.SystemUser;
+import ss.martin.platform.anno.security.EntityAccess;
+import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.SecurityService;
@@ -49,19 +49,16 @@ import ss.martin.platform.wrapper.UserPermissions;
 class SecurityServiceImpl implements SecurityService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(SecurityService.class);
-    /** Security context. */
-    @Autowired
-    private SecurityContext securityContext;
     /** Authentication manager. */
     @Autowired
     private AuthenticationManager authManager;
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         UserPermissions permissions = new UserPermissions();
-        SystemUser currentUser = securityContext.currentUser();
+        SystemUser currentUser = SecurityContext.currentUser();
         if (currentUser != null) {
             permissions.setUserId(currentUser.getId());
-            permissions.setSubscription(securityContext.subscription());
+            permissions.setSubscription(SecurityContext.subscription());
             permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                     + currentUser.getLastname());
             permissions.setStandardRole(currentUser.getStandardRole());
@@ -74,7 +71,7 @@ class SecurityServiceImpl implements SecurityService {
         // first level of security
         Optional.ofNullable(clazz.getAnnotation(EntityAccess.class)).ifPresentOrElse((anno) -> {
             Set<StandardRole> entityRoles = new HashSet(Arrays.asList(anno.roles()));
-            if (entityRoles.contains(securityContext.currentUser().getStandardRole())) {
+            if (entityRoles.contains(SecurityContext.currentUser().getStandardRole())) {
                 permissions.addAll(Arrays.asList(EntityPermission.values()));
             }
         }, () -> {

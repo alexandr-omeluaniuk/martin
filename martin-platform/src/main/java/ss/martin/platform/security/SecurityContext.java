@@ -23,10 +23,7 @@
  */
 package ss.martin.platform.security;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import ss.entity.martin.Subscription;
 import ss.entity.martin.SystemUser;
 import ss.martin.platform.spring.security.UserPrincipal;
@@ -36,14 +33,12 @@ import ss.martin.platform.spring.security.UserPrincipal;
  * Provided access to current security context.
  * @author ss
  */
-@Service
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class SecurityContext {
     /**
      * Get current user.
      * @return current user.
      */
-    public SystemUser currentUser() {
+    public static synchronized SystemUser currentUser() {
         Object auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth instanceof UserPrincipal) {
             UserPrincipal userPrincipal = (UserPrincipal) auth;
@@ -56,7 +51,7 @@ public class SecurityContext {
      * Get current user subscription.
      * @return subscription.
      */
-    public Subscription subscription() {
+    public static synchronized Subscription subscription() {
         return currentUser().getSubscription();
     }
 }

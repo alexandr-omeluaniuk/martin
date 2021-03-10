@@ -38,10 +38,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.dao.UserDAO;
 import ss.entity.martin.Subscription;
 import ss.entity.martin.SystemUser;
+import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.exception.RegistrationUserException;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
@@ -78,9 +78,6 @@ class SystemUserServiceImpl implements SystemUserService {
     /** Platform configuration. */
     @Autowired
     private PlatformConfiguration config;
-    /** Security context. */
-    @Autowired
-    private SecurityContext securityContext;
 // =================================================== PUBLIC =========================================================
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -91,7 +88,7 @@ class SystemUserServiceImpl implements SystemUserService {
         String validationString = UUID.randomUUID().toString();
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
-        if (securityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
+        if (SecurityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
             em.persist(systemUser);
         } else {
             coreDAO.create(systemUser);
@@ -154,7 +151,7 @@ class SystemUserServiceImpl implements SystemUserService {
     @Override
     public SystemUser createSystemUser(SystemUser user) throws Exception {
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
-        user.setSubscription(securityContext.currentUser().getSubscription());
+        user.setSubscription(SecurityContext.currentUser().getSubscription());
         startRegistration(user);
         return user;
     }
