@@ -185,6 +185,14 @@ class CoreDAOImpl implements CoreDAO {
         criteria.select(c).where(predicates.toArray(new Predicate[0]));
         return em.createQuery(criteria).getResultList();
     }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T extends DataModel> void massDelete(List<T> entities) {
+        for (T entity : entities) {
+            em.remove(entity);
+        }
+        em.flush();
+    }
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
             EntitySearchRequest searchRequest) throws Exception {

@@ -58,6 +58,12 @@ public interface CoreDAO {
      */
     <T extends DataModel> void massDelete(Set<Long> ids, Class<T> cl);
     /**
+     * Mass deletion.
+     * @param <T> entity type.
+     * @param entities entities.
+     */
+    <T extends DataModel> void massDelete(List<T> entities);
+    /**
      * Mass create.
      * @param <T> entity type.
      * @param list list of entities.
