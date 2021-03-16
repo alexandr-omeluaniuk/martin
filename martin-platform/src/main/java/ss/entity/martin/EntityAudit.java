@@ -16,6 +16,7 @@
  */
 package ss.entity.martin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -41,7 +42,8 @@ public abstract class EntityAudit extends TenantEntity {
 // ================================== FIELDS ======================================================
     /** Created by. */
     @CreatedBy
-    @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, updatable = false)
     private SystemUser createdBy;
     /** Created date. */
@@ -51,7 +53,8 @@ public abstract class EntityAudit extends TenantEntity {
     private Date createdDate;
     /** Last modified by. */
     @LastModifiedBy
-    @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "last_modified_by")
     private SystemUser lastModifiedBy;
     /** Last modified date. */
