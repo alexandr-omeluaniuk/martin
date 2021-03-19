@@ -96,7 +96,7 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object create(@PathVariable("entity") String entityName, @RequestBody Object rawData)
+    public DataModel create(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = getEntityClass(entityName);
@@ -111,13 +111,12 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public RESTResponse update(@PathVariable("entity") String entityName, @RequestBody Object rawData)
+    public DataModel update(@PathVariable("entity") String entityName, @RequestBody Object rawData)
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = getEntityClass(entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
-        entityService.update(entity);
-        return new RESTResponse();
+        return entityService.update(entity);
     }
     /**
      * Mass deletion.
