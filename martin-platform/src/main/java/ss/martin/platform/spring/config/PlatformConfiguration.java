@@ -53,6 +53,8 @@ public class PlatformConfiguration {
     private String systemEmailContactEmail;
     /** Navigation configuration. */
     private URLConfiguration navigation;
+    /** Firebase config json file absolute path. */
+    private String firebaseConfigFilePath;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the systemEmailContactName
@@ -173,5 +175,17 @@ public class PlatformConfiguration {
      */
     public void setNavigation(URLConfiguration navigation) {
         this.navigation = navigation;
+    }
+    /**
+     * @return the firebaseConfigFilePath
+     */
+    public String getFirebaseConfigFilePath() {
+        return firebaseConfigFilePath;
+    }
+    /**
+     * @param firebaseConfigFilePath the firebaseConfigFilePath to set
+     */
+    public void setFirebaseConfigFilePath(String firebaseConfigFilePath) {
+        this.firebaseConfigFilePath = firebaseConfigFilePath;
     }
 }
