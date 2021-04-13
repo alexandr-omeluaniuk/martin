@@ -58,16 +58,28 @@ public class SecurityRESTController {
         return securityService.getUserPermissions();
     }
     /**
-     * Save Firebase client token.
+     * Subscribe Firebase notifications.
      * @param token Firebase token.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/firebase-token", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void saveFirebaseToken(@RequestBody String token) throws Exception {
+    @RequestMapping(value = "/firebase-notifications/subscribe", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void subscribeFirebaseNotifications(@RequestBody String token) throws Exception {
         SystemUser user = SecurityContext.currentUser();
         if (user.getFirebaseToken() == null) {
             user.setFirebaseToken(token);
             coreDAO.update(user);
         }
+    }
+    /**
+     * Unsubscribe Firebase notifications.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/firebase-notifications/unsubscribe", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void unsubscribeFirebaseNotifications() throws Exception {
+        SystemUser user = SecurityContext.currentUser();
+        user.setFirebaseToken(null);
+        coreDAO.update(user);
     }
 }
