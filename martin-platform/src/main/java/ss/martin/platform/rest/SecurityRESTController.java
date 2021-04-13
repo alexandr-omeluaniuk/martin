@@ -67,7 +67,7 @@ public class SecurityRESTController {
     public void subscribeFirebaseNotifications(@RequestBody String token) throws Exception {
         SystemUser user = SecurityContext.currentUser();
         if (user.getFirebaseToken() == null) {
-            user.setFirebaseToken(token);
+            user.setFirebaseToken(token.replace("\"", ""));
             coreDAO.update(user);
         }
     }
