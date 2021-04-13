@@ -39,6 +39,8 @@ public class UserPermissions {
     private Long userId;
     /** STandard role. */
     private StandardRole standardRole;
+    /** Has Firebase token. */
+    private boolean hasFirebaseToken;
     /**
      * @return the fullname
      */
@@ -86,5 +88,17 @@ public class UserPermissions {
      */
     public void setStandardRole(StandardRole standardRole) {
         this.standardRole = standardRole;
+    }
+    /**
+     * @return the hasFirebaseToken
+     */
+    public boolean isHasFirebaseToken() {
+        return hasFirebaseToken;
+    }
+    /**
+     * @param hasFirebaseToken the hasFirebaseToken to set
+     */
+    public void setHasFirebaseToken(boolean hasFirebaseToken) {
+        this.hasFirebaseToken = hasFirebaseToken;
     }
 }

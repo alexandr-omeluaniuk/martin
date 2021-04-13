@@ -92,6 +92,10 @@ public class SystemUser extends TenantEntity implements SoftDeleted {
     /** Active. */
     @Column(name = "active", nullable = false)
     private boolean active;
+    /** Firebase token. */
+    @Size(max = 255)
+    @Column(name = "firebase_token", length = 255)
+    private String firebaseToken;
 // ==================================== SET & GET =================================================
     /**
      * @return the email
@@ -190,6 +194,18 @@ public class SystemUser extends TenantEntity implements SoftDeleted {
     @Override
     public void setActive(boolean active) {
         this.active = active;
+    }
+    /**
+     * @return the firebaseToken
+     */
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+    /**
+     * @param firebaseToken the firebaseToken to set
+     */
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 // ================================================================================================
     @Override

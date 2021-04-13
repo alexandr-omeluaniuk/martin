@@ -62,6 +62,7 @@ class SecurityServiceImpl implements SecurityService {
             permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                     + currentUser.getLastname());
             permissions.setStandardRole(currentUser.getStandardRole());
+            permissions.setHasFirebaseToken(currentUser.getFirebaseToken() != null);
         }
         return permissions;
     }
