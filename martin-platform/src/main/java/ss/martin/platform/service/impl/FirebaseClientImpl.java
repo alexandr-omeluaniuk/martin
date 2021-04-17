@@ -26,13 +26,13 @@ package ss.martin.platform.service.impl;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.LightSettings;
 import com.google.firebase.messaging.LightSettingsColor;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
+import com.google.firebase.messaging.WebpushFcmOptions;
 import com.google.firebase.messaging.WebpushNotification;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,11 +98,12 @@ class FirebaseClientImpl implements FirebaseClient {
 
     @Override
     public String sendTopicNotification(PushNotification notification, String topic) throws Exception {
-        Message message = Message.builder().setTopic(topic).setAndroidConfig(
+        Message message = Message.builder().setTopic(topic)/*.setAndroidConfig(
                 AndroidConfig.builder().setTtl(Long.valueOf(notification.getTtlInSeconds()) * 1000)
-                        .setNotification(createAndroidBuilder(notification).build()).build())
+                        .setNotification(createAndroidBuilder(notification).build()).build())*/
                 .setWebpushConfig(
                 WebpushConfig.builder().putHeader("ttl", notification.getTtlInSeconds())
+                        .setFcmOptions(WebpushFcmOptions.withLink(notification.getClickAction()))
                         .setNotification(createWebPushBuilder(notification).build()).build()
         ).build();
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
@@ -129,10 +130,11 @@ class FirebaseClientImpl implements FirebaseClient {
         builder.setData(notification.getData());
         builder.addAction(
                 new WebpushNotification.Action(notification.getClickAction(), notification.getClickActionLabel())
-        ).setImage(notification.getIcon())
-                .setVibrate(new int[] {300, 100, 400})
+        ).setVibrate(new int[] {200, 100, 200, 100, 200, 100, 200, 100, 200})
+                .setBadge(notification.getIcon())
                 .setIcon(notification.getIcon())
                 .setTitle(notification.getTitle())
+                .setRequireInteraction(true)
                 .setBody(notification.getBody());
         return builder;
     }
