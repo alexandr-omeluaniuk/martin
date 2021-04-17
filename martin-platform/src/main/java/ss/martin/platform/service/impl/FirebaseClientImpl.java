@@ -26,7 +26,11 @@ package ss.martin.platform.service.impl;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.AndroidConfig;
+import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.LightSettings;
+import com.google.firebase.messaging.LightSettingsColor;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushNotification;
@@ -86,7 +90,7 @@ class FirebaseClientImpl implements FirebaseClient {
         }
         Message message = Message.builder().setToken(user.getFirebaseToken()).setWebpushConfig(
                 WebpushConfig.builder().putHeader("ttl", notification.getTtlInSeconds())
-                        .setNotification(createBuilder(notification).build()).build()
+                        .setNotification(createWebPushBuilder(notification).build()).build()
         ).build();
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
         return response;
@@ -94,9 +98,12 @@ class FirebaseClientImpl implements FirebaseClient {
 
     @Override
     public String sendTopicNotification(PushNotification notification, String topic) throws Exception {
-        Message message = Message.builder().setTopic(topic).setWebpushConfig(
+        Message message = Message.builder().setTopic(topic).setAndroidConfig(
+                AndroidConfig.builder().setTtl(Long.valueOf(notification.getTtlInSeconds()) * 1000)
+                        .setNotification(createAndroidBuilder(notification).build()).build())
+                .setWebpushConfig(
                 WebpushConfig.builder().putHeader("ttl", notification.getTtlInSeconds())
-                .setNotification(createBuilder(notification).build()).build()
+                        .setNotification(createWebPushBuilder(notification).build()).build()
         ).build();
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
         return response;
@@ -117,16 +124,29 @@ class FirebaseClientImpl implements FirebaseClient {
      * @param notification notification.
      * @return builder.
      */
-    private WebpushNotification.Builder createBuilder(PushNotification notification) throws Exception {
+    private WebpushNotification.Builder createWebPushBuilder(PushNotification notification) throws Exception {
         WebpushNotification.Builder builder = WebpushNotification.builder();
         builder.setData(notification.getData());
         builder.addAction(
                 new WebpushNotification.Action(notification.getClickAction(), notification.getClickActionLabel())
         ).setImage(notification.getIcon())
-                .setVibrate(new int[] {300, 100, 400, 100, 500})
+                .setVibrate(new int[] {300, 100, 400})
                 .setIcon(notification.getIcon())
                 .setTitle(notification.getTitle())
                 .setBody(notification.getBody());
+        return builder;
+    }
+    
+    private AndroidNotification.Builder createAndroidBuilder(PushNotification notification) {
+        AndroidNotification.Builder builder = AndroidNotification.builder();
+        builder.setVibrateTimingsInMillis(new long[] {300, 100, 400, 100, 500, 100, 1000})
+                .setIcon(notification.getIcon())
+                .setTitle(notification.getTitle())
+                .setClickAction(notification.getClickAction())
+                .setColor("#dd2c00")
+                .setDefaultLightSettings(false)
+                .setLightSettings(LightSettings.builder().setColor(LightSettingsColor.fromString("#dd2c00")).build())
+                .setBody(notification.getBody());       
         return builder;
     }
     
