@@ -23,7 +23,6 @@
  */
 package ss.martin.platform.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -119,11 +118,7 @@ class FirebaseClientImpl implements FirebaseClient {
      * @return builder.
      */
     private WebpushNotification.Builder createBuilder(PushNotification notification) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
         WebpushNotification.Builder builder = WebpushNotification.builder();
-        String payload = mapper.writeValueAsString(notification);
-        builder.setData(payload);
-        builder.putCustomData("agrolavka", payload);
         builder.addAction(
                 new WebpushNotification.Action(notification.getClickAction(), notification.getClickActionLabel())
         ).setImage(notification.getIcon()).setTitle(notification.getTitle()).setBody(notification.getBody());
