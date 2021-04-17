@@ -65,7 +65,7 @@ class FirebaseClientImpl implements FirebaseClient {
     @PostConstruct
     protected void init() {
         if (configuration.getFirebaseConfigFilePath() != null && !configuration.getFirebaseConfigFilePath().isBlank()) {
-            if (FirebaseApp.getInstance() == null) {
+            if (FirebaseApp.getApps().isEmpty()) {
                 Path p = Paths.get(configuration.getFirebaseConfigFilePath());
                 try (InputStream serviceAccount = Files.newInputStream(p)) {
                     FirebaseOptions options = FirebaseOptions.builder()
@@ -119,9 +119,14 @@ class FirebaseClientImpl implements FirebaseClient {
      */
     private WebpushNotification.Builder createBuilder(PushNotification notification) throws Exception {
         WebpushNotification.Builder builder = WebpushNotification.builder();
+        builder.setData(notification.getData());
         builder.addAction(
                 new WebpushNotification.Action(notification.getClickAction(), notification.getClickActionLabel())
-        ).setImage(notification.getIcon()).setTitle(notification.getTitle()).setBody(notification.getBody());
+        ).setImage(notification.getIcon())
+                .setVibrate(new int[] {300, 100, 400, 100, 500})
+                .setIcon(notification.getIcon())
+                .setTitle(notification.getTitle())
+                .setBody(notification.getBody());
         return builder;
     }
     

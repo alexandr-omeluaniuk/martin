@@ -40,6 +40,8 @@ public class PushNotification {
     private String clickActionLabel;
     /** Time to live (in seconds). */
     private String ttlInSeconds;
+    /** Arbitrary data. */
+    private String data;
     /**
      * @return the title
      */
@@ -111,5 +113,17 @@ public class PushNotification {
      */
     public void setClickActionLabel(String clickActionLabel) {
         this.clickActionLabel = clickActionLabel;
+    }
+    /**
+     * @return the data
+     */
+    public String getData() {
+        return data;
+    }
+    /**
+     * @param data the data to set
+     */
+    public void setData(String data) {
+        this.data = data;
     }
 }
