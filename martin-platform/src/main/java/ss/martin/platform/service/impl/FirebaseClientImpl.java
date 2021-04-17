@@ -23,6 +23,7 @@
  */
 package ss.martin.platform.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -65,14 +66,16 @@ class FirebaseClientImpl implements FirebaseClient {
     @PostConstruct
     protected void init() {
         if (configuration.getFirebaseConfigFilePath() != null && !configuration.getFirebaseConfigFilePath().isBlank()) {
-            Path p = Paths.get(configuration.getFirebaseConfigFilePath());
-            try (InputStream serviceAccount = Files.newInputStream(p)) {
-                FirebaseOptions options = FirebaseOptions.builder()
-                      .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
-                FirebaseApp.initializeApp(options);
-                LOG.info("Firebase initialization completed...");
-            } catch (IOException e) {
-                LOG.error("Firebase credentials loading error!", e);
+            if (FirebaseApp.getInstance() == null) {
+                Path p = Paths.get(configuration.getFirebaseConfigFilePath());
+                try (InputStream serviceAccount = Files.newInputStream(p)) {
+                    FirebaseOptions options = FirebaseOptions.builder()
+                          .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
+                    FirebaseApp.initializeApp(options);
+                    LOG.info("Firebase initialization completed...");
+                } catch (IOException e) {
+                    LOG.error("Firebase credentials loading error!", e);
+                }
             }
         }
     }
@@ -115,8 +118,12 @@ class FirebaseClientImpl implements FirebaseClient {
      * @param notification notification.
      * @return builder.
      */
-    private WebpushNotification.Builder createBuilder(PushNotification notification){
+    private WebpushNotification.Builder createBuilder(PushNotification notification) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
         WebpushNotification.Builder builder = WebpushNotification.builder();
+        String payload = mapper.writeValueAsString(notification);
+        builder.setData(payload);
+        builder.putCustomData("agrolavka", payload);
         builder.addAction(
                 new WebpushNotification.Action(notification.getClickAction(), notification.getClickActionLabel())
         ).setImage(notification.getIcon()).setTitle(notification.getTitle()).setBody(notification.getBody());
