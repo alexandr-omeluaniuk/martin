@@ -24,6 +24,7 @@
 package ss.martin.platform.rest;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -67,10 +68,10 @@ public class FirebaseRESTController {
             final @PathVariable("firebaseToken") String firebaseToken,
             final @RequestHeader(value = "User-Agent") String userAgentString) throws Exception {
         UserAgent userAgent = SecurityContext.principal().getUserAgent();
-        NotificationTopicSubscription subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
+        Optional<NotificationTopicSubscription> subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
             return topic.equals(s.getTopic());
-        }).findFirst().get();
-        if (SecurityContext.currentUser().equals(userAgent.getCreatedBy()) && subs == null) {
+        }).findFirst();
+        if (SecurityContext.currentUser().equals(userAgent.getCreatedBy()) && subs.isEmpty()) {
             userAgent.setFirebaseToken(firebaseToken);
             userAgent.setUserAgentString(userAgentString);
             coreDAO.update(userAgent);
@@ -97,14 +98,14 @@ public class FirebaseRESTController {
             final @PathVariable("firebaseToken") String firebaseToken,
             final @RequestHeader(value = "User-Agent") String userAgentString) throws Exception {
         UserAgent userAgent = SecurityContext.principal().getUserAgent();
-        NotificationTopicSubscription subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
+        Optional<NotificationTopicSubscription> subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
             return topic.equals(s.getTopic());
-        }).findFirst().get();
-        if (subs != null) {
+        }).findFirst();
+        if (subs.isPresent()) {
             Set<UserAgent> set = new HashSet<>();
             set.add(userAgent);
             firebaseClient.unsubscribeFromTopic(topic, set);
-            coreDAO.delete(subs.getId(), NotificationTopicSubscription.class);
+            coreDAO.delete(subs.get().getId(), NotificationTopicSubscription.class);
         }
     }
 }
