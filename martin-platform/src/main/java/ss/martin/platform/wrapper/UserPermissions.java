@@ -24,6 +24,7 @@
 package ss.martin.platform.wrapper;
 
 import ss.entity.martin.Subscription;
+import ss.entity.martin.UserAgent;
 import ss.martin.platform.security.StandardRole;
 
 /**
@@ -40,7 +41,7 @@ public class UserPermissions {
     /** STandard role. */
     private StandardRole standardRole;
     /** Has Firebase token. */
-    private boolean hasFirebaseToken;
+    private UserAgent userAgent;
     /**
      * @return the fullname
      */
@@ -90,15 +91,15 @@ public class UserPermissions {
         this.standardRole = standardRole;
     }
     /**
-     * @return the hasFirebaseToken
+     * @return the userAgent
      */
-    public boolean isHasFirebaseToken() {
-        return hasFirebaseToken;
+    public UserAgent getUserAgent() {
+        return userAgent;
     }
     /**
-     * @param hasFirebaseToken the hasFirebaseToken to set
+     * @param userAgent the userAgent to set
      */
-    public void setHasFirebaseToken(boolean hasFirebaseToken) {
-        this.hasFirebaseToken = hasFirebaseToken;
+    public void setUserAgent(UserAgent userAgent) {
+        this.userAgent = userAgent;
     }
 }

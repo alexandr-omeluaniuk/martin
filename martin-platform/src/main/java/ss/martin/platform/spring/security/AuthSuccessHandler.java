@@ -18,13 +18,19 @@ package ss.martin.platform.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import ss.entity.martin.UserAgent;
+import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.security.SecurityContext;
 
 /**
  * Authentication success handler.
@@ -32,11 +38,34 @@ import org.springframework.stereotype.Component;
  */
 @Component
 class AuthSuccessHandler implements AuthenticationSuccessHandler {
+    /** Logger. */
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AuthSuccessHandler.class);
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse hsr1,
             Authentication a) throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.OK.value());
         LoginResponse success = new LoginResponse(true, "Welcome to Martin platform");
         hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(success));
+        // save user agent
+        String userAgentString = hsr.getHeader("User-Agent");
+        UserPrincipal principal = SecurityContext.principal();
+        List<UserAgent> userAgents = principal.getUserAgents();
+        UserAgent userAgent = userAgents.stream().filter(ua -> {
+            return userAgentString.equals(ua.getUserAgentString());
+        }).findFirst().map(ua -> ua).orElseGet(() -> {
+            UserAgent ua = new UserAgent();
+            ua.setUserAgentString(userAgentString);
+            try {
+                coreDAO.create(ua);
+            } catch (Exception ex) {
+                LOG.error("can't create new user agent.", ex);
+            }
+            principal.getUserAgents().add(ua);
+            return ua;
+        });
+        principal.setUserAgent(userAgent);
     }
 }

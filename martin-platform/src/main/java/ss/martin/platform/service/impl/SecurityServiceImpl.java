@@ -55,14 +55,15 @@ class SecurityServiceImpl implements SecurityService {
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         UserPermissions permissions = new UserPermissions();
-        SystemUser currentUser = SecurityContext.currentUser();
-        if (currentUser != null) {
+        UserPrincipal principal = SecurityContext.principal();
+        if (principal != null) {
+            SystemUser currentUser = principal.getUser();
             permissions.setUserId(currentUser.getId());
             permissions.setSubscription(SecurityContext.subscription());
             permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                     + currentUser.getLastname());
             permissions.setStandardRole(currentUser.getStandardRole());
-            permissions.setHasFirebaseToken(currentUser.getFirebaseToken() != null);
+            permissions.setUserAgent(principal.getUserAgent());
         }
         return permissions;
     }

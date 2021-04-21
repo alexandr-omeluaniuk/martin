@@ -26,10 +26,7 @@ package ss.martin.platform.service.impl;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.LightSettings;
-import com.google.firebase.messaging.LightSettingsColor;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushFcmOptions;
@@ -46,7 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ss.entity.martin.SystemUser;
+import ss.entity.martin.UserAgent;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.service.FirebaseClient;
 import ss.martin.platform.spring.config.PlatformConfiguration;
@@ -84,11 +81,11 @@ class FirebaseClientImpl implements FirebaseClient {
     }
 
     @Override
-    public String sendPersonalNotification(PushNotification notification, SystemUser user) throws Exception {
-        if (user.getFirebaseToken() == null || user.getFirebaseToken().isBlank()) {
-            throw new PlatformException("User " + user + " has not Firebase token!");
+    public String sendPersonalNotification(PushNotification notification, UserAgent userAgent) throws Exception {
+        if (userAgent.getFirebaseToken() == null || userAgent.getFirebaseToken().isBlank()) {
+            throw new PlatformException(userAgent + " has not Firebase token!");
         }
-        Message message = Message.builder().setToken(user.getFirebaseToken()).setWebpushConfig(
+        Message message = Message.builder().setToken(userAgent.getFirebaseToken()).setWebpushConfig(
                 WebpushConfig.builder().putHeader("ttl", notification.getTtlInSeconds())
                         .setNotification(createWebPushBuilder(notification).build()).build()
         ).build();
@@ -98,10 +95,7 @@ class FirebaseClientImpl implements FirebaseClient {
 
     @Override
     public String sendTopicNotification(PushNotification notification, String topic) throws Exception {
-        Message message = Message.builder().setTopic(topic)/*.setAndroidConfig(
-                AndroidConfig.builder().setTtl(Long.valueOf(notification.getTtlInSeconds()) * 1000)
-                        .setNotification(createAndroidBuilder(notification).build()).build())*/
-                .setWebpushConfig(
+        Message message = Message.builder().setTopic(topic).setWebpushConfig(
                 WebpushConfig.builder().putHeader("ttl", notification.getTtlInSeconds())
                         .setFcmOptions(WebpushFcmOptions.withLink(notification.getClickAction()))
                         .setNotification(createWebPushBuilder(notification).build()).build()
@@ -111,11 +105,21 @@ class FirebaseClientImpl implements FirebaseClient {
     }
 
     @Override
-    public void subscribeUsersToTopic(String topic, Set<SystemUser> users) throws Exception {
-        for (SystemUser user : users) {
-            if (user.getFirebaseToken() != null && !user.getFirebaseToken().isBlank()) {
+    public void subscribeToTopic(String topic, Set<UserAgent> userAgents) throws Exception {
+        for (UserAgent userAgent : userAgents) {
+            if (userAgent.getFirebaseToken() != null && !userAgent.getFirebaseToken().isBlank()) {
                 FirebaseMessaging.getInstance().subscribeToTopic(
-                        Collections.singletonList(user.getFirebaseToken()), topic);
+                        Collections.singletonList(userAgent.getFirebaseToken()), topic);
+            }
+        }
+    }
+    
+    @Override
+    public void unsubscribeFromTopic(String topic, Set<UserAgent> userAgents) throws Exception {
+        for (UserAgent userAgent : userAgents) {
+            if (userAgent.getFirebaseToken() != null && !userAgent.getFirebaseToken().isBlank()) {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(
+                        Collections.singletonList(userAgent.getFirebaseToken()), topic);
             }
         }
     }
@@ -138,18 +142,4 @@ class FirebaseClientImpl implements FirebaseClient {
                 .setBody(notification.getBody());
         return builder;
     }
-    
-    private AndroidNotification.Builder createAndroidBuilder(PushNotification notification) {
-        AndroidNotification.Builder builder = AndroidNotification.builder();
-        builder.setVibrateTimingsInMillis(new long[] {300, 100, 400, 100, 500, 100, 1000})
-                .setIcon(notification.getIcon())
-                .setTitle(notification.getTitle())
-                .setClickAction(notification.getClickAction())
-                .setColor("#dd2c00")
-                .setDefaultLightSettings(false)
-                .setLightSettings(LightSettings.builder().setColor(LightSettingsColor.fromString("#dd2c00")).build())
-                .setBody(notification.getBody());       
-        return builder;
-    }
-    
 }

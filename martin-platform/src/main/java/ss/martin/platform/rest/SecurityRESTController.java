@@ -25,13 +25,9 @@ package ss.martin.platform.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ss.entity.martin.SystemUser;
-import ss.martin.platform.dao.CoreDAO;
-import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.wrapper.UserPermissions;
 
@@ -45,9 +41,6 @@ public class SecurityRESTController {
     /** Security service. */
     @Autowired
     private SecurityService securityService;
-    /** Core DAO. */
-    @Autowired
-    private CoreDAO coreDAO;
     /**
      * Get user permissions.
      * @return user permissions.
@@ -56,30 +49,5 @@ public class SecurityRESTController {
     @RequestMapping(value = "/permissions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public UserPermissions getUserPermissions() throws Exception {
         return securityService.getUserPermissions();
-    }
-    /**
-     * Subscribe Firebase notifications.
-     * @param token Firebase token.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/firebase-notifications/subscribe", method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public void subscribeFirebaseNotifications(@RequestBody String token) throws Exception {
-        SystemUser user = SecurityContext.currentUser();
-        if (user.getFirebaseToken() == null) {
-            user.setFirebaseToken(token.replace("\"", ""));
-            coreDAO.update(user);
-        }
-    }
-    /**
-     * Unsubscribe Firebase notifications.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/firebase-notifications/unsubscribe", method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public void unsubscribeFirebaseNotifications() throws Exception {
-        SystemUser user = SecurityContext.currentUser();
-        user.setFirebaseToken(null);
-        coreDAO.update(user);
     }
 }

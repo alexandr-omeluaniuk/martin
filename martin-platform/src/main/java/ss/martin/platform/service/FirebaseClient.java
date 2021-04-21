@@ -24,7 +24,7 @@
 package ss.martin.platform.service;
 
 import java.util.Set;
-import ss.entity.martin.SystemUser;
+import ss.entity.martin.UserAgent;
 import ss.martin.platform.wrapper.PushNotification;
 
 /**
@@ -35,11 +35,11 @@ public interface FirebaseClient {
     /**
      * Send personal notification.
      * @param notification notification.
-     * @param user user.
+     * @param userAgent user agent.
      * @return Firebase response.
      * @throws Exception error.
      */
-    String sendPersonalNotification(PushNotification notification, SystemUser user) throws Exception;
+    String sendPersonalNotification(PushNotification notification, UserAgent userAgent) throws Exception;
     /**
      * Send topic notification.
      * @param notification notification.
@@ -49,10 +49,17 @@ public interface FirebaseClient {
      */
     String sendTopicNotification(PushNotification notification, String topic) throws Exception;
     /**
-     * Subscribe users to topic.
+     * Subscribe user agents to topic.
      * @param topic topic.
-     * @param users users.
+     * @param userAgents users.
      * @throws Exception error.
      */
-    void subscribeUsersToTopic(String topic, Set<SystemUser> users) throws Exception;
+    void subscribeToTopic(String topic, Set<UserAgent> userAgents) throws Exception;
+    /**
+     * Unsubscribe user agents from topic.
+     * @param topic topic.
+     * @param userAgents user agents.
+     * @throws Exception error.
+     */
+    void unsubscribeFromTopic(String topic, Set<UserAgent> userAgents) throws Exception;
 }

@@ -39,10 +39,18 @@ public class SecurityContext {
      * @return current user.
      */
     public static synchronized SystemUser currentUser() {
+        UserPrincipal userPrincipal = principal();
+        return userPrincipal == null ? null : userPrincipal.getUser();
+    }
+    /**
+     * Get user principal.
+     * @return user principal.
+     */
+    public static synchronized UserPrincipal principal() {
         Object auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth instanceof UserPrincipal) {
             UserPrincipal userPrincipal = (UserPrincipal) auth;
-            return userPrincipal.getUser();
+            return userPrincipal;
         } else {
             return null;
         }

@@ -17,9 +17,11 @@
 package ss.martin.platform.spring.security;
 
 import java.util.Collection;
+import java.util.List;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import ss.entity.martin.SystemUser;
+import ss.entity.martin.UserAgent;
 
 /**
  * SystemUser principal.
@@ -28,6 +30,10 @@ import ss.entity.martin.SystemUser;
 public class UserPrincipal extends UsernamePasswordAuthenticationToken {
     /** SystemUser. */
     private SystemUser user;
+    /** User agents. */
+    private List<UserAgent> userAgents;
+    /** User agent of logged in user. */
+    private UserAgent userAgent;
     /**
      * Constructor.
      * @param username - username.
@@ -49,5 +55,29 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
      */
     public void setUser(SystemUser user) {
         this.user = user;
+    }
+    /**
+     * @return the userAgents
+     */
+    public List<UserAgent> getUserAgents() {
+        return userAgents;
+    }
+    /**
+     * @param userAgents the userAgents to set
+     */
+    public void setUserAgents(List<UserAgent> userAgents) {
+        this.userAgents = userAgents;
+    }
+    /**
+     * @return the userAgent
+     */
+    public UserAgent getUserAgent() {
+        return userAgent;
+    }
+    /**
+     * @param userAgent the userAgent to set
+     */
+    public void setUserAgent(UserAgent userAgent) {
+        this.userAgent = userAgent;
     }
 }

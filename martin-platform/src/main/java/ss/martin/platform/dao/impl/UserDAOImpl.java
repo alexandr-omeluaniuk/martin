@@ -25,8 +25,10 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ss.entity.martin.EntityAudit_;
 import ss.entity.martin.SystemUser;
 import ss.entity.martin.SystemUser_;
+import ss.entity.martin.UserAgent;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.security.StandardRole;
 
@@ -69,5 +71,14 @@ class UserDAOImpl implements UserDAO {
         criteria.select(c).where(cb.equal(c.get(SystemUser_.validationString), validationString));
         List<SystemUser> users = em.createQuery(criteria).getResultList();
         return users.isEmpty() ? null : users.get(0);
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<UserAgent> getUserAgents(SystemUser user) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<UserAgent> criteria = cb.createQuery(UserAgent.class);
+        Root<UserAgent> c = criteria.from(UserAgent.class);
+        criteria.select(c).where(cb.equal(c.get(EntityAudit_.createdBy), user));
+        return em.createQuery(criteria).getResultList();
     }
 }

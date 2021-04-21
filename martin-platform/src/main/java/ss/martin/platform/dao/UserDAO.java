@@ -16,7 +16,9 @@
  */
 package ss.martin.platform.dao;
 
+import java.util.List;
 import ss.entity.martin.SystemUser;
+import ss.entity.martin.UserAgent;
 
 /**
  * SystemUser DAO.
@@ -40,4 +42,10 @@ public interface UserDAO {
      * @return system user or null.
      */
     SystemUser getUserByValidationString(String validationString);
+    /**
+     * Get user user agents.
+     * @param user user.
+     * @return user agents.
+     */
+    List<UserAgent> getUserAgents(SystemUser user);
 }
