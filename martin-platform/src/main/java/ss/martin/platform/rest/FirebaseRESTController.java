@@ -24,15 +24,17 @@
 package ss.martin.platform.rest;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ss.entity.martin.NotificationTopicSubscription;
 import ss.entity.martin.UserAgent;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.security.SecurityContext;
@@ -58,15 +60,24 @@ public class FirebaseRESTController {
      * @param userAgentString user agent string.
      * @throws Exception error.
      */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @RequestMapping(value = "/topic/subscribe/{firebaseToken}/{topic}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public void subscribeToTopic(@PathVariable("topic") String topic,
             final @PathVariable("firebaseToken") String firebaseToken,
             final @RequestHeader(value = "User-Agent") String userAgentString) throws Exception {
-        UserAgent userAgent = getUserAgent(userAgentString, firebaseToken);
-        userAgent.setFirebaseToken(firebaseToken);
-        if (SecurityContext.currentUser().equals(userAgent.getCreatedBy())) {
+        UserAgent userAgent = SecurityContext.principal().getUserAgent();
+        NotificationTopicSubscription subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
+            return topic.equals(s.getTopic());
+        }).findFirst().get();
+        if (SecurityContext.currentUser().equals(userAgent.getCreatedBy()) && subs == null) {
+            userAgent.setFirebaseToken(firebaseToken);
+            userAgent.setUserAgentString(userAgentString);
             coreDAO.update(userAgent);
+            NotificationTopicSubscription notificationSubscription = new NotificationTopicSubscription();
+            notificationSubscription.setTopic(topic);
+            notificationSubscription.setUserAgent(userAgent);
+            coreDAO.create(notificationSubscription);
             Set<UserAgent> set = new HashSet<>();
             set.add(userAgent);
             firebaseClient.subscribeToTopic(topic, set);
@@ -79,32 +90,21 @@ public class FirebaseRESTController {
      * @param userAgentString user agent string.
      * @throws Exception error.
      */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @RequestMapping(value = "/topic/unsubscribe/{firebaseToken}/{topic}", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public void unsubscribeFirebaseNotifications(@PathVariable("topic") String topic,
             final @PathVariable("firebaseToken") String firebaseToken,
             final @RequestHeader(value = "User-Agent") String userAgentString) throws Exception {
-        UserAgent userAgent = getUserAgent(userAgentString, firebaseToken);
-        Set<UserAgent> set = new HashSet<>();
-        set.add(userAgent);
-        firebaseClient.unsubscribeFromTopic(topic, set);
-    }
-    /**
-     * Get user agent by User-Agent string and Firebase token in addition.
-     * @param userAgentString User-Agent string.
-     * @param firebaseToken Firebase token.
-     * @return user agent.
-     */
-    private UserAgent getUserAgent(String userAgentString, String firebaseToken) {
-        List<UserAgent> userAgents = SecurityContext.principal().getUserAgents();
-        UserAgent userAgent = userAgents.stream().filter(ua -> {
-            return userAgentString.equals(ua.getUserAgentString());
+        UserAgent userAgent = SecurityContext.principal().getUserAgent();
+        NotificationTopicSubscription subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
+            return topic.equals(s.getTopic());
         }).findFirst().get();
-        if (userAgent == null) {
-            userAgent = userAgents.stream().filter(ua -> {
-                return firebaseToken.equals(ua.getFirebaseToken());
-            }).findFirst().get();
+        if (subs != null) {
+            Set<UserAgent> set = new HashSet<>();
+            set.add(userAgent);
+            firebaseClient.unsubscribeFromTopic(topic, set);
+            coreDAO.delete(subs.getId(), NotificationTopicSubscription.class);
         }
-        return userAgent;
     }
 }

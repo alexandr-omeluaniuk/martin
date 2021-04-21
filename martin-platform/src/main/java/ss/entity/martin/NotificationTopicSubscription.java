@@ -23,72 +23,59 @@
  */
 package ss.entity.martin;
 
-import java.util.List;
-import javax.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * User agent.
+ * Notification topic subscription.
  * @author alex
  */
 @Entity
-@Table(name = "user_agents")
-public class UserAgent extends EntityAudit {
-    // ============================================= FIELDS ===========================================================
-    /** User agent string. */
+@Table(name = "notification_topic_subscriptions")
+public class NotificationTopicSubscription extends DataModel {
+    // ============================================ FIELDS ============================================================
+    /** Topic. */
     @NotNull
-    @Size(max = 1000)
-    @Column(name = "user_agent_string", nullable = false, length = 1000)
-    private String userAgentString;
-    /** Firebase token. */
     @Size(max = 255)
-    @Column(name = "firebase_token", length = 255)
-    private String firebaseToken;
-    /** Notification subscriptions. */
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userAgent", orphanRemoval = true, cascade = CascadeType.REMOVE)
-    private List<NotificationTopicSubscription> notificationSubscriptions;
-    // ============================================= SET & GET ========================================================
+    @Column(name = "topic", nullable = false, length = 255)
+    private String topic;
+    /** User agent. */
+    @JsonIgnore
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_agent_id")
+    private UserAgent userAgent;
+    // ============================================ SET & GET =========================================================
     /**
-     * @return the userAgentString
+     * @return the topic
      */
-    public String getUserAgentString() {
-        return userAgentString;
+    public String getTopic() {
+        return topic;
     }
     /**
-     * @param userAgentString the userAgentString to set
+     * @param topic the topic to set
      */
-    public void setUserAgentString(String userAgentString) {
-        this.userAgentString = userAgentString;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
     /**
-     * @return the firebaseToken
+     * @return the userAgent
      */
-    public String getFirebaseToken() {
-        return firebaseToken;
+    public UserAgent getUserAgent() {
+        return userAgent;
     }
     /**
-     * @param firebaseToken the firebaseToken to set
+     * @param userAgent the userAgent to set
      */
-    public void setFirebaseToken(String firebaseToken) {
-        this.firebaseToken = firebaseToken;
-    }
-    /**
-     * @return the notificationSubscriptions
-     */
-    public List<NotificationTopicSubscription> getNotificationSubscriptions() {
-        return notificationSubscriptions;
-    }
-    /**
-     * @param notificationSubscriptions the notificationSubscriptions to set
-     */
-    public void setNotificationSubscriptions(List<NotificationTopicSubscription> notificationSubscriptions) {
-        this.notificationSubscriptions = notificationSubscriptions;
+    public void setUserAgent(UserAgent userAgent) {
+        this.userAgent = userAgent;
     }
     // ================================================================================================================
     @Override
@@ -100,15 +87,15 @@ public class UserAgent extends EntityAudit {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserAgent)) {
+        if (!(object instanceof NotificationTopicSubscription)) {
             return false;
         }
-        UserAgent other = (UserAgent) object;
+        NotificationTopicSubscription other = (NotificationTopicSubscription) object;
         return !((this.getId() == null && other.getId() != null)
                 || (this.getId() != null && !this.getId().equals(other.getId())));
     }
     @Override
     public String toString() {
-        return "ss.entity.martin.UserAgent[ id=" + getId() + " ]";
+        return "ss.entity.martin.NotificationTopicSubscription[ id=" + getId() + " ]";
     }
 }
