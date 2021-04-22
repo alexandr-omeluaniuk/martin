@@ -53,6 +53,8 @@ public class PlatformConfiguration {
     private String systemEmailContactEmail;
     /** Navigation configuration. */
     private URLConfiguration navigation;
+    /** JWT configuration. */
+    private JwtConfiguration jwt;
     /** Firebase config json file absolute path. */
     private String firebaseConfigFilePath;
     // ========================================== SET & GET ===========================================================
@@ -187,5 +189,17 @@ public class PlatformConfiguration {
      */
     public void setFirebaseConfigFilePath(String firebaseConfigFilePath) {
         this.firebaseConfigFilePath = firebaseConfigFilePath;
+    }
+    /**
+     * @return the jwt
+     */
+    public JwtConfiguration getJwt() {
+        return jwt;
+    }
+    /**
+     * @param jwt the jwt to set
+     */
+    public void setJwt(JwtConfiguration jwt) {
+        this.jwt = jwt;
     }
 }
