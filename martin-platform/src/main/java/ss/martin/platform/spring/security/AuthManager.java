@@ -36,6 +36,7 @@ import ss.entity.martin.SystemUser;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
 import ss.martin.platform.security.SystemUserStatus;
+import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
  * Authentication provider.
@@ -51,6 +52,12 @@ class AuthManager implements AuthenticationManager {
     /** SystemUser DAO. */
     @Autowired
     private UserDAO userDAO;
+    /** JWT token utility. */
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    /** Platform configuration. */
+    @Autowired
+    private PlatformConfiguration configuration;
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         String username = auth.getPrincipal() + "";
@@ -74,6 +81,9 @@ class AuthManager implements AuthenticationManager {
         UserPrincipal authentication = new UserPrincipal(username, password, gaList);
         authentication.setUser(user);
         authentication.setUserAgents(userDAO.getUserAgents(user));
+        if (configuration.getJwt() != null) {
+            authentication.setJwtToken(new JwtToken(jwtTokenUtil.generateToken(authentication)));
+        }
         LOG.info("successfull authentication for [" + user + "] completed...");
         return authentication;
     }

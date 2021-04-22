@@ -34,6 +34,8 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
     private List<UserAgent> userAgents;
     /** User agent of logged in user. */
     private UserAgent userAgent;
+    /** JWT token. */
+    private JwtToken jwtToken;
     /**
      * Constructor.
      * @param username - username.
@@ -79,5 +81,17 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
      */
     public void setUserAgent(UserAgent userAgent) {
         this.userAgent = userAgent;
+    }
+    /**
+     * @return the jwtToken
+     */
+    public JwtToken getJwtToken() {
+        return jwtToken;
+    }
+    /**
+     * @param jwtToken the jwtToken to set
+     */
+    public void setJwtToken(JwtToken jwtToken) {
+        this.jwtToken = jwtToken;
     }
 }
