@@ -32,8 +32,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ss.entity.martin.DataModel;
 import ss.entity.martin.SystemUser;
+import ss.entity.martin.UserAgent;
 import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.constants.EntityPermission;
+import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.SecurityService;
@@ -52,6 +54,9 @@ class SecurityServiceImpl implements SecurityService {
     /** Authentication manager. */
     @Autowired
     private AuthenticationManager authManager;
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         UserPermissions permissions = new UserPermissions();
@@ -63,7 +68,9 @@ class SecurityServiceImpl implements SecurityService {
             permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                     + currentUser.getLastname());
             permissions.setStandardRole(currentUser.getStandardRole());
-            permissions.setUserAgent(principal.getUserAgent());
+            UserAgent ua = coreDAO.findById(principal.getUserAgent().getId(), UserAgent.class);
+            principal.setUserAgent(ua);
+            permissions.setUserAgent(ua);
         }
         return permissions;
     }
