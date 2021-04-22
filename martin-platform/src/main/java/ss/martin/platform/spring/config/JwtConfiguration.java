@@ -31,7 +31,7 @@ public class JwtConfiguration {
     /** JWT secret. */
     private String secret;
     /** Validity period in hours. */
-    private Integer validityPeriodInHours = 8;
+    private Integer validityPeriodInHours;
     /**
      * @return the secret
      */
