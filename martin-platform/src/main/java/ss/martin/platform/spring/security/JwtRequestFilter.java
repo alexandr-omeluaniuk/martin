@@ -76,7 +76,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         restoredPrincipal.setUserAgent(userAgent);
                         return restoredPrincipal;
                     } catch (Exception ex) {
-                        LOG.info("Can not deserialize principal from JWT claims", ex);
+                        LOG.debug("Can not deserialize principal from JWT claims", ex);
                         return null;
                     }
                 });
