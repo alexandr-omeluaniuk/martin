@@ -55,8 +55,7 @@ class AuthSuccessHandler implements AuthenticationSuccessHandler {
         loginResponse.setMessage("Welcome to Martin platform");
         principal.setUserAgent(securityService.getUserAgent(hsr));
         if (isJWTAuthentication) {
-            principal.setJwtToken(new JwtToken(jwtTokenUtil.generateToken(principal)));
-            loginResponse.setJwt(principal.getJwtToken().getToken());
+            loginResponse.setJwt(jwtTokenUtil.generateToken(principal));
         }
         hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(loginResponse));
     }

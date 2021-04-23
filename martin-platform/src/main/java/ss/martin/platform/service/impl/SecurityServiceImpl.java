@@ -30,6 +30,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ss.entity.martin.DataModel;
@@ -117,5 +119,14 @@ class SecurityServiceImpl implements SecurityService {
             return ua;
         });
         return userAgent;
+    }
+    @Override
+    public UserPrincipal createPrincipal(SystemUser user) {
+        GrantedAuthority ga = new SimpleGrantedAuthority(user.getStandardRole().name());
+        List<GrantedAuthority> gaList = new ArrayList<>();
+        gaList.add(ga);
+        UserPrincipal principal = new UserPrincipal(user.getEmail(), user.getPassword(), gaList);
+        principal.setUser(user);
+        return principal;
     }
 }

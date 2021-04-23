@@ -5,20 +5,20 @@
  */
 package ss.martin.platform.spring.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Base64;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ss.martin.platform.constants.JwtConstants;
 import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
@@ -64,14 +64,9 @@ public class JwtTokenUtil implements Serializable {
 
     //generate token for user
     public String generateToken(UserPrincipal principal) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(baos);
-        objectOutputStream.writeObject(principal);
-        objectOutputStream.flush();
-        objectOutputStream.close();
         Claims claims = new DefaultClaims();
-        claims.put(JwtToken.CLAIM_KEY_PRINCIPAL, Base64.getEncoder().encodeToString(baos.toByteArray()));
-        baos.close();
+        claims.put(JwtConstants.CLAIM_KEY_SYSTEM_USER, serializeObjectToJSON(principal.getUser()));
+        claims.put(JwtConstants.CLAIM_KEY_USER_AGENT, serializeObjectToJSON(principal.getUserAgent()));
         return doGenerateToken(claims, principal.getUser().getEmail());
     }
 
@@ -90,5 +85,19 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, String email) {
         final String username = getUsernameFromToken(token);
         return (username.equals(email) && !isTokenExpired(token));
+    }
+    /**
+     * Serialize object to json string.
+     * @param obj object.
+     * @return json string.
+     * @throws Exception serialization error.
+     */
+    private String serializeObjectToJSON(Object obj) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        objectMapper.writeValue(baos, obj);
+        String json = new String(baos.toByteArray(), "UTF-8");
+        baos.close();
+        return json;
     }
 }

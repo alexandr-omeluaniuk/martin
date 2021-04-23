@@ -16,9 +16,7 @@
  */
 package ss.martin.platform.spring.security;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -36,6 +32,7 @@ import ss.entity.martin.SystemUser;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
 import ss.martin.platform.security.SystemUserStatus;
+import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
@@ -55,11 +52,14 @@ class AuthManager implements AuthenticationManager {
     /** Platform configuration. */
     @Autowired
     private PlatformConfiguration configuration;
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         boolean isJWTAuthentication = configuration.getJwt() != null;
-        String username = auth.getPrincipal() + "";
-        String password = auth.getCredentials() + "";
+        String username = String.valueOf(auth.getPrincipal());
+        String password = String.valueOf(auth.getCredentials());
         SystemUser user = userDAO.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
@@ -77,12 +77,7 @@ class AuthManager implements AuthenticationManager {
         if (user.getSubscription().getExpirationDate().before(new Date())) {
             throw new SubscriptionHasExpiredException(user.getSubscription());
         }
-        GrantedAuthority ga = new SimpleGrantedAuthority(user.getStandardRole().name());
-        List<GrantedAuthority> gaList = new ArrayList<>();
-        gaList.add(ga);
-        UserPrincipal authentication = new UserPrincipal(username, password, gaList);
-        authentication.setUser(user);
         LOG.info("successfull authentication for [" + user + "] completed...");
-        return authentication;
+        return securityService.createPrincipal(user);
     }
 }

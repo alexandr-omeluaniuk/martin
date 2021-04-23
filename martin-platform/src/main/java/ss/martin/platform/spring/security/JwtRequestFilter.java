@@ -5,11 +5,9 @@
  */
 package ss.martin.platform.spring.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Base64;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ss.entity.martin.SystemUser;
+import ss.entity.martin.UserAgent;
+import ss.martin.platform.constants.JwtConstants;
 import ss.martin.platform.security.SecurityContext;
+import ss.martin.platform.service.SecurityService;
 
 /**
  * JWT filter.
@@ -30,19 +32,25 @@ import ss.martin.platform.security.SecurityContext;
 public class JwtRequestFilter extends OncePerRequestFilter {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(JwtRequestFilter.class);
+    /** Header 'Bearer' string. */
+    private static final String HEADER_BEARER = "Bearer ";
+    /** Header 'Authorization' string. */
+    private static final String HEADER_AUTHORIZATION = "Authorization";
     /** JWT token utility. */
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader(HEADER_AUTHORIZATION);
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
+        if (requestTokenHeader != null && requestTokenHeader.startsWith(HEADER_BEARER)) {
+            jwtToken = requestTokenHeader.substring(HEADER_BEARER.length());
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
@@ -63,15 +71,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.validateToken(jwtToken, username)) {
                 principal = jwtTokenUtil.getClaimFromToken(jwtToken, (claims) -> {
                     try {
-                        String payload = claims.get(JwtToken.CLAIM_KEY_PRINCIPAL, String.class);
-                        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.getDecoder().decode(payload));
-                        ObjectInputStream objectInputStream = new ObjectInputStream(bais);
-                        UserPrincipal p = (UserPrincipal) objectInputStream.readObject();
-                        bais.close();
-                        objectInputStream.close();
-                        return p;
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        SystemUser systemUser = objectMapper.readValue(
+                                claims.get(JwtConstants.CLAIM_KEY_SYSTEM_USER, String.class), SystemUser.class);
+                        UserAgent userAgent = objectMapper.readValue(
+                                claims.get(JwtConstants.CLAIM_KEY_USER_AGENT, String.class), UserAgent.class);
+                        UserPrincipal restoredPrincipal = securityService.createPrincipal(systemUser);
+                        restoredPrincipal.setUserAgent(userAgent);
+                        return restoredPrincipal;
                     } catch (Exception ex) {
-                        LOG.info("Can not deserialize '" + JwtToken.CLAIM_KEY_PRINCIPAL + "' claim value", ex);
+                        LOG.info("Can not deserialize principal from JWT claims", ex);
                         return null;
                     }
                 });
