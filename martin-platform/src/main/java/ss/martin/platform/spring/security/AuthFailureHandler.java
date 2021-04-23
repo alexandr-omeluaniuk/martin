@@ -29,6 +29,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
+import ss.martin.platform.wrapper.RESTResponse;
 
 /**
  * Authentication failure handler.
@@ -40,7 +41,7 @@ class AuthFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest hsr, HttpServletResponse hsr1,
             AuthenticationException ae) throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.UNAUTHORIZED.value());
-        LoginResponse failback = new LoginResponse(false, ae.getMessage());
+        RESTResponse failback = new RESTResponse(false, ae.getMessage());
         if (ae instanceof UsernameNotFoundException) {
             failback.setCode("1");
         } else if (ae instanceof BadCredentialsException) {

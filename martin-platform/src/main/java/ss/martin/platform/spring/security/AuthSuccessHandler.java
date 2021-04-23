@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import ss.entity.martin.UserAgent;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.security.SecurityContext;
+import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
  * Authentication success handler.
@@ -43,15 +44,22 @@ class AuthSuccessHandler implements AuthenticationSuccessHandler {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Platform configuration. */
+    @Autowired
+    private PlatformConfiguration configuration;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse hsr1,
             Authentication a) throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.OK.value());
-        LoginResponse success = new LoginResponse(true, "Welcome to Martin platform");
-        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(success));
+        UserPrincipal principal = SecurityContext.principal();
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setMessage("Welcome to Martin platform");
+        if (configuration.getJwt() != null) {
+            loginResponse.setJwt(principal.getJwtToken().getToken());
+        }
+        hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(loginResponse));
         // save user agent
         String userAgentString = hsr.getHeader("User-Agent");
-        UserPrincipal principal = SecurityContext.principal();
         List<UserAgent> userAgents = principal.getUserAgents();
         UserAgent userAgent = userAgents.stream().filter(ua -> {
             return userAgentString.equals(ua.getUserAgentString());

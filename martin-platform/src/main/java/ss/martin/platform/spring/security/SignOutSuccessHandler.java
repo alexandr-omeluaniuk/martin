@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
+import ss.martin.platform.wrapper.RESTResponse;
 
 /**
  * Logout success handler.
@@ -36,7 +37,7 @@ class SignOutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest hsr, HttpServletResponse hsr1, Authentication a)
             throws IOException, ServletException {
         hsr1.setStatus(HttpStatus.OK.value());
-        LoginResponse success = new LoginResponse(true, "Logout is OK!");
+        RESTResponse success = new RESTResponse(true, "Logout is OK!");
         hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(success));
     }
 }
