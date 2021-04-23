@@ -31,8 +31,8 @@ import org.springframework.stereotype.Component;
 import ss.entity.martin.SystemUser;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
+import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.SystemUserStatus;
-import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
@@ -52,9 +52,6 @@ class AuthManager implements AuthenticationManager {
     /** Platform configuration. */
     @Autowired
     private PlatformConfiguration configuration;
-    /** Security service. */
-    @Autowired
-    private SecurityService securityService;
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         boolean isJWTAuthentication = configuration.getJwt() != null;
@@ -78,6 +75,6 @@ class AuthManager implements AuthenticationManager {
             throw new SubscriptionHasExpiredException(user.getSubscription());
         }
         LOG.info("successfull authentication for [" + user + "] completed...");
-        return securityService.createPrincipal(user);
+        return SecurityContext.createPrincipal(user);
     }
 }

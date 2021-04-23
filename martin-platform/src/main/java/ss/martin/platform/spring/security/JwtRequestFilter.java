@@ -22,7 +22,6 @@ import ss.entity.martin.SystemUser;
 import ss.entity.martin.UserAgent;
 import ss.martin.platform.constants.JwtConstants;
 import ss.martin.platform.security.SecurityContext;
-import ss.martin.platform.service.SecurityService;
 
 /**
  * JWT filter.
@@ -39,9 +38,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /** JWT token utility. */
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    /** Security service. */
-    @Autowired
-    private SecurityService securityService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -76,7 +72,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                 claims.get(JwtConstants.CLAIM_KEY_SYSTEM_USER, String.class), SystemUser.class);
                         UserAgent userAgent = objectMapper.readValue(
                                 claims.get(JwtConstants.CLAIM_KEY_USER_AGENT, String.class), UserAgent.class);
-                        UserPrincipal restoredPrincipal = securityService.createPrincipal(systemUser);
+                        UserPrincipal restoredPrincipal = SecurityContext.createPrincipal(systemUser);
                         restoredPrincipal.setUserAgent(userAgent);
                         return restoredPrincipal;
                     } catch (Exception ex) {

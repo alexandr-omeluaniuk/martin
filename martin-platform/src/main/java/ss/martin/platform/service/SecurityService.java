@@ -19,10 +19,8 @@ package ss.martin.platform.service;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import ss.entity.martin.DataModel;
-import ss.entity.martin.SystemUser;
 import ss.entity.martin.UserAgent;
 import ss.martin.platform.constants.EntityPermission;
-import ss.martin.platform.spring.security.UserPrincipal;
 import ss.martin.platform.wrapper.UserPermissions;
 
 /**
@@ -55,10 +53,4 @@ public interface SecurityService {
      * @return user agent.
      */
     UserAgent getUserAgent(HttpServletRequest httpRequest);
-    /**
-     * Create principal for user.
-     * @param user user.
-     * @return principal.
-     */
-    UserPrincipal createPrincipal(SystemUser user);
 }
