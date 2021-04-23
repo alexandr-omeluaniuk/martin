@@ -12,6 +12,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,8 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
  */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(JwtRequestFilter.class);
     /** JWT token utility. */
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -39,13 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        if (request.getRequestURI().equals("/api/account/register")
-                || request.getRequestURI().equals("/api/account/login")) {
-            chain.doFilter(request, response);
-            return;
-        }
         final String requestTokenHeader = request.getHeader("Authorization");
-
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
@@ -55,14 +53,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                LOG.warn("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                LOG.info("JWT Token has expired");
             }
         } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+            LOG.info("JWT Token does not begin with Bearer String");
         }
-
         // Once we get the token validate it.
         UserPrincipal principal = SecurityContext.principal();
         if (username != null && principal == null) {

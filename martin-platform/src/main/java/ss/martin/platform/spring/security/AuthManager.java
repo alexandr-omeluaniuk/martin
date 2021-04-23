@@ -60,6 +60,7 @@ class AuthManager implements AuthenticationManager {
     private PlatformConfiguration configuration;
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
+        boolean isJWTAuthentication = configuration.getJwt() != null;
         String username = auth.getPrincipal() + "";
         String password = auth.getCredentials() + "";
         SystemUser user = userDAO.findByUsername(username);
@@ -69,8 +70,12 @@ class AuthManager implements AuthenticationManager {
         if (SystemUserStatus.ACTIVE != user.getStatus()) {
             throw new DisabledException("User is deactivated: " + username);
         }
-        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Wrong password: " + password);
+        if (isJWTAuthentication && configuration.getJwt().getSecret().equals(password)) {
+            // user can be authenticated without password
+        } else {
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                throw new BadCredentialsException("Wrong password: " + password);
+            }
         }
         if (user.getSubscription().getExpirationDate().before(new Date())) {
             throw new SubscriptionHasExpiredException(user.getSubscription());
@@ -81,7 +86,7 @@ class AuthManager implements AuthenticationManager {
         UserPrincipal authentication = new UserPrincipal(username, password, gaList);
         authentication.setUser(user);
         authentication.setUserAgents(userDAO.getUserAgents(user));
-        if (configuration.getJwt() != null) {
+        if (isJWTAuthentication) {
             authentication.setJwtToken(new JwtToken(jwtTokenUtil.generateToken(authentication)));
         }
         LOG.info("successfull authentication for [" + user + "] completed...");
