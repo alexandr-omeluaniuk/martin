@@ -38,6 +38,7 @@ import ss.entity.martin.UserAgent;
 import ss.martin.platform.anno.security.EntityAccess;
 import ss.martin.platform.constants.EntityPermission;
 import ss.martin.platform.dao.CoreDAO;
+import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.SecurityService;
@@ -59,6 +60,9 @@ class SecurityServiceImpl implements SecurityService {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** User DAO. */
+    @Autowired
+    private UserDAO userDAO;
     @Override
     public UserPermissions getUserPermissions() throws Exception {
         UserPermissions permissions = new UserPermissions();
@@ -99,7 +103,7 @@ class SecurityServiceImpl implements SecurityService {
     public UserAgent getUserAgent(HttpServletRequest httpRequest) {
         UserPrincipal principal = SecurityContext.principal();
         String userAgentString = httpRequest.getHeader("User-Agent");
-        List<UserAgent> userAgents = principal.getUserAgents();
+        List<UserAgent> userAgents = userDAO.getUserAgents(principal.getUser());
         UserAgent userAgent = userAgents.stream().filter(ua -> {
             return userAgentString.equals(ua.getUserAgentString());
         }).findFirst().map(ua -> ua).orElseGet(() -> {
@@ -110,7 +114,6 @@ class SecurityServiceImpl implements SecurityService {
             } catch (Exception ex) {
                 LOG.error("can't create new user agent.", ex);
             }
-            principal.getUserAgents().add(ua);
             return ua;
         });
         return userAgent;

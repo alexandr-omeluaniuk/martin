@@ -13,7 +13,9 @@ import java.io.Serializable;
  */
 public class JwtToken implements Serializable {
     /** UID. */
-    private static final long serialVersionUID = -8091879091924046844L;
+    private static final long serialVersionUID = -1L;
+    /** JWT claim key for principal. */
+    public static final String CLAIM_KEY_PRINCIPAL = "PRINCIPAL";
     /** Token. */
     private final String token;
     /**

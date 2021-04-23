@@ -21,7 +21,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -37,25 +36,28 @@ import ss.martin.platform.spring.config.PlatformConfiguration;
  */
 @Component
 class AuthSuccessHandler implements AuthenticationSuccessHandler {
-    /** Logger. */
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AuthSuccessHandler.class);
     /** Security service. */
     @Autowired
     private SecurityService securityService;
     /** Platform configuration. */
     @Autowired
     private PlatformConfiguration configuration;
+    /** JWT token utility. */
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse hsr1,
             Authentication a) throws IOException, ServletException {
+        boolean isJWTAuthentication = configuration.getJwt() != null;
         hsr1.setStatus(HttpStatus.OK.value());
         UserPrincipal principal = SecurityContext.principal();
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setMessage("Welcome to Martin platform");
-        if (configuration.getJwt() != null) {
+        principal.setUserAgent(securityService.getUserAgent(hsr));
+        if (isJWTAuthentication) {
+            principal.setJwtToken(new JwtToken(jwtTokenUtil.generateToken(principal)));
             loginResponse.setJwt(principal.getJwtToken().getToken());
         }
         hsr1.getOutputStream().println(new ObjectMapper().writeValueAsString(loginResponse));
-        principal.setUserAgent(securityService.getUserAgent(hsr));
     }
 }

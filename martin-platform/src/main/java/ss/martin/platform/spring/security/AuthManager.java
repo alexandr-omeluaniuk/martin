@@ -52,9 +52,6 @@ class AuthManager implements AuthenticationManager {
     /** SystemUser DAO. */
     @Autowired
     private UserDAO userDAO;
-    /** JWT token utility. */
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
     /** Platform configuration. */
     @Autowired
     private PlatformConfiguration configuration;
@@ -85,10 +82,6 @@ class AuthManager implements AuthenticationManager {
         gaList.add(ga);
         UserPrincipal authentication = new UserPrincipal(username, password, gaList);
         authentication.setUser(user);
-        authentication.setUserAgents(userDAO.getUserAgents(user));
-        if (isJWTAuthentication) {
-            authentication.setJwtToken(new JwtToken(jwtTokenUtil.generateToken(authentication)));
-        }
         LOG.info("successfull authentication for [" + user + "] completed...");
         return authentication;
     }
