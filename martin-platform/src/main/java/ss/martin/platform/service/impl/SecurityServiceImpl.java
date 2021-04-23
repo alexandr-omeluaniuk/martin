@@ -19,8 +19,10 @@ package ss.martin.platform.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +94,25 @@ class SecurityServiceImpl implements SecurityService {
     public void backgroundAuthentication(String username, String password) {
         Authentication a = authManager.authenticate(new UserPrincipal(username, password, new ArrayList<>()));
         SecurityContextHolder.getContext().setAuthentication(a);
+    }
+    @Override
+    public UserAgent getUserAgent(HttpServletRequest httpRequest) {
+        UserPrincipal principal = SecurityContext.principal();
+        String userAgentString = httpRequest.getHeader("User-Agent");
+        List<UserAgent> userAgents = principal.getUserAgents();
+        UserAgent userAgent = userAgents.stream().filter(ua -> {
+            return userAgentString.equals(ua.getUserAgentString());
+        }).findFirst().map(ua -> ua).orElseGet(() -> {
+            UserAgent ua = new UserAgent();
+            ua.setUserAgentString(userAgentString);
+            try {
+                coreDAO.create(ua);
+            } catch (Exception ex) {
+                LOG.error("can't create new user agent.", ex);
+            }
+            principal.getUserAgents().add(ua);
+            return ua;
+        });
+        return userAgent;
     }
 }

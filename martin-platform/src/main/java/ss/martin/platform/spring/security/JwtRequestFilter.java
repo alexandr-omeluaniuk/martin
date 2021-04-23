@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ss.martin.platform.security.SecurityContext;
+import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
@@ -39,15 +40,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /** Platform configuration. */
     @Autowired
     private PlatformConfiguration configuration;
-
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get
-        // only the Token
+        // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -72,8 +75,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // that the current user is authenticated. So it passes the
                 // Spring Security Configurations successfully.
                 SecurityContextHolder.getContext().setAuthentication(a);
+                principal = SecurityContext.principal();
+                principal.setUserAgent(securityService.getUserAgent(request));
             }
         }
+        // otherwise without principal will be 401 error
         chain.doFilter(request, response);
     }
 }
