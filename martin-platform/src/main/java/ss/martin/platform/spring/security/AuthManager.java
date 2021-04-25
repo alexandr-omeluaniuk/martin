@@ -33,7 +33,6 @@ import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.exception.SubscriptionHasExpiredException;
 import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.security.SystemUserStatus;
-import ss.martin.platform.spring.config.PlatformConfiguration;
 
 /**
  * Authentication provider.
@@ -49,12 +48,8 @@ class AuthManager implements AuthenticationManager {
     /** SystemUser DAO. */
     @Autowired
     private UserDAO userDAO;
-    /** Platform configuration. */
-    @Autowired
-    private PlatformConfiguration configuration;
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
-        boolean isJWTAuthentication = configuration.getJwt() != null;
         String username = String.valueOf(auth.getPrincipal());
         String password = String.valueOf(auth.getCredentials());
         SystemUser user = userDAO.findByUsername(username);
@@ -64,12 +59,8 @@ class AuthManager implements AuthenticationManager {
         if (SystemUserStatus.ACTIVE != user.getStatus()) {
             throw new DisabledException("User is deactivated: " + username);
         }
-        if (isJWTAuthentication && configuration.getJwt().getSecret().equals(password)) {
-            // user can be authenticated without password
-        } else {
-            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
-                throw new BadCredentialsException("Wrong password: " + password);
-            }
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("Wrong password: " + password);
         }
         if (user.getSubscription().getExpirationDate().before(new Date())) {
             throw new SubscriptionHasExpiredException(user.getSubscription());
