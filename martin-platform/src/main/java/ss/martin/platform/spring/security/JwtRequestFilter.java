@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ss.entity.martin.Subscription;
 import ss.entity.martin.SystemUser;
 import ss.entity.martin.UserAgent;
 import ss.martin.platform.constants.JwtConstants;
@@ -68,8 +69,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 principal = jwtTokenUtil.getClaimFromToken(jwtToken, (claims) -> {
                     try {
                         ObjectMapper objectMapper = new ObjectMapper();
+                        Subscription subscription = objectMapper.readValue(
+                                claims.get(JwtConstants.CLAIM_KEY_SUBSCRIPTION, String.class), Subscription.class);
                         SystemUser systemUser = objectMapper.readValue(
                                 claims.get(JwtConstants.CLAIM_KEY_SYSTEM_USER, String.class), SystemUser.class);
+                        systemUser.setSubscription(subscription);
                         UserAgent userAgent = objectMapper.readValue(
                                 claims.get(JwtConstants.CLAIM_KEY_USER_AGENT, String.class), UserAgent.class);
                         UserPrincipal restoredPrincipal = SecurityContext.createPrincipal(systemUser);

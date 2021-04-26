@@ -67,6 +67,7 @@ public class JwtTokenUtil implements Serializable {
         Claims claims = new DefaultClaims();
         claims.put(JwtConstants.CLAIM_KEY_SYSTEM_USER, serializeObjectToJSON(principal.getUser()));
         claims.put(JwtConstants.CLAIM_KEY_USER_AGENT, serializeObjectToJSON(principal.getUserAgent()));
+        claims.put(JwtConstants.CLAIM_KEY_SUBSCRIPTION, serializeObjectToJSON(principal.getUser().getSubscription()));
         return doGenerateToken(claims, principal.getUser().getEmail());
     }
 
