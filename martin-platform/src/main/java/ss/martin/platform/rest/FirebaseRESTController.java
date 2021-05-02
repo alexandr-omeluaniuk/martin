@@ -68,6 +68,7 @@ public class FirebaseRESTController {
             final @PathVariable("firebaseToken") String firebaseToken,
             final @RequestHeader(value = "User-Agent") String userAgentString) throws Exception {
         UserAgent userAgent = SecurityContext.principal().getUserAgent();
+        userAgent = coreDAO.findById(userAgent.getId(), UserAgent.class);
         Optional<NotificationTopicSubscription> subs = userAgent.getNotificationSubscriptions().stream().filter(s -> {
             return topic.equals(s.getTopic());
         }).findFirst();
