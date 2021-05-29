@@ -7,6 +7,7 @@ package ss.martin.platform.spring.config;
 
 import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,6 +21,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.spring.security.AuthUsernamePasswordFilter;
@@ -81,6 +84,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/static/**", "/locales/**", "/*.json", "/*.js", "/*.txt",
                 "/*.ico", "/*.html", "/", configuration.getNavigation().getViews() + "/**",
                 configuration.getNavigation().getRegistrationVerification() + "/**");
+        web.httpFirewall(httpFirewall());
+    }
+    /**
+     * Spring security HTTP firewall.
+     * @return 
+     */
+    @Bean
+    public HttpFirewall httpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedPercent(true);;
+        firewall.setAllowSemicolon(true);
+        return firewall;
     }
     /**
      * Create custom authentication filter.
