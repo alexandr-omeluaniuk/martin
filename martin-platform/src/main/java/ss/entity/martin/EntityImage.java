@@ -58,6 +58,10 @@ public class EntityImage extends EntityAudit {
     @NotNull
     @Column(name = "image_size", nullable = false)
     private Long size;
+    /** Absolute path on disk. */
+    @NotNull
+    @Column(name = "file_name_on_disk", length = 255, nullable = false)
+    private String fileNameOnDisk;
     /** Data. */
     @JsonDeserialize(using = ByteArrayDeserializer.class)
     @FormField
@@ -111,6 +115,18 @@ public class EntityImage extends EntityAudit {
      */
     public void setImageData(byte[] data) {
         this.data = data;
+    }
+    /**
+     * @return the fileNameOnDisk
+     */
+    public String getFileNameOnDisk() {
+        return fileNameOnDisk;
+    }
+    /**
+     * @param fileNameOnDisk the fileNameOnDisk to set
+     */
+    public void setFileNameOnDisk(String fileNameOnDisk) {
+        this.fileNameOnDisk = fileNameOnDisk;
     }
     // ================================================================================================================
     @Override

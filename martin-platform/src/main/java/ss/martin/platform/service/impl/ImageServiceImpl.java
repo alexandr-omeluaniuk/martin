@@ -30,6 +30,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.UUID;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -70,18 +71,24 @@ class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void saveImageToDisk(EntityImage image) throws Exception {
-        File file = new File(getRootFolder(), String.valueOf(image.getId()));
-        Files.write(Paths.get(file.toURI()), image.getImageData(), StandardOpenOption.CREATE);
+    public String saveImageToDisk(byte[] data) throws Exception {
+        String randomName = generateRandomFilename();
+        File file = new File(getRootFolder(), randomName);
+        Files.write(Paths.get(file.toURI()), data, StandardOpenOption.CREATE);
+        return randomName;
     }
 
     @Override
     public byte[] readImageFromDisk(EntityImage image) throws Exception {
-        File file = new File(getRootFolder(), String.valueOf(image.getId()));
+        File file = new File(getRootFolder(), image.getFileNameOnDisk());
         return Files.readAllBytes(Paths.get(file.toURI()));
     }
     
     private File getRootFolder() {
         return new File(platformConfiguration.getImagesStoragePath());
+    }
+    
+    private String generateRandomFilename() {
+        return System.currentTimeMillis() + "." + UUID.randomUUID().toString();
     }
 }

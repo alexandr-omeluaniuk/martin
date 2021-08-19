@@ -40,10 +40,11 @@ public interface ImageService {
     byte[] convertToThumbnail(byte[] data, int thumbnailMinSize) throws Exception;
     /**
      * Save image to disk.
-     * @param image image with data.
+     * @param data image data.
+     * @return absolute file path.
      * @throws Exception error.
      */
-    void saveImageToDisk(EntityImage image) throws Exception;
+    String saveImageToDisk(byte[] data) throws Exception;
     /**
      * Read image from disk.
      * @param image image.
