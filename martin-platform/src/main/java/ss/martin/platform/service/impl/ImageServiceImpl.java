@@ -74,7 +74,7 @@ class ImageServiceImpl implements ImageService {
     public String saveImageToDisk(byte[] data) throws Exception {
         String randomName = generateRandomFilename();
         File file = new File(getRootFolder(), randomName);
-        Files.write(Paths.get(file.toURI()), data, StandardOpenOption.CREATE);
+        Files.write(Paths.get(file.toURI()), data, StandardOpenOption.CREATE_NEW);
         return randomName;
     }
 
@@ -85,7 +85,11 @@ class ImageServiceImpl implements ImageService {
     }
     
     private File getRootFolder() {
-        return new File(platformConfiguration.getImagesStoragePath());
+        File folder = new File(platformConfiguration.getImagesStoragePath());
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder;
     }
     
     private String generateRandomFilename() {
