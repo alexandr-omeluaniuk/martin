@@ -26,8 +26,8 @@ package ss.entity.martin;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.FormField;
@@ -61,9 +61,7 @@ public class EntityImage extends EntityAudit {
     /** Data. */
     @JsonDeserialize(using = ByteArrayDeserializer.class)
     @FormField
-    @Lob
-    @NotNull
-    @Column(name = "image_data", nullable = false)
+    @Transient
     private byte[] data;
     // ============================================= SET & GET ========================================================
     /**
@@ -105,13 +103,13 @@ public class EntityImage extends EntityAudit {
     /**
      * @return the data
      */
-    public byte[] getData() {
+    public byte[] getImageData() {
         return data;
     }
     /**
      * @param data the data to set
      */
-    public void setData(byte[] data) {
+    public void setImageData(byte[] data) {
         this.data = data;
     }
     // ================================================================================================================

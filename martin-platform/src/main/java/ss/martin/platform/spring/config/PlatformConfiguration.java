@@ -57,6 +57,8 @@ public class PlatformConfiguration {
     private JwtConfiguration jwt;
     /** Firebase config json file absolute path. */
     private String firebaseConfigFilePath;
+    /** Image storage absolute path. */
+    private String imagesStoragePath;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the systemEmailContactName
@@ -201,5 +203,17 @@ public class PlatformConfiguration {
      */
     public void setJwt(JwtConfiguration jwt) {
         this.jwt = jwt;
+    }
+    /**
+     * @return the imagesStoragePath
+     */
+    public String getImagesStoragePath() {
+        return imagesStoragePath;
+    }
+    /**
+     * @param imagesStoragePath the imagesStoragePath to set
+     */
+    public void setImagesStoragePath(String imagesStoragePath) {
+        this.imagesStoragePath = imagesStoragePath;
     }
 }
