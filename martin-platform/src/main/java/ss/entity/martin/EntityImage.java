@@ -26,12 +26,14 @@ package ss.entity.martin;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.FormField;
 import ss.martin.platform.util.ByteArrayDeserializer;
+import ss.martin.platform.util.EntityImageListener;
 
 /**
  * Entity image.
@@ -39,6 +41,7 @@ import ss.martin.platform.util.ByteArrayDeserializer;
  */
 @Entity
 @Table(name = "entity_image")
+@EntityListeners(EntityImageListener.class)
 public class EntityImage extends EntityAudit {
     // ============================================= FIELDS ===========================================================
     /** Image file name. */

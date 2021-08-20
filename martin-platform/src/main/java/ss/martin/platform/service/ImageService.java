@@ -46,6 +46,12 @@ public interface ImageService {
      */
     String saveImageToDisk(byte[] data) throws Exception;
     /**
+     * Delete image from disk.
+     * @param image entity image.
+     * @throws Exception error.
+     */
+    void deleteImageFromDisk(EntityImage image) throws Exception;
+    /**
      * Read image from disk.
      * @param image image.
      * @return image data.

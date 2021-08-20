@@ -84,6 +84,14 @@ class ImageServiceImpl implements ImageService {
         return Files.readAllBytes(Paths.get(file.toURI()));
     }
     
+    @Override
+    public void deleteImageFromDisk(EntityImage image) throws Exception {
+        File file = new File(getRootFolder(), image.getFileNameOnDisk());
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+    
     private File getRootFolder() {
         File folder = new File(platformConfiguration.getImagesStoragePath());
         if (!folder.exists()) {
