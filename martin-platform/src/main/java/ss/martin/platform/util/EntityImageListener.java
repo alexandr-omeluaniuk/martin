@@ -44,7 +44,7 @@ public class EntityImageListener {
     protected void prePersist(EntityImage entity) throws Exception {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         entity.setFileNameOnDisk(imageService.saveImageToDisk(entity.getImageData()));
-        entity.setImageData(null);  // release space in DB
+        entity.setImageData(new byte[0]);  // release space in DB
     }
     
     @PreUpdate
@@ -52,7 +52,7 @@ public class EntityImageListener {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         imageService.deleteImageFromDisk(entity);
         entity.setFileNameOnDisk(imageService.saveImageToDisk(entity.getImageData()));
-        entity.setImageData(null);  // release space in DB
+        entity.setImageData(new byte[0]);  // release space in DB
     }
     
     @PreRemove
