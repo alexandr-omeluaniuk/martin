@@ -118,7 +118,7 @@ class EntityServiceImpl implements EntityService {
         for (PlatformEntityListener l : listeners) {
             l.postUpdate(entity);
         }
-        return entity;
+        return coreDAO.findById(entity.getId(), entityClass);
     }
     @Override
     public <T extends DataModel> void delete(Set<Long> ids, Class<T> cl) throws Exception {
