@@ -43,11 +43,15 @@ public class ByteArrayDeserializer extends StdDeserializer<byte[]> {
     }
     @Override
     public byte[] deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
-        String value = jp.getText();
-        if (value.contains(",")) {
-            return Base64.getDecoder().decode(value.split(",")[1]);
-        } else {
-            return Base64.getDecoder().decode(value);
+        try {
+            String value = jp.getText();
+            if (value.contains(",")) {
+                return Base64.getDecoder().decode(value.split(",")[1]);
+            } else {
+                return Base64.getDecoder().decode(value);
+            }
+        } catch (IllegalArgumentException ex) {
+            return null;
         }
     }
 }

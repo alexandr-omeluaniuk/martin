@@ -23,6 +23,7 @@
  */
 package ss.entity.martin;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -30,6 +31,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.security.FormField;
+import ss.martin.platform.util.ByteArrayDeserializer;
 import ss.martin.platform.util.EntityImageListener;
 
 /**
@@ -63,6 +65,7 @@ public class EntityImage extends EntityAudit {
     @Column(name = "file_name_on_disk", length = 255, nullable = false)
     private String fileNameOnDisk;
     /** Data. */
+    @JsonDeserialize(using = ByteArrayDeserializer.class)
     @FormField
     @Column(name = "image_data", nullable = true)
     private byte[] data;
@@ -106,13 +109,13 @@ public class EntityImage extends EntityAudit {
     /**
      * @return the data
      */
-    public byte[] getImageData() {
+    public byte[] getData() {
         return data;
     }
     /**
      * @param data the data to set
      */
-    public void setImageData(byte[] data) {
+    public void setData(byte[] data) {
         this.data = data;
     }
     /**
