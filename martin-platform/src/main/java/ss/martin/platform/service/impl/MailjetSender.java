@@ -28,6 +28,10 @@ import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
 import com.mailjet.client.MailjetResponse;
 import com.mailjet.client.resource.Emailv31;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -59,14 +63,27 @@ class MailjetSender implements EmailService {
         for (EmailRequest.EmailContact recipient : emailRequest.getRecipients()) {
             recipients.put(new JSONObject().put("Email", recipient.getEmail()).put("Name", recipient.getName()));
         }
-        MailjetRequest email = new MailjetRequest(Emailv31.resource).property(Emailv31.MESSAGES, new JSONArray()
+        JSONArray arrAttachments = new JSONArray();
+        if (emailRequest.getAttachments() != null) {
+            for (EmailRequest.EmailAttachment attachment : emailRequest.getAttachments()) {
+                String base64 = Base64.getEncoder().encodeToString(
+                           Files.readAllBytes(Paths.get(attachment.getFile().toURI())));
+                JSONObject obj = new JSONObject()
+                        .put("ContentType", attachment.getContentType())
+                        .put("Filename", attachment.getName())
+                        .put("Base64Content", base64);
+                arrAttachments.put(obj);
+            }
+        }
+        JSONArray props = new JSONArray()
             .put(new JSONObject().put(Emailv31.Message.FROM, new JSONObject()
             .put("Email", emailRequest.getSender().getEmail())
             .put("Name", emailRequest.getSender().getName()))
             .put(Emailv31.Message.TO, recipients)
             .put(Emailv31.Message.SUBJECT, emailRequest.getSubject())
             .put(Emailv31.Message.TEXTPART, emailRequest.getMessage() == null ? "" : emailRequest.getMessage())
-            .put(Emailv31.Message.HTMLPART, "")));
+            .put(Emailv31.Message.HTMLPART, "").put(Emailv31.Message.ATTACHMENTS, arrAttachments));
+        MailjetRequest email = new MailjetRequest(Emailv31.resource).property(Emailv31.MESSAGES, props);
         MailjetResponse response = client.post(email);
         LOG.debug("response status: " + response.getStatus());
         LOG.debug("response data: " + response.getData());

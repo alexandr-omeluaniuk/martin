@@ -23,6 +23,8 @@
  */
 package ss.martin.platform.wrapper;
 
+import java.io.File;
+
 /**
  * Email request.
  * @author ss
@@ -36,6 +38,8 @@ public class EmailRequest {
     private String subject;
     /** Message. */
     private String message;
+    /** Attachments. */
+    private EmailAttachment[] attachments;
     // ===================================== SET & GET ================================================================
     /**
      * @return the sender
@@ -84,6 +88,81 @@ public class EmailRequest {
      */
     public void setMessage(String message) {
         this.message = message;
+    }
+    /**
+     * @return the attachments
+     */
+    public EmailAttachment[] getAttachments() {
+        return attachments;
+    }
+    /**
+     * @param attachments the attachments to set
+     */
+    public void setAttachments(EmailAttachment[] attachments) {
+        this.attachments = attachments;
+    }
+    /**
+     * Email attachment.
+     */
+    public static class EmailAttachment {
+        /** Name. */
+        private String name;
+        /** Content type. */
+        private String contentType;
+        /** File. */
+        private File file;
+        /**
+         * Constructor.
+         */
+        public EmailAttachment() {
+        }
+        /**
+         * Constructor.
+         * @param name name.
+         * @param contentType content type.
+         * @param file file.
+         */
+        public EmailAttachment(String name, String contentType, File file) {
+            this.name = name;
+            this.contentType = contentType;
+            this.file = file;
+        }
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
+        /**
+         * @return the contentType
+         */
+        public String getContentType() {
+            return contentType;
+        }
+        /**
+         * @param contentType the contentType to set
+         */
+        public void setContentType(String contentType) {
+            this.contentType = contentType;
+        }
+        /**
+         * @return the file
+         */
+        public File getFile() {
+            return file;
+        }
+        /**
+         * @param file the file to set
+         */
+        public void setFile(File file) {
+            this.file = file;
+        }
     }
     /**
      * Email contact.
