@@ -36,6 +36,10 @@ import ss.martin.platform.spring.security.JwtRequestFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @EnableWebSecurity/*(debug = true)*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /** Whitelist URLs. */
+    private static final String[] WHITELIST = new String[] {
+        "/static/*", "/locales/*", "/*.json", "/*.js", "/*.txt", "/*.ico", "/*.html", "/"
+    };
     /** Authentication entry point. */
     @Autowired
     private AuthenticationEntryPoint authEntryPoint;
@@ -64,15 +68,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests().mvcMatchers(
-                        configuration.getNavigation().getPublicRest() + "/**", "/api/platform/public").permitAll().and()
-                .authorizeRequests().mvcMatchers(configuration.getNavigation().getProtectedRest() + "/**",
-                        "/api/platform/security/**", "/api/platform/entity/**").authenticated()
+                        configuration.getNavigation().getPublicRest() + "/*", "/api/platform/public").permitAll().and()
+                .authorizeRequests().mvcMatchers(configuration.getNavigation().getProtectedRest() + "/*",
+                        "/api/platform/security/*", "/api/platform/entity/*").authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginPage(configuration.getNavigation().getLoginPage()).permitAll().and()
                 .logout().deleteCookies("JSESSIONID").logoutUrl(configuration.getNavigation().getLogout())
                 .logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
+        // Whitelist
+        http.authorizeHttpRequests().mvcMatchers(WHITELIST).permitAll();
+        http.authorizeHttpRequests().mvcMatchers(configuration.getNavigation().getViews() + "/*").permitAll();
+        http.authorizeHttpRequests().mvcMatchers(configuration.getNavigation().getRegistrationVerification() + "/*")
+                .permitAll();
         if (configuration.getJwt() != null) {
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -81,9 +90,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/static/**", "/locales/**", "/*.json", "/*.js", "/*.txt",
-                "/*.ico", "/*.html", "/", configuration.getNavigation().getViews() + "/**",
-                configuration.getNavigation().getRegistrationVerification() + "/**");
         web.httpFirewall(httpFirewall());
     }
     /**
@@ -93,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public HttpFirewall httpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowUrlEncodedPercent(true);;
+        firewall.setAllowUrlEncodedPercent(true);
         firewall.setAllowSemicolon(true);
         return firewall;
     }
