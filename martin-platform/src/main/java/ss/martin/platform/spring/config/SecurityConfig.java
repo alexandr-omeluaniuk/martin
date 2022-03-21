@@ -86,6 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         }
+        // CSP
+        if (configuration.getContentSecurityPolicy() != null) {
+            http.headers().xssProtection().and().contentSecurityPolicy(configuration.getContentSecurityPolicy());
+        }
         systemUserService.superUserCheck();
     }
     @Override

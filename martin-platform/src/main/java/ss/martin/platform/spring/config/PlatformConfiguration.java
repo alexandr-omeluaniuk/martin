@@ -59,6 +59,8 @@ public class PlatformConfiguration {
     private String firebaseConfigFilePath;
     /** Image storage absolute path. */
     private String imagesStoragePath;
+    /** Content-Security-Policy header value. */
+    private String contentSecurityPolicy;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the systemEmailContactName
@@ -215,5 +217,17 @@ public class PlatformConfiguration {
      */
     public void setImagesStoragePath(String imagesStoragePath) {
         this.imagesStoragePath = imagesStoragePath;
+    }
+    /**
+     * @return the contentSecurityPolicy
+     */
+    public String getContentSecurityPolicy() {
+        return contentSecurityPolicy;
+    }
+    /**
+     * @param contentSecurityPolicy the contentSecurityPolicy to set
+     */
+    public void setContentSecurityPolicy(String contentSecurityPolicy) {
+        this.contentSecurityPolicy = contentSecurityPolicy;
     }
 }
