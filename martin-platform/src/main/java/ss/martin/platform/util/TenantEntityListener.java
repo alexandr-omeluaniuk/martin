@@ -27,7 +27,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ss.entity.martin.SystemUser;
 import ss.entity.martin.TenantEntity;
 import ss.martin.platform.security.SecurityContext;
@@ -60,10 +59,10 @@ public class TenantEntityListener {
             }
         }
         // save current subscription for every tenant entity.
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+        //SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         if (entity != null && ReflectionUtils.hasSuperClass(entity.getClass(), TenantEntity.class)) {
             TenantEntity tenantEntity = (TenantEntity) entity;
-            tenantEntity.setSubscription(SecurityContext.currentUser().getSubscription());
+            tenantEntity.setSubscription(SecurityContext.subscription());
         }
     }
 }

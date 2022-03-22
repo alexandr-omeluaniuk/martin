@@ -27,7 +27,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ss.entity.martin.EntityImage;
 import ss.martin.platform.service.ImageService;
 
@@ -37,19 +36,21 @@ import ss.martin.platform.service.ImageService;
  */
 public class EntityImageListener {
     /** Image service. */
-    @Autowired
     private ImageService imageService;
+    
+    @Autowired
+    public void init(ImageService imageService) {
+        this.imageService = imageService;
+    }
     
     @PrePersist
     protected void prePersist(EntityImage entity) throws Exception {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         entity.setFileNameOnDisk(imageService.saveImageToDisk(entity.getData()));
         entity.setData(new byte[0]);  // release space in DB
     }
     
     @PreUpdate
     protected void preUpdate(EntityImage entity) throws Exception {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         imageService.deleteImageFromDisk(entity);
         entity.setFileNameOnDisk(imageService.saveImageToDisk(entity.getData()));
         entity.setData(new byte[0]);  // release space in DB
@@ -57,7 +58,6 @@ public class EntityImageListener {
     
     @PreRemove
     protected void preRemove(EntityImage entity) throws Exception {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         imageService.deleteImageFromDisk(entity);
     }
 }
