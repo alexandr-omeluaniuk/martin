@@ -7,6 +7,7 @@ package ss.martin.platform.spring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -91,6 +92,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
         // otherwise without principal will be 401 error
-        chain.doFilter(request, response);
+        try {
+            chain.doFilter(request, response);
+        } catch (FileNotFoundException ex) {
+            LOG.warn(ex.getMessage());
+        }
     }
 }
