@@ -189,7 +189,7 @@ class CoreDAOImpl implements CoreDAO {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> void massDelete(List<T> entities) {
         for (T entity : entities) {
-            em.remove(entity);
+            em.remove(em.contains(entity) ? entity : em.merge(entity));
         }
         em.flush();
     }
